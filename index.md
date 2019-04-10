@@ -1,6 +1,6 @@
-# CRUK Bioinformatics Summer School 2018: Functional Genomics
+# CRUK Bioinformatics Summer School 2019: Functional Genomics
 
-**23rd - 27th July 2018: Craik-Marshall Room, Downing Site, University of Cambridge**
+**15th - 19th July 2019: Craik-Marshall Room, Downing Site, University of Cambridge**
 
 ## Overview
 
@@ -16,7 +16,7 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 
 ### Pre-requisites
 
-**The course will include a great deal of hands-on work in R and at the command line. In order for you to make the most of the course we strongly recommend that you take an introductory course, or have sufficient experience in the following areas:**
+**The course will include a great deal of hands-on work in R and at the command line. In order for you to make the most of the course we <u>strongly recommend</u> that you take an introductory course, or have sufficient experience in the following areas:**
 
 - R
 - Unix
@@ -24,8 +24,9 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 
 **More specific requirements and references can be found [here](http://www.cruk.cam.ac.uk/bioinformatics-summer-school-prerequisites)**   
 
+<---- 
 **Data files for course are [here](https://www.dropbox.com/sh/s4qb83mtuxjelg7/AAB0HIXL5_NGE8r20UxjG1v5a?dl=0). There is a zip-file for each course and a sizes.txt file with zip sizes (Warning: Single-cell one is BIG!)**   
-
+----->
 ### Instructors
 
 - [Mark Fernandes (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
@@ -44,7 +45,6 @@ During this course you will learn about:-
 - To provide an understanding of how aligned sequencing reads, genome sequences and genomic regions are represented in R.
 - To encourage confidence in reading sequencing reads into R, performing quality assessment and executing standard pipelines for (bulk) RNA-Seq and ChIP-Seq analysis 
 - Analysis of transcription factor (TF) and epigenomic (histone mark) ChIP-seq data 
-- Recent advances in single-cell sequencing
 
 ### Objectives
 After the course you should be able to:-
@@ -54,20 +54,19 @@ After the course you should be able to:-
 - Given a set of gene identifiers, find out whereabouts in the genome they are located, and vice-versa 
 - Produce a list of differentially expressed genes from an RNA-Seq experiment.
 - Import a set of ChIP-Seq peaks and investigate their biological context.
-- Appreciate the differences between bulk and single-cell RNA-seq analyses, and why the same methodologies might not be applicable
 
-# Day 0 (July 22nd )
+# Day 0 (July 14th )
 
 **SOCIAL
 18:00 - ..
-Informal get-together at The Grain and Hop Store (close to accommodation in Downing College)
+Informal get-together at The Grain and Hop Store (close to accommodation in Downing College). Meet fellow attendees and some of your trainers.    
 Join us for a drink and dinner (self-paying), and to meet your colleagues for the next few days
 http://www.grainandhopstore-cambridge.co.uk/ 
 
 **Note that the Training Room in Craik-Marshall building (1st Floor) will be open from 9am. 
 School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2018-07-23-functional-genomics) **
 
-# Day 1 (July 23rd)
+# Day 1 (July 15th)
 
 - 09:30 [Course Introduction](Introduction/Session1-intro.html)
 - 09:30 - 10:30; [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf)
@@ -84,7 +83,7 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
   + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4_Short_Read_Alignment_to_a_Reference-Genome_SS.pdf) (3.45-5.00pm)
   + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_SS.html) (45 min)
     
-# Day 2 (July 24th)
+# Day 2 (July 16th)
 
 **Please note we use several Rstudio Notebook html files as material for the RNAseq course. To obtain the source code
 (.Rmd file) you can simply click on the code button in the top right-hand corner).**
@@ -102,25 +101,20 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
 - 15:00 - 17:00 
   + [Differential expression analysis with DESeq2](RNASeq2018/html/04_DE_analysis_with_DESeq2.nb.html)
 
-# Day 3 (July 25th)
+# Day 3 (July 17th)
 
 - 09:30 - 11:00; [Annotation and Visualisation of Differential Expression](RNASeq2018/html/05_Annotation_and_Visualisation.nb.html)
 - 11:00 - 12:30; [Gene set analysis and Gene Ontology testing](RNASeq2018/html/06_Gene_set_testing.nb.html)
 
 - 12:30 - 13:30; LUNCH
-- 13:30 - 16:30; Single Cell RNASeq 'taster'
-  + [Introduction to single-cell sequencing](SingleCell/slides/2018-07-25_CRUK_CI_summer_school-scRNAseq.pdf)  
-  + [QC and normalization Practical](SingleCell/practical/QC_and_normalization.html).  
-  + [Single cell population identification Practical (Rmd file)](SingleCell/practical/crukBioinfoSummerSchoolJuly2018_scRnaSeqCellPopId_practical.Rmd)
-  + [Single cell population identification Practical (html file)](SingleCell/practical/crukBioinfoSummerSchoolJuly2018_scRnaSeqCellPopId_practical_run.html)
-
-NB We do not have sufficient time to teach this entire course in half a day. However, some concepts are covered in the Bulk RNASeq course and we provide the [link to the full materials](https://hemberg-lab.github.io/scRNA.seq.course/index.html). Please note, that on occasions where all of the material was used, it resulted in a five-day course(!). We will teach topics that should be of interest even to those not interested in single-cell work.
+- 13:30 - 16:30; {Rory}
+- 
 
 **SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
 [Google Map](https://www.google.com/maps/dir/Craik-Marshall+Building,+Cambridge/Scudamore's+Mill+Lane+Punting+Station,+Mill+Ln,+Cambridge+CB2+1RS/@52.2021771,0.1169979,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x47d8709788f7fb6b:0x117c3858ab077fb0!2m2!1d0.1224918!2d52.2019233!1m5!1m1!1s0x47d870a335f0f833:0xdb33dae59780b590!2m2!1d0.115892!2d52.201511!3e3). 
 [Scudamore's Web-site & Mill lane map](https://www.scudamores.com/punting-mill-lane). 
 
-# Day 4 (July 26th)
+# Day 4 (July 18th)
 
 - ChIP-seq data analysis
     + Lecture 5: [Introduction to ChIP-seq](ChIP/Lectures//L5_Introduction_to_ChIP-seq_SS.pdf) (9.30-10.00pm)
@@ -142,7 +136,7 @@ NB We do not have sufficient time to teach this entire course in half a day. How
 Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwiptLD_s7zcAhXEy4UKHU0CDgkQjRx6BAgBEAU&url=https%3A%2F%2Fwww.downing-conferences-cambridge.co.uk%2Fabout-us%2Fvisitor-map&psig=AOvVaw1kbZkL02AvKqsWtNfNzNTJ&ust=1532682124262374) **    
 
 
-# Day 5 (July 27th)
+# Day 5 (July 19th)
 
 - 09:30 - 12:30; **A room in C-M building will be available for storing your baggage (There will be signage)
 - ATAC-seq and Epigenomics
