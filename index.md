@@ -24,9 +24,8 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 
 **More specific requirements and references can be found [here](http://www.cruk.cam.ac.uk/bioinformatics-summer-school-prerequisites)**   
 
-<---- 
-**Data files for course are [here](https://www.dropbox.com/sh/s4qb83mtuxjelg7/AAB0HIXL5_NGE8r20UxjG1v5a?dl=0). There is a zip-file for each course and a sizes.txt file with zip sizes (Warning: Single-cell one is BIG!)**   
------>
+[//]: # (**Data files for course are [here](https://www.dropbox.com/sh/s4qb83mtuxjelg7/AAB0HIXL5_NGE8r20UxjG1v5a?dl=0). There is a zip-file for each course and a sizes.txt file with zip sizes (Warning: Single-cell one is BIG!)**   )
+
 ### Instructors
 
 - [Mark Fernandes (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
@@ -37,6 +36,8 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 - [Alistair Martin (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group)
 - [Stephane Ballereau (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
 - [Michael Morgan (CRUK CI)](http://www.cruk.cam.ac.uk/).  
+- [Dominique]()
+
 
 
 ### Aims
@@ -101,6 +102,10 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
 - 15:00 - 17:00 
   + [Differential expression analysis with DESeq2](RNASeq2018/html/04_DE_analysis_with_DESeq2.nb.html)
 
+**SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
+[Google Map](https://www.google.com/maps/dir/Craik-Marshall+Building,+Cambridge/Scudamore's+Mill+Lane+Punting+Station,+Mill+Ln,+Cambridge+CB2+1RS/@52.2021771,0.1169979,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x47d8709788f7fb6b:0x117c3858ab077fb0!2m2!1d0.1224918!2d52.2019233!1m5!1m1!1s0x47d870a335f0f833:0xdb33dae59780b590!2m2!1d0.115892!2d52.201511!3e3). 
+[Scudamore's Web-site & Mill lane map](https://www.scudamores.com/punting-mill-lane). 
+
 # Day 3 (July 17th)
 
 - 09:30 - 11:00; [Annotation and Visualisation of Differential Expression](RNASeq2018/html/05_Annotation_and_Visualisation.nb.html)
@@ -108,11 +113,10 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
 
 - 12:30 - 13:30; LUNCH
 - 13:30 - 16:30; {Rory}
-- 
 
-**SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
-[Google Map](https://www.google.com/maps/dir/Craik-Marshall+Building,+Cambridge/Scudamore's+Mill+Lane+Punting+Station,+Mill+Ln,+Cambridge+CB2+1RS/@52.2021771,0.1169979,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x47d8709788f7fb6b:0x117c3858ab077fb0!2m2!1d0.1224918!2d52.2019233!1m5!1m1!1s0x47d870a335f0f833:0xdb33dae59780b590!2m2!1d0.115892!2d52.201511!3e3). 
-[Scudamore's Web-site & Mill lane map](https://www.scudamores.com/punting-mill-lane). 
+**SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:00 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below)    
+[Drinks Reception 18:00- 19:45 West Lodge    
+Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwiptLD_s7zcAhXEy4UKHU0CDgkQjRx6BAgBEAU&url=https%3A%2F%2Fwww.downing-conferences-cambridge.co.uk%2Fabout-us%2Fvisitor-map&psig=AOvVaw1kbZkL02AvKqsWtNfNzNTJ&ust=1532682124262374) **    
 
 # Day 4 (July 18th)
 
@@ -130,11 +134,6 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
     + Practical 7: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (30 min)
     + Practical 8: [Identifying direct targets of transcription factors with Rcade](ChIP/Practicals/Practical8_Rcade_SS.pdf) (30 min)
     + Lecture 10:: [Useful software utilities for the analysis of genomic data](ChIP/Lectures/L10_Software_utilities_for_computational_genomics_SS.pdf) (4.30-5.00pm)
- 
-**SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:00 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below)    
-[Drinks Reception 18:00- 19:45 West Lodge    
-Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwiptLD_s7zcAhXEy4UKHU0CDgkQjRx6BAgBEAU&url=https%3A%2F%2Fwww.downing-conferences-cambridge.co.uk%2Fabout-us%2Fvisitor-map&psig=AOvVaw1kbZkL02AvKqsWtNfNzNTJ&ust=1532682124262374) **    
-
 
 # Day 5 (July 19th)
 
