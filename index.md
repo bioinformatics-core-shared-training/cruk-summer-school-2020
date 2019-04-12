@@ -69,6 +69,8 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
 
 # Day 1 (July 15th)
 
+Breakfast at Downing College is at 9am
+9:45 - 17:15 C-M Training room
 - 09:30 [Course Introduction](Introduction/Session1-intro.html)
 - 09:30 - 10:30; [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf)
 - 10:30 - 12:30; [Introduction (Recap) of R and Bioconductor](Introduction/bioc-intro.nb.html)
@@ -145,7 +147,8 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
   +  Lecture 12 [Introduction to Epigenomics and Chromatin Interactions](ChIP/Lectures/L12_Introduction_to_Epigenomics_SS.pdf) (11.30-12.30)
 
 - 12:30 - 13:30; LUNCH
-- Safe Journey home (Thank you for participating in the Summer School)
+- Some of you may now be going to the [CRUK Cambridge Centre Graduate Symposium](https://www.crukccgraduatesymposium.com/) Hope you enjoy it!    
+- Have a safe Journey home (Thank you for participating in the Summer School)
 ## Please don't forget to fill in the [survey]( https://www.surveymonkey.co.uk/r/SummerSchl)   
 
 <!--
