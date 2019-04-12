@@ -135,7 +135,7 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
     + Lecture 9: [Downstream analysis of ChIP-seq](ChIP/Lectures/L9_Downstream_Analysis_of_ChIP-seq_data_SS.pdf) (1.30-2.15pm)
     + Practical 7: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (2.15-3.00pm)
     + Lecture 10: [A brief introduction to epigenomics](ChIP/Lectures/L12_Introduction_to_Epigenomics_SS.pdf)(3.00-3.30pm) 
-    + Practical 8: [Data Integration for Functional Genomics (TF direct targets & chromatin colours](ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.30-5.00 min)
+    + Practical 8: [Data Integration for Functional Genomics (TF direct targets & chromatin colours)](ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.30-5.00 min)
  
 
 # Day 5 (July 19th)
@@ -144,7 +144,7 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
 - ATAC-seq and Epigenomics
    + Lecture 11:: [Useful software utilities for the analysis of genomic data](ChIP/Lectures/L10_Software_utilities_for_computational_genomics_SS.pdf) (9.30-10.00am)
   +  Practical 9: [Useful software utilities for the analysis of genomic data](ChIP/Practicals/Practical9_Useful_software_utilities_for_the_analysis_of_genomic_data_SS.html) (10.00-11.00am)
-  +  Lecture 12 [ATAC-seq data analysis](ChIP/Lectures/L11_Introduction_to_ATAC-seq_SS.pdf) (11.00-11.30am)
+  +  Lecture 12 [Chromatin accessibility and nucleosome occupancy with ATAC-seq](ChIP/Lectures/L11_Introduction_to_ATAC-seq_SS.pdf) (11.00-11.30am)
   +  Practical 10: [ATAC-seq analysis](ChIP/Practicals/Practical10_ATAC-seq_analysis_SS.html) (11.30-12.30pm)
 
 
