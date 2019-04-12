@@ -123,19 +123,20 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
 # Day 4 (July 18th)
 
 - ChIP-seq data analysis
-    + Lecture 1: [Introduction to ChIP-seq](ChIP/Lectures//L5_Introduction_to_ChIP-seq_SS.pdf) (9.30-10.00pm)
-    + Lecture 2: [Peak Calling](ChIP/Lectures/L6_Peak_Calling_SS.pdf) (10.00-11.00pm)
-    + Practical 1: [Peak calling using MACS2](ChIP/Practicals/Practical3_peakcalling_SS.html) (30 min)
-    + Lecture 3: [Differential binding analysis](ChIP/Lectures/L7_Differential_binding_analysis_DB.pdf) (11.00-12.30pm)
-    + Practical 2: [THOR (and Diffbind)](ChIP/Practicals/Practical4_differentialBinding_DB.html) (20 min)
-    + Lecture 4: [Quality control methods for ChIP-seq](ChIP/Lectures/L8_Quality_control_methods_for_ChIP-seq_DB.pdf) (1 hr)
-    + Practical 3: [TBA](ChIP/Practicals/Practical5_ChIPQC_DB.html) (30 min)
-    + Practical 4: [Integrative Genome Viewer](ChIP/Practicals/Practical6_IGV_DB.html) (30 min)
+    + Lecture 1: [Introduction to ChIP-seq](ChIP/Lectures//L5_Introduction_to_ChIP-seq_SS.pdf) (9.30-10.00am)
+    + Lecture 2: [Peak Calling](ChIP/Lectures/L6_Peak_Calling_SS.pdf) (10.00-10.30am)
+    + Practical 1: [Peak calling with MACS2](ChIP/Practicals/Practical3_peakcalling_SS.html) (10.30-11.00am)
+    + Lecture 3: [Differential binding analysis](ChIP/Lectures/L7_Differential_binding_analysis_DB.pdf) (11.00-11.15am)
+    + Practical 2: [THOR (and Diffbind)](ChIP/Practicals/Practical4_differentialBinding_DB.html) (11.15-11.30pm)
+    + Lecture 4: [Quality control methods for ChIP-seq](ChIP/Lectures/L8_Quality_control_methods_for_ChIP-seq_DB.pdf) (11.30-12.00pm)
+    + Practical 3: [TBA](ChIP/Practicals/Practical5_ChIPQC_DB.html) (12.00-12.30pm)
+   
     LUNCH (12.30-1.30pm)
-    + Lecture 5: [Downstream analysis of ChIP-seq](ChIP/Lectures/L9_Downstream_Analysis_of_ChIP-seq_data_SS.pdf) (1.30-2.15pm)
-    + Practical 5: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (2.15-3.00pm)
-    + Lecture 6: [A brief introduction to epigenomics](ChIP/Lectures/L12_Introduction_to_Epigenomics_SS.pdf)(3.00-3.30pm) 
-    + Practical 6: [Data Integration for Functional Genomics (TF direct targets & chromatin colours)](ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.30-5.00 min)
+     + Practical 4: [Integrative Genome Viewer](ChIP/Practicals/Practical6_IGV_DB.html) (1.30-2.00 min)
+    + Lecture 5: [Downstream analysis of ChIP-seq](ChIP/Lectures/L9_Downstream_Analysis_of_ChIP-seq_data_SS.pdf) (2.00-2.30pm)
+    + Practical 5: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (2.30-3.15pm)
+    + Lecture 6: [(epi)Genomic data integration](3.15-3.45pm)
+    + Practical 6: [Data Integration for Functional Genomics (TF direct targets & chromatin colours)](ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.45-5.00 min)
  
 
 # Day 5 (July 19th)
