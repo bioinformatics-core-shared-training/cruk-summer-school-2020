@@ -142,10 +142,10 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
 
 - 09:30 - 12:30; **A room in C-M building will be available for storing your baggage (There will be signage)
 - ATAC-seq and Epigenomics
-   + Lecture 1:: [Useful software utilities for the analysis of genomic data](ChIP/Lectures/L10_Software_utilities_for_computational_genomics_SS.pdf) (9.30-10.00am)
-  +  Practical 1: [Useful software utilities for the analysis of genomic data](ChIP/Practicals/Practical9_Useful_software_utilities_for_the_analysis_of_genomic_data_SS.html) (10.00-11.00am)
-  +  Lecture 2 [Chromatin accessibility and nucleosome occupancy with ATAC-seq](ChIP/Lectures/L11_Introduction_to_ATAC-seq_SS.pdf) (11.00-11.30am)
-  +  Practical 2: [ATAC-seq analysis](ChIP/Practicals/Practical10_ATAC-seq_analysis_SS.html) (11.30-12.30pm)
+  +  Lecture 1 [Chromatin accessibility and nucleosome occupancy with ATAC-seq](ChIP/Lectures/L11_Introduction_to_ATAC-seq_SS.pdf) (9.30-10.00am)
+  +  Practical 1: [ATAC-seq analysis](ChIP/Practicals/Practical10_ATAC-seq_analysis_SS.html) (10.00-11.00am)
+  + Lecture 2:: [Useful software utilities for the analysis of genomic data](ChIP/Lectures/L10_Software_utilities_for_computational_genomics_SS.pdf) (11.00-11.30am)
+  +  Practical 2: [Useful software utilities for the analysis of genomic data](ChIP/Practicals/Practical9_Useful_software_utilities_for_the_analysis_of_genomic_data_SS.html) (11.30-12.30pm)
 
 
 - 12:30 - 13:30; LUNCH
