@@ -29,8 +29,8 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 ### Instructors
 
 - [Mark Fernandes (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
-- [Shamith Samarajiwa (MRC CU)](http://www.mrc-cu.cam.ac.uk/research/Shamith-Samarajiwa-folder)
-- [Dora Bihary (MRC CU)](http://www.mrc-cu.cam.ac.uk/research/Shamith-Samarajiwa-folder)
+- [Shamith Samarajiwa (MRC CU)](https://www.samarajiwa-lab.org/)
+- [Joanna Krupka (MRC CU)](https://www.samarajiwa-lab.org/)
 - [Ashley Sawle (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
 - [Abigail Edwards (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
 - [Alistair Martin (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group)
