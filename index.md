@@ -132,19 +132,21 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
     + Practical 5: [ChIPQC package](ChIP/Practicals/Practical5_ChIPQC_DB.html) (30 min)
     + Practical 6: [Integrative Genome Viewer](ChIP/Practicals/Practical6_IGV_DB.html) (30 min)
     LUNCH (12.30-1.30pm)
-    + Lecture 9: [Downstream analysis of ChIP-seq](ChIP/Lectures/L9_Downstream_Analysis_of_ChIP-seq_data_SS.pdf) (1.30-3.15pm)
-    + Practical 7: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (30 min)
-    + Practical 8: [Identifying direct targets of transcription factors with Rcade](ChIP/Practicals/Practical8_Rcade_SS.pdf) (30 min)
-    + Lecture 10:: [Useful software utilities for the analysis of genomic data](ChIP/Lectures/L10_Software_utilities_for_computational_genomics_SS.pdf) (4.30-5.00pm)
+    + Lecture 9: [Downstream analysis of ChIP-seq](ChIP/Lectures/L9_Downstream_Analysis_of_ChIP-seq_data_SS.pdf) (1.30-2.15pm)
+    + Practical 7: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (2.15-2.45pm)
+    + Lecture 9: [A brief introduction to epigenomics](ChIP/Lectures/L12_Introduction_to_Epigenomics_SS.pdf)(3.00-3.30pm) 
+    + Practical 8: [Data Integration in Functional Genomics (TF direct targets & chromatin colours)] (ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.30-5.00 min)
+ 
 
 # Day 5 (July 19th)
 
 - 09:30 - 12:30; **A room in C-M building will be available for storing your baggage (There will be signage)
 - ATAC-seq and Epigenomics
+   + Lecture 10:: [Useful software utilities for the analysis of genomic data](ChIP/Lectures/L10_Software_utilities_for_computational_genomics_SS.pdf) (4.30-5.00pm)
   +  Practical 9: [Useful software utilities for the analysis of genomic data](ChIP/Practicals/Practical9_Useful_software_utilities_for_the_analysis_of_genomic_data_SS.html) (9.30-10.30am)
   +  Lecture 11 [ATAC-seq data analysis](ChIP/Lectures/L11_Introduction_to_ATAC-seq_SS.pdf) (10.30-11.30am)
   +  Practical 10: [ATAC-seq analysis](ChIP/Practicals/Practical10_ATAC-seq_analysis_SS.html) (30 min)
-  +  Lecture 12 [Introduction to Epigenomics and Chromatin Interactions](ChIP/Lectures/L12_Introduction_to_Epigenomics_SS.pdf) (11.30-12.30)
+  +  Lecture 12 [Introduction to Epigenomics and Chromatin Interactions] (11.30-12.30)
 
 - 12:30 - 13:30; LUNCH
 - Some of you may now be going to the [CRUK Cambridge Centre Graduate Symposium](https://www.crukccgraduatesymposium.com/) Hope you enjoy it!    
