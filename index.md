@@ -135,8 +135,8 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
      + Practical 4: [Integrative Genome Viewer](ChIP/Practicals/Practical6_IGV_DB.html) (1.30-2.00 min)
     + Lecture 5: [Downstream analysis of ChIP-seq](ChIP/Lectures/L9_Downstream_Analysis_of_ChIP-seq_data_SS.pdf) (2.00-2.30pm)
     + Practical 5: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (2.30-3.15pm)
-    + Lecture 6: [(epi)Genomic data integration](3.15-3.45pm)
-    + Practical 6: [Data Integration for Functional Genomics (TF direct targets & chromatin colours)](ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.45-5.00 min)
+    + Lecture 6: [Introduction to (epi)Genomic data integration](3.15-3.45pm)
+    + Practical 6: [Data Integration (TF direct targets & chromatin modifications)](ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.45-5.00 min)
  
 
 # Day 5 (July 19th)
