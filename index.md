@@ -115,7 +115,12 @@ Breakfast at Downing College is at 9am
 - 11:00 - 12:30; [Gene set analysis and Gene Ontology testing](RNASeq2018/html/06_Gene_set_testing.nb.html)
 
 - 12:30 - 13:30; LUNCH
-- 13:30 - 16:30; {Rory}
+- 13:30 - 16:30; Prognostic Gene Signatures
+1.      Prognostic Gene Signatures (RS) 13:30 -14:00
+2.      Survival Analysis (DL) 14:00 – 14:30
+3.      Practical: Deriving a Predictive Gene Signature from DEGs 14:30 – 15:00
+4.      Issues with prognostic gene signatures (RS) 15:00 – 15:30
+5.      Practical: Checking gene signatures with SigCheck 15:30 – 16:00
 
 **SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:00 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below)    
 [Drinks Reception 18:00- 19:45 West Lodge    
