@@ -37,7 +37,7 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 - [Abigail Edwards (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core).  
 - [Alistair Martin (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group).   
 - [Stephane Ballereau (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core).     
-- [Dominique-Laurent Couturier](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core).   
+- [Dominique-Laurent Couturier(CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core).   
 
 
 
