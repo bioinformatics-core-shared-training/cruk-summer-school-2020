@@ -45,8 +45,9 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 During this course you will learn about:-
 
 - To provide an understanding of how aligned sequencing reads, genome sequences and genomic regions are represented in R.
-- To encourage confidence in reading sequencing reads into R, performing quality assessment and executing standard pipelines for (bulk) RNA-Seq and ChIP-Seq analysis 
-- Analysis of transcription factor (TF) and epigenomic (histone mark) ChIP-seq data 
+- To encourage confidence in reading sequencing reads into R, performing quality assessment and executing standard pipelines for (bulk) RNA-Seq, ChIP-Seq and ATAC-seq analysis 
+- Analysis of transcription factor (TF) and epigenomic (histone mark) ChIP-seq data
+-
 
 ### Objectives
 After the course you should be able to:-
