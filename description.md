@@ -93,7 +93,7 @@ Informal get-together the day before the course at a local pub
 - Downloading public ChIP-seq datasets
 - Downstream analysis of ChIP-seq data
 - Differential Binding analysis
-- Introduction to the analysis of long distance interactions
+- Introduction to the analysis of ATAC-seq data
 
 ## Day five 09:30 - 12:30
 
