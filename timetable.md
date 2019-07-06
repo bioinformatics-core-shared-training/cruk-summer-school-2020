@@ -4,9 +4,13 @@
 - 10:30 - 12:30; Introduction (Recap) of R (MD)
 - 12:30 - 13:30; LUNCH
 - 13:30 - 14:30 Principles of Experimental Design (RS)
-- 14:30 - 17:00; (SS / DB)
-    + Data Processing for Next Generation Sequencing
-    + Alignment to reference genomes and QC 
+- 14:30 - 17:00; Data Processing for Next Generation Sequencing (JK / DB)
+    + Introduction to next generation sequencing (JK)
+    + A brief Introduction to genomic file formats (DB)
+    + Quality control and artefact removal (DB)
+    + Practical - Learn to use FastQC and Cutadapt on a sample dataset
+    + Short Read alignment and quality control (JK)
+    + Practical - Alignment to reference genomes using BWA and STAR
     
 # Day 2
 
