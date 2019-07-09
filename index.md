@@ -28,16 +28,15 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 
 ### Instructors
 
-- [Mark Fernandes (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core). 
-- [Rory Stark (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
+- [Mark Fernandes (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/mark-fernandes). 
+- [Rory Stark (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/rory-stark)
 - [Shamith Samarajiwa (MRC CU)](https://www.samarajiwa-lab.org/people). 
 - [Dora Bihary (MRC CU)](https://www.samarajiwa-lab.org/people). 
 - [Joanna Krupka (MRC CU)](https://www.samarajiwa-lab.org/people).  
-- [Ashley Sawle (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core). 
-- [Abigail Edwards (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core).  
+- [Ashley Sawle (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/ash-sawle).   
 - [Alistair Martin (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group).   
-- [Stephane Ballereau (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core).     
-- [Dominique-Laurent Couturier(CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core).   
+- [Stephane Ballereau (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/stephane-ballereau).     
+- [Dominique-Laurent Couturier(CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/dominique-laurent-couturier).   
 
 
 
