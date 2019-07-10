@@ -69,8 +69,8 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
 
 # Day 1 (July 15th)
 
-Breakfast at Downing College is at 9am
-9:45 - 17:15 C-M Training room
+Breakfast at Downing College is at 8.45-9.15am.  
+__C-M Training room__.  
 - 09:30 [Course Introduction](Introduction/Session1-intro.html)
 - 09:30 - 10:30; [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf)
 - 10:30 - 12:30; [Introduction (Recap) of R and Bioconductor](Introduction/bioc-intro.nb.html)
