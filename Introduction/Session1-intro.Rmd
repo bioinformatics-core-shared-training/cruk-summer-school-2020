@@ -16,18 +16,18 @@ We're based at [Cancer Research Uk Cambridge Institute](http://www.cruk.cam.ac.u
 
 # Who's who 
 
+- [Mark Fernandes (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/mark-fernandes). 
+- [Rory Stark (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/rory-stark)
+- [Shamith Samarajiwa (MRC CU)](https://www.samarajiwa-lab.org/people). 
+- [Dora Bihary (MRC CU)](https://www.samarajiwa-lab.org/people). 
+- [Joanna Krupka (MRC CU)](https://www.samarajiwa-lab.org/people).  
+- [Ashley Sawle (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/ash-sawle).   
+- [Alistair Martin (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group).   
+- [Stephane Ballereau (CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/stephane-ballereau).     
+- [Dominique-Laurent Couturier(CRUK CI)](https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/dominique-laurent-couturier).  
 
-- [Mark Fernandes (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
-- [Shamith Samarajiwa (MRC CU)](http://www.mrc-cu.cam.ac.uk/research/Shamith-Samarajiwa-folder)
-- [Dora Bihary (MRC CU)](http://www.mrc-cu.cam.ac.uk/research/Shamith-Samarajiwa-folder)
-- [Ashley Sawle (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
-- [Alistair Martin (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group)
-- [Michael Morgan (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group)
-- [Abigail Edwards (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
-- [Stephane Ballereau (CRUK CI)](http://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core)
 
-
-Huge thanks too to Kelly O'Reilly (CRUK) for admin support, and Gabriella, Paul and Cathy for support in Genetics
+Huge thanks too to Kelly O'Reilly, Justin Holt, Louisa Bellis (CRUKCC) for admin support, and Gabriella, Paul and Cathy for support in Genetics
 
 # Who are you?
 
@@ -90,7 +90,7 @@ p2
 
 # Live note-taking and documentation
 
-- We have an "etherpad" at https://public.etherpad-mozilla.org/p/2018-07-23-functional-genomics
+- We have an "etherpad" at https://public.etherpad-mozilla.org/p/2019-07-15-functional-genomics
 - Use this to ask questions during the talks
-- We can post code snippets, links and corrections here too
+- We can post code snippets, links and corrections here too. So please keep it open in a browser tab...
 
