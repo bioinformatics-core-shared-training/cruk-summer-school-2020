@@ -8,7 +8,7 @@ Functional genomics looks at the dynamic aspects of how the genome functions wit
 particularly in the form of gene expression (transcription) and gene regulation. This workshop surveys
 current methods for functional genomics using high-throughput technologies. 
 
-High-throughput technologies such as next generation sequencing (NGS) can routinely produce massive amounts of data. However, such datasets pose new challenges in the way the data have to be analyzed, annotated and interpreted which are not trivial and are daunting to the wet-lab biologist. This course covers state-of-the-art and best-practice tools for bulk RNA-seq and ChIP-seq data analysis, and will also introduce approaches for analysing data arising from single-cell RNA-seq studies.
+High-throughput technologies such as next generation sequencing (NGS) can routinely produce massive amounts of data. However, such datasets pose new challenges in the way the data have to be analyzed, annotated and interpreted which are not trivial and are daunting to the wet-lab biologist. This course covers state-of-the-art and best-practice tools for bulk RNA-seq and ChIP-seq data analysis, and will also introduce approaches in prognostic gene signatures.
 
 ### Audience
 
@@ -159,7 +159,7 @@ Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
 - 12:30 - 13:30; LUNCH
 - Some of you may now be going to the [CRUK Cambridge Centre Graduate Symposium](https://www.crukccgraduatesymposium.com/) Hope you enjoy it!    
 - Have a safe Journey home (Thank you for participating in the Summer School)
-## Please don't forget to fill in the [survey]( https://www.surveymonkey.co.uk/r/SummerSchl)   
+## Please don't forget to fill in the [survey]( https://www.surveymonkey.co.uk/r/SumSch2019)   
 
 <!--
 ## Data
