@@ -1,9 +1,9 @@
 # Day 1
 
-- 09:30 - 10:30; Introduction to Functional Genomics (RS)
-- 10:30 - 12:30; Introduction (Recap) of R (MD)
+- 09:30 - 10:30; Introduction to Functional Genomics (AM)
+- 10:30 - 12:30; Introduction (Recap) of R (AM)
 - 12:30 - 13:30; LUNCH
-- 13:30 - 14:30 Principles of Experimental Design (RS)
+- 13:30 - 14:30 Principles of Experimental Design (MF)
 - 14:30 - 17:00; Data Processing for Next Generation Sequencing (JK / DB)
     + Introduction to next generation sequencing (JK)
     + A brief Introduction to genomic file formats (DB)
