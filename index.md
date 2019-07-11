@@ -70,6 +70,8 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
 # Day 1 (July 15th)
 
 Breakfast at Downing College is at 8.45-9.15am.  
+## Important - if you want a lunch on Friday please fill in the Doodle Poll (Link is on our Etherpad).  
+
 __C-M Training room__.  
 - 09:30 [Course Introduction](Introduction/Session1-intro.html)
 - 09:30 - 10:30; [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf)
@@ -101,7 +103,7 @@ __C-M Training room__.
   + [Linear models html nb](RNASeq2018/html/03_Linear_Models.nb.html)
 - 12:30 - 13:30; LUNCH
 - 13:30 - 15:00; Linear models & differential expression
-- 15:00 - 17:00 
+- 15:00 - 17:30 
   + [Differential expression analysis with DESeq2](RNASeq2018/html/04_DE_analysis_with_DESeq2.nb.html)
 
 **SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
