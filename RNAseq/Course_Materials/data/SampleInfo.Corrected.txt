@@ -1,0 +1,13 @@
+FileName	Sample	CellType	Status	Group
+MCL1.DG.bam	MCL1.DG	basal	virgin	basal.virgin
+MCL1.DH.bam	MCL1.DH	basal	virgin	basal.virgin
+MCL1.DI.bam	MCL1.DI	basal	pregnant	basal.pregnant
+MCL1.DJ.bam	MCL1.DJ	basal	pregnant	basal.pregnant
+MCL1.DK.bam	MCL1.DK	basal	lactate	basal.lactate
+MCL1.DL.bam	MCL1.DL	basal	lactate	basal.lactate
+MCL1.LA.bam	MCL1.LA	luminal	virgin	luminal.virgin
+MCL1.LB.bam	MCL1.LB	luminal	virgin	luminal.virgin
+MCL1.LC.bam	MCL1.LC	luminal	pregnant	luminal.pregnant
+MCL1.LD.bam	MCL1.LD	luminal	pregnant	luminal.pregnant
+MCL1.LE.bam	MCL1.LE	luminal	lactate	luminal.lactate
+MCL1.LF.bam	MCL1.LF	luminal	lactate	luminal.lactate

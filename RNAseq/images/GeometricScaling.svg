@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="606.37048mm"
+   height="311.78854mm"
+   viewBox="0 0 2148.5568 1104.7626"
+   id="svg4328"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="GeometricScaling.svg">
+  <defs
+     id="defs4330">
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect5255"
+       is_visible="true"
+       pattern="m -392.93642,447.6135 c 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 z"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       fuse_tolerance="0" />
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect5251"
+       is_visible="true"
+       pattern="M 0,5 C 0,2.24 2.24,0 5,0 7.76,0 10,2.24 10,5 10,7.76 7.76,10 5,10 2.24,10 0,7.76 0,5 Z"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       fuse_tolerance="0" />
+    <inkscape:path-effect
+       effect="powerstroke"
+       id="path-effect5247"
+       is_visible="true"
+       offset_points="0,0.5"
+       sort_points="true"
+       interpolator_type="Linear"
+       interpolator_beta="0.2"
+       start_linecap_type="zerowidth"
+       linejoin_type="round"
+       miter_limit="4"
+       end_linecap_type="zerowidth"
+       cusp_linecap_type="round" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.38596074"
+     inkscape:cx="904.64289"
+     inkscape:cy="550.34303"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="687"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata4333">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(902.22312,0.28579712)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-221.42856"
+       y="217.73999"
+       id="text4897"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4899"
+         x="-221.42856"
+         y="217.73999"
+         style="font-size:90px">÷</tspan></text>
+    <rect
+       ry="83.647636"
+       y="7.0615339"
+       x="-171.44728"
+       height="1090.0679"
+       width="619.46594"
+       id="rect5555"
+       style="opacity:1;fill:#dff8ff;fill-opacity:0.6;stroke:#727272;stroke-width:14.69466209;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       ry="28.571432"
+       y="138.07655"
+       x="-134.57146"
+       height="102.85714"
+       width="545.71429"
+       id="rect4891"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:#ffe8f6;fill-opacity:1;stroke:#727272;stroke-width:14.69466209;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5455"
+       width="619.46594"
+       height="1090.0679"
+       x="-894.87579"
+       y="7.0615339"
+       ry="83.647636" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4878"
+       width="545.71429"
+       height="102.85714"
+       x="-858"
+       y="138.07655"
+       ry="28.571432" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-585.25024"
+       y="204.41724"
+       id="text4880"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4882"
+         x="-585.25024"
+         y="204.41724">Read Counts Gene 1</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4893"
+       y="204.41724"
+       x="138.17831"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="204.41724"
+         x="138.17831"
+         id="tspan4895"
+         sodipodi:role="line">Geometric Mean Gene 1</tspan></text>
+    <rect
+       ry="28.571432"
+       y="272.74319"
+       x="-858"
+       height="102.85714"
+       width="545.71429"
+       id="rect4917"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4919"
+       y="339.08386"
+       x="-585.25024"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="339.08386"
+         x="-585.25024"
+         id="tspan4921"
+         sodipodi:role="line">Read Counts Gene 2</tspan></text>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4925"
+       width="545.71429"
+       height="102.85714"
+       x="-134.57146"
+       y="272.74319"
+       ry="28.571432" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="138.17831"
+       y="339.08386"
+       id="text4927"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4929"
+         x="138.17831"
+         y="339.08386">Geometric Mean Gene 2</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4931"
+       y="352.40662"
+       x="-221.42856"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:90px"
+         y="352.40662"
+         x="-221.42856"
+         id="tspan4933"
+         sodipodi:role="line">÷</tspan></text>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4939"
+       width="545.71429"
+       height="102.85714"
+       x="-858"
+       y="407.40979"
+       ry="28.571432" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-585.25024"
+       y="473.75049"
+       id="text4941"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4943"
+         x="-585.25024"
+         y="473.75049">Read Counts Gene 3</tspan></text>
+    <rect
+       ry="28.571432"
+       y="407.40979"
+       x="-134.57146"
+       height="102.85714"
+       width="545.71429"
+       id="rect4947"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4949"
+       y="473.75049"
+       x="138.17831"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="473.75049"
+         x="138.17831"
+         id="tspan4951"
+         sodipodi:role="line">Geometric Mean Gene 3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-221.42856"
+       y="487.07324"
+       id="text4953"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4955"
+         x="-221.42856"
+         y="487.07324"
+         style="font-size:90px">÷</tspan></text>
+    <rect
+       ry="28.571432"
+       y="542.07648"
+       x="-858"
+       height="102.85714"
+       width="545.71429"
+       id="rect4961"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4963"
+       y="608.41718"
+       x="-585.25024"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="608.41718"
+         x="-585.25024"
+         id="tspan4965"
+         sodipodi:role="line">Read Counts Gene 4</tspan></text>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4969"
+       width="545.71429"
+       height="102.85714"
+       x="-134.57146"
+       y="542.07642"
+       ry="28.571432" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="138.17831"
+       y="608.41711"
+       id="text4971"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4973"
+         x="138.17831"
+         y="608.41711">Geometric Mean Gene 4</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4975"
+       y="621.73987"
+       x="-221.42856"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:90px"
+         y="621.73987"
+         x="-221.42856"
+         id="tspan4977"
+         sodipodi:role="line">÷</tspan></text>
+    <rect
+       ry="28.571432"
+       y="946.64789"
+       x="-858"
+       height="102.85714"
+       width="545.71429"
+       id="rect5005"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text5007"
+       y="1012.9886"
+       x="-585.25024"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="1012.9886"
+         x="-585.25024"
+         id="tspan5009"
+         sodipodi:role="line">Read Counts Gene n</tspan></text>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5013"
+       width="545.71429"
+       height="102.85714"
+       x="-134.57146"
+       y="946.64789"
+       ry="28.571432" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="138.17831"
+       y="1012.9886"
+       id="text5015"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5017"
+         x="138.17831"
+         y="1012.9886">Geometric Mean Gene n</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5019"
+       y="1026.3114"
+       x="-221.42856"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:90px"
+         y="1026.3114"
+         x="-221.42856"
+         id="tspan5021"
+         sodipodi:role="line">÷</tspan></text>
+    <circle
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path5147"
+       cx="-585.14282"
+       cy="702.64795"
+       r="8.6686611" />
+    <circle
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle5151"
+       cx="-585.14282"
+       cy="795.79071"
+       r="8.6686611" />
+    <circle
+       r="8.6686611"
+       cy="888.93359"
+       cx="-585.14282"
+       id="circle5153"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <g
+       id="g5644">
+      <circle
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="circle5162"
+         cx="138.28571"
+         cy="702.64795"
+         r="8.6686611" />
+      <circle
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="circle5164"
+         cx="138.28571"
+         cy="795.79071"
+         r="8.6686611" />
+      <circle
+         r="8.6686611"
+         cy="888.93359"
+         cx="138.28571"
+         id="circle5166"
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g5325"
+       transform="matrix(1.3734793,0,0,1,-69.769567,0)">
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:connector-curvature="0"
+         inkscape:original-d="m 390.30161,126.42545 c 146.58124,-1.83648 -5.98333,468.83432 152.57481,470.93996 -159.17637,-4.22399 -5.99357,465.99109 -152.57481,463.77739"
+         inkscape:path-effect="#path-effect5255"
+         id="path5253"
+         d="m 390.30161,126.42545 c -0.003,-0.20496 2.17138,-0.65812 6.44183,-0.52671 3.98362,0.12258 10.91133,0.83895 18.33607,4.13443 6.24837,2.79167 12.97234,7.50327 18.97456,14.72135 5.30158,6.37653 9.75456,14.0991 13.53411,23.34181 3.7503,9.14836 6.63591,19.09033 9.00986,30.25914 4.87122,22.90172 7.0413,46.6833 8.32307,75.57967 1.24794,27.92495 1.32205,54.34301 1.49561,86.48191 0,0 0,4e-5 0,4e-5 0.14652,26.73876 0.27919,56.95616 1.8455,86.2964 1.30841,24.29611 3.44814,49.99405 9.267,74.81559 2.35322,10.03126 5.32647,20.01345 9.4832,29.452 3.54551,8.02125 7.90862,15.71415 13.56453,22.21373 5.06322,5.82956 11.23007,10.76911 18.18041,13.98877 6.59399,4.61038 13.99781,7.70376 21.57518,9.59812 0.83628,0.20907 1.67352,0.40325 2.51076,0.58305 -8.49186,1.48064 -16.90361,4.33695 -24.37061,9.14143 0,0 -4e-5,3e-5 -4e-5,3e-5 -6.89973,2.86843 -13.08885,7.46875 -18.16201,13.014 -5.64594,6.15249 -10.01223,13.55527 -13.55814,21.30499 -4.1706,9.15138 -7.1434,18.87811 -9.49643,28.66427 -5.85511,24.372 -7.97329,49.66804 -9.27298,73.58098 -1.56354,29.04114 -1.67668,58.94959 -1.80523,85.42699 0,0 0,4e-5 0,4e-5 -0.15237,31.92436 -0.20465,58.14911 -1.42547,85.89585 -1.25529,28.74865 -3.40191,52.41551 -8.24515,75.20624 -2.36164,11.12103 -5.23602,21.02173 -8.97524,30.13103 -3.76901,9.2049 -8.21392,16.8957 -13.50675,23.241 -5.99644,7.1875 -12.71719,11.8707 -18.95653,14.6378 -7.42652,3.2716 -14.35336,3.9665 -18.33235,4.0775 -4.26706,0.1191 -6.43785,-0.3392 -6.43476,-0.5441 0.005,-0.3149 2.18386,-0.3812 6.30098,-0.9923 3.80299,-0.5644 10.46786,-1.7924 17.17304,-5.2543 5.68969,-2.9188 11.68431,-7.584 17.0265,-14.5135 4.74512,-6.1522 8.64002,-13.5482 12.01149,-22.5071 3.33067,-8.8749 5.82255,-18.50284 7.87155,-29.4402 4.21042,-22.49134 5.80819,-45.65341 6.60741,-74.30912 0.76528,-27.78594 0.45649,-53.45466 0.26124,-85.62319 0,0 0,-4e-5 0,-4e-5 -0.16332,-26.53318 -0.31453,-56.47756 1.06228,-85.9037 1.11715,-24.14186 3.1703,-49.99569 9.12195,-75.36893 2.39236,-10.2075 5.53152,-20.53546 10.00716,-30.48292 3.78771,-8.44966 8.69741,-16.7228 15.20728,-23.92492 5.93373,-6.54714 13.28421,-11.98756 21.65851,-15.52459 10e-6,10e-6 4e-5,-2e-5 4e-5,-2e-5 8.99383,-2.09916 18.72291,-1.89151 28.2985,0.0681 -0.9622,0.15591 -1.92628,0.29423 -2.89128,0.4144 -8.74186,1.08864 -17.45505,0.67569 -25.48813,-1.54534 -8.3721,-3.93618 -15.63757,-9.72552 -21.48895,-16.53027 -6.45874,-7.52388 -11.32679,-16.06098 -15.09676,-24.75521 -4.44031,-10.20527 -7.56819,-20.76866 -9.95788,-31.20979 -5.90694,-25.792 -7.97899,-52.03374 -9.10621,-76.55831 -1.38002,-29.72094 -1.24791,-59.96787 -1.10169,-86.76437 0,0 0,-3e-5 0,-3e-5 0.174,-32.38294 0.46232,-58.24399 -0.32876,-86.20919 -0.82478,-28.80461 -2.44474,-52.08142 -6.68163,-74.68553 -2.06069,-10.98596 -4.56342,-20.65596 -7.90485,-29.57111 -3.38174,-8.99794 -7.28507,-16.42649 -12.03938,-22.61081 -5.34948,-6.96127 -11.34724,-11.65377 -17.04559,-14.59658 -6.70368,-3.48416 -13.36685,-4.73268 -17.17318,-5.3086 -4.11881,-0.62319 -6.29969,-0.69472 -6.30364,-1.00988 z"
+         style="fill:#000000;fill-rule:evenodd;stroke:none;stroke-width:4.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5323"
+         d="m 542.92216,597.39839 -28.50961,-6.54481 4.51195,11.50301 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       id="g5564"
+       transform="translate(-388.64056,-5.199507)">
+      <rect
+         transform="matrix(0,1,-1,0,0,0)"
+         ry="20.02817"
+         y="-937.70215"
+         x="467.17145"
+         height="72.101395"
+         width="263.6377"
+         id="rect5389"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:4.07355642;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         transform="matrix(0,1,-1,0,0,0)"
+         sodipodi:linespacing="125%"
+         id="text5391"
+         y="-886.73932"
+         x="598.74615"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="-886.73932"
+           x="598.74615"
+           id="tspan5393"
+           sodipodi:role="line">Median</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:180px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-587.17651"
+       y="93.442368"
+       id="text5551"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5553"
+         x="-587.17651"
+         y="93.442368"
+         style="font-size:60px">Sample A</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text5557"
+       y="93.442368"
+       x="136.54253"
+       style="font-style:normal;font-weight:normal;font-size:180px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-size:60px"
+         y="93.442368"
+         x="136.54253"
+         id="tspan5559"
+         sodipodi:role="line">All Samples</tspan></text>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5571"
+       width="545.71429"
+       height="102.85714"
+       x="697.11932"
+       y="542.36224"
+       ry="28.571432" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="969.86914"
+       y="608.70288"
+       id="text5573"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5575"
+         x="969.86914"
+         y="608.70288">Scaling Factor Sample A</tspan></text>
+    <g
+       id="g5649"
+       transform="translate(-359.71426,0)">
+      <circle
+         r="8.6686611"
+         cy="702.64795"
+         cx="138.28571"
+         id="circle5651"
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         r="8.6686611"
+         cy="795.79071"
+         cx="138.28571"
+         id="circle5653"
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:9.27976227;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="circle5655"
+         cx="138.28571"
+         cy="888.93359"
+         r="8.6686611" />
+    </g>
+  </g>
+</svg>

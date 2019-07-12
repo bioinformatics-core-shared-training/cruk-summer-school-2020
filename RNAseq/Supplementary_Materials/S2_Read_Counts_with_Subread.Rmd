@@ -1,0 +1,129 @@
+---
+title: "RNA-seq analysis in R"
+author: "Stephane Ballereau, Mark Dunning, Abbi Edwards, Oscar Rueda, Ashley Sawle"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    toc: yes
+minutes: 300
+layout: page
+subtitle: Counting
+bibliography: ref.bib
+---
+
+
+## Introduction and data import
+
+The raw reads, in fastq files, have been aligned using HISAT2. The alignment
+process produces a set of BAM files, where each file contains the read
+alignments for each library. The BAM files containing the aligned reads can be
+found in the **`counts/small_bams`** directory under the
+**`SupplementaryMaterials`** 
+
+## Counting
+
+Once our reads have been aligned against the genome, we need to summarise the
+information across genes or exons. In the BAM file, there is a chromosomal
+location for every read that mapped uniquely. We can determine if the region
+each read is aligned to corresponds to a particular gene or exon and then
+summarise across the entire BAM file to get total read counts for each gene or
+exon. 
+
+We will use **`featureCounts`** [@Liao2014] programme from the [subRead
+package](http://subread.sourceforge.net/) to do the counting. In addition to
+the BAM files, we also need to provide **`featureCounts`** with an annotation
+file. Usually this will be a GTF/GFF file corresponding to the genome assembly
+used (a description of the GTF  format  can  be  found  at  [UCSC
+website](http://genome.ucsc.edu/FAQ/FAQformat.html#format4)).
+**`featureCounts`** can also use a simpler annotation format called SAF, this
+is particularly useful for defining custom/novel features that you wish to
+count against.
+
+GTF/GFF files define genomic regions covered by different types of genomic
+features, e.g. genes, transcripts, exons, or UTRs. The necessary GTF is already 
+in the directory `Course_Materials/data`. Instruction on where and how
+to download the GTF can be found in the [Supplementary 
+Materials](S1_Getting_raw_reads_from_SRA.html).
+
+When using a GTF/GFF file we need to tell **`featureCounts`** what feature type 
+to use to count reads, and what attribute type to summarise the results at. For 
+RNAseq we most commonly wish to count reads aligning to exons, and then to 
+summarise at the gene level. 
+
+Lets have a quick look at the top of a GTF file so we can see what data it
+contains and what **feature type** and **attribute type** mean:
+
+```
+cd ~/RNAseq_March_2019/SupplementaryMaterials/counts
+
+gunzip Mus_musculus.GRCm38.80.gtf.gz  
+
+head Mus_musculus.GRCm38.80.gtf
+```
+
+The code below uses **`featureCounts`** to count reads in a BAM file against a 
+GTF for the mouse GRCm38 genome assembly.
+
+```
+  featureCounts \
+      -t exon \
+      -g gene_id \
+      --primary \
+      -a Mus_musculus.GRCm38.80.gtf \
+      -o MCL1_DJ.featureCounts \
+      small_bams/MCL1_DJ.bam
+```
+* **`-t exon`** - the **feature** type to count reads against, in this case exons
+* **`-g gene_id`** - the **attribute** type to summarise counts by, in this case the gene ID
+* **`--primary`** - only count primary alignment
+
+**`featureCounts`** has many additional options that can be used to alter the ways in which it does the counting.
+
+```
+featureCounts --help
+```
+
+Running featureCounts generates two output files. A summary statistics table (**`MCL1.DJ.featureCounts.summary`**) and a full table of counts (**`MCL1.DJ.featureCounts`**) for each feature (gene in this case). Let take a look at each file.
+
+```
+cat MCL1.DJ.featureCounts.summary
+```
+
+The summary table reports the numbers of unassigned reads and the reasons why they are not assigned (eg. ambiguity, multi-mapping, secondary alignment, mapping quality, fragment length, chimera, read duplicate, non-junction and so on), in addition to the number of successfully assigned reads for each library. See [subread documentation](http://bioinf.wehi.edu.au/subread-package/SubreadUsersGuide.pdf) ('Program output' section).
+
+```
+head MCL1.DJ.featureCounts
+```
+
+The full results table begins with a line containing the command used to generate the counts. It then has a table of 7 columns. The first column is the gene identifier, this will vary depending on the GTF file used, in our case this is a UCSC gene id. The second to fifth columns describe the genes location, and the sixth column is the length of the gene. The final column contains the number of reads assigned to the gene. Note that **`featureCounts`** outputs a row for every gene in the GTF, even the ones with no reads assigned, and the row order is determined by the order in the GTF. This means that if featureCounts is used on mutliple samples with same GTF file, the separate files can be combined easily as the rows always refer to the same gene.
+
+In fact we can have **`featureCounts`** do this for us by running all of our libraries together in one command. To save time for this we will use versions of our BAM files that only include alignments to chromosome 15. You can find these in **`small_bams`** directory.
+
+```
+  featureCounts \
+      -t exon \
+      -g gene_id \
+      --primary \
+      -a small_bams/Mus_musculus.GRCm38.80.chr15.gtf  \
+      -o GSE60450_Lactation.chr15.featureCounts \
+      small_bams/MCL*.bam
+```
+
+This gives us a combined counts table as an output with the first 6 columns as before but now the folowing columns contain the counts for all of the samples.
+
+```
+head GSE60450_Lactation.chr15.featureCounts
+```
+
+> ## Challenge {.challenge}
+>
+> 1. Redo the counting over the exons, rather than the genes. Use `featureCounts --help` to find the option you need to use. Make sure featureCounts outputs the results to a new file.
+> 2. Redo the counting over genes, allowing for multimapping reads. Compare the results to our intial counts.
+>
+
+
+Notes
+
+* If you are sequencing your own data, the sequencing facility will almost always provide fastq files which can be aligned to a genome with an aligner of your choice.  
+* For publicly available sequence data from GEO/SRA, the files are usually in the Sequence Read Archive (SRA) format. Prior to read alignment, these files need to be converted into the FASTQ format using the fastq-dump utility from the SRA Toolkit. We have included instructions on how to do this in [Getting raw reads from SRA](S1_Getting_raw_reads_from_SRA.html) under the Supplementary Material directory.  
+

@@ -95,17 +95,17 @@ __C-M Training room__.
 (.Rmd file) you can simply click on the code button in the top right-hand corner).**
 
 - 09:00 - 09:30; 
-  + [Introduction to RNA-seq](RNASeq2018/html/00_Introduction_to_RNAseq_Analysis.html)
+  + [Introduction to RNA-seq](RNAseq/html/00_Introduction_to_RNAseq_Analysis_in_R.html)
 - 09:30 - 11:00; 
-  + [Counting](RNASeq2018/html/01_Read_Counts_with_Subread.html)
-  + [Importing and QC of RNA-seq data](RNASeq2018/html/02_Preprocessing_Data.nb.html)
+  + [Counting](RNAseq/html/01_Read_Counts_with_Subread.html)
+  + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
 - 11:00 - 12:30 Linear models & differential expression
-  + [Slides](RNASeq2018/slides/LinearModels.pdf)
-  + [Linear models html nb](RNASeq2018/html/03_Linear_Models.nb.html)
+  + [Slides](RNAseq/slides/LinearModels.pdf)
+  + [Linear models html nb](RNAseq/html/03_Linear_Models.nb.html)
 - 12:30 - 13:30; LUNCH
 - 13:30 - 15:00; Linear models & differential expression
 - 15:00 - 17:30 
-  + [Differential expression analysis with DESeq2](RNASeq2018/html/04_DE_analysis_with_DESeq2.nb.html)
+  + [Differential expression analysis with DESeq2](RNAseq/html/04_DE_analysis_with_DESeq2.html)
 
 **SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
 [Google Map](https://www.google.com/maps/dir/Craik-Marshall+Building,+Cambridge/Scudamore's+Mill+Lane+Punting+Station,+Mill+Ln,+Cambridge+CB2+1RS/@52.2021771,0.1169979,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x47d8709788f7fb6b:0x117c3858ab077fb0!2m2!1d0.1224918!2d52.2019233!1m5!1m1!1s0x47d870a335f0f833:0xdb33dae59780b590!2m2!1d0.115892!2d52.201511!3e3). 
@@ -113,8 +113,8 @@ __C-M Training room__.
 
 # Day 3 (July 17th)
 
-- 09:30 - 11:00; [Annotation and Visualisation of Differential Expression](RNASeq2018/html/05_Annotation_and_Visualisation.nb.html)
-- 11:00 - 12:30; [Gene set analysis and Gene Ontology testing](RNASeq2018/html/06_Gene_set_testing.nb.html)
+- 09:30 - 11:00; [Annotation and Visualisation of Differential Expression](RNAseq/html/05_Annotation_and_Visualisation.html)
+- 11:00 - 12:30; [Gene set analysis and Gene Ontology testing](RNAseq/html/06_Gene_set_testing.html)
 
 - 12:30 - 13:30; LUNCH
 - 13:30 - 16:30; Prognostic Gene Signatures

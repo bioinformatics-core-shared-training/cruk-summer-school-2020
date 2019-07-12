@@ -1,0 +1,417 @@
+---
+title: "RNA-seq analysis in R"
+author: "Stephane Ballereau, Mark Dunning, Oscar Rueda, Ashley Sawle"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+layout: page
+subtitle: Obtaining and aligning RNA-seq reads from public repositories
+bibliography: ref.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+## Introduction
+
+Analysing an RNAseq experiment begins with sequencing reads. These are aligned
+to a reference genome, then the number of reads mapped to each gene can be
+counted. This results in a table of counts, which is what we perform
+statistical analyses on in R. This tutorial explains how to download the raw
+data files from the [NCBI Sequence Read
+Archive](https://trace.ncbi.nlm.nih.gov/Traces/sra/) public repository, how to
+QC the reads with
+[FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and finally
+how to align the reads to the reference genome.
+
+## Mouse mammary gland dataset
+
+The data for this course comes from a Nature Cell Biology paper, [*EGF-mediated
+induction of Mcl-1 at the switch to lactation is essential for alveolar cell
+survival*](http://www.ncbi.nlm.nih.gov/pubmed/25730472) [@Fu2015]. Both the raw
+data (sequence reads) can be downloaded from SRA under
+[SRP045534](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?study=SRP045534) 
+and processed data (counts) can be downloaded from Gene Expression Omnibus 
+database (GEO) under accession number
+[GSE60450](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE60450).
+
+## Download raw data from SRA
+
+Raw reads from sequencing experiments tend to be distributed through the
+Sequence Read Archive [SRA](https://trace.ncbi.nlm.nih.gov/Traces/sra/)). SRA
+provide command line tools for downloading and processing the archive files as
+the [SRA
+toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software).
+
+Alternatively the 
+(*SRAdb*)[http://bioconductor.org/packages/release/bioc/html/SRAdb.html] 
+Bioconductor package can be used to query and download files that are hosted in 
+SRA from within R. 
+
+We will download the data using the SRA toolkit in the Terminal.
+
+### download the SRA toolkit
+
+You will need to select the correct version from the website above for your
+operating system, in this case we are on a CentOS Linux machine.
+```{bash}
+# download the gzip file
+wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.1-1/sratoolkit.2.9.1-1-centos_linux64.tar.gz
+# unzip the file
+tar -xzvf sratoolkit.2.9.1-1-centos_linux64.tar.gz
+# add the 'bin' directory to the PATH - note the you will need to do this
+# everytime you start a new terminal and wish to use the toolkit
+export PATH=$PWD/sratoolkit.2.9.1-1-centos_linux64/bin/:${PATH}
+# create a directory to which to download the sra files
+mkdir sraDir
+# use the vdb-config tool to set the download directory
+vdb-config -i # this pops up an interactive window instructions below
+```
+
+Use the vdb-config window to set the Default Import Path to the new `sra` 
+directory we just created. Use tab to navigate to `Change` under the `Set 
+Default Import Path` (the highlighting indicates the active field the arrow keys
+and tab to navigate to the correct directory. When you have changed the 
+directory `Save` and `Exit`
+
+## Download the set of sra files
+
+We can now directly download each `sra` file. The `sra` file is SRA's own
+archive format, but we can extract the raw reads in the more common `.fastq`
+format in the next step.
+
+To download the sra file we need their accessions numbers. Go to the 
+[SRA Run Selector](https://trace.ncbi.nlm.nih.gov/Traces/study/?go=home) and
+enter the project number *SRP045534*. This will give us the 8 `SRR` run numbers
+that we need to download.
+
+Use the `prefetch` tool from the sra toolkit to download each file. This will
+take 
+
+```{bash}
+prefetch SRR1552444
+prefetch SRR1552445
+prefetch SRR1552446
+prefetch SRR1552447
+prefetch SRR1552448
+prefetch SRR1552449
+prefetch SRR1552450
+prefetch SRR1552451
+prefetch SRR1552452
+prefetch SRR1552453
+prefetch SRR1552454
+prefetch SRR1552455
+```
+
+## Extracting fastq files
+
+Using the [SRA Toolkit](https://www.ncbi.nlm.nih.gov/sra) command-line utility
+from NCBI we can generate the `fastq` files from these archive files. We can do
+this within a Terminal (i.e. not within RStudio) with the following, making
+sure your working directory contains the `.sra` files.
+
+```{bash}
+mkdir fastq
+for sraFile in sraDir/sra/*.sra; do
+ echo "Extracting fastq from "${sraFile}
+ fastq-dump \
+    --origfmt \
+    --gzip \
+    --outdir fastq \
+    ${sraFile}
+done
+```
+
+After each fastq file has been extracted, you should see a message to report
+have many reads (spots) are contained in the file. Note that this process may
+take several hours.
+
+
+## Quality assessment of reads
+
+The [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) tool
+from the Brabraham Institute is recommended for a preliminary assessment of the
+read quality. However, caution should be exercised when interpreting the
+results as the reports are not specifically-tailored for RNA-seq. Some sections
+are know to flag-up warning or error messages for perfectly fine RNA-seq
+experiments.
+
+### Install FastQC
+
+You can download the software and view detailed installation instructions
+[here](https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc).
+
+```{bash}
+# Download the tool - note that you may need to change the version number
+wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.7.zip
+# unzip
+unzip fastqc_v0.11.7.zip 
+# make the tool executable
+chmod +x FastQC/fastqc
+# add FastQC to the Path
+export PATH=$PWD/FastQC:${PATH}
+```
+
+### Run FastQC
+
+```{bash}
+# make directory to output the results to
+mkdir fastqc
+# run fastqc
+fastqc -o fastqc fastq/*fastq.gz
+```
+
+You can speed this process up either by running each sample in parallel on a 
+computing cluster and/or using the `-t` option to use multiple cores.
+
+## Downloading the reference data
+
+To align to the `GRCm38` genome, we will first download the reference genome
+from Ensembl. We will also need a gene definition file (GTF/GFF file); HISAT2
+will incorporate this information into the index we will need to create for the
+reference genome.
+
+```{bash}
+# create a reference directory
+mkdir -p referenceData/fasta
+cd referenceData/fasta
+# download the fasta file
+wget ftp://ftp.ensembl.org/pub/release-80/fasta/mus_musculus/dna/Mus_musculus.GRCm38.dna_sm.primary_assembly.fa.gz 
+gunzip Mus_musculus.GRCm38.dna_sm.primary_assembly.fa.gz 
+
+# Download the GTF file
+cd ..
+mkdir annotations
+cd annotations
+wget ftp://ftp.ensembl.org/pub/release-80/gtf/mus_musculus/Mus_musculus.GRCm38.80.gtf.gz 
+gunzip Mus_musculus.GRCm38.80.gtf.gz 
+
+# return to project directory
+cd ../../
+```
+
+## Alignment using HISAT2
+
+[HISAT2](https://ccb.jhu.edu/software/hisat2/index.shtml) is a fast, 
+splice-aware aligner, specifically designed for RNAseq data. We will first need
+to install the software and then use it to index our reference genome before we
+can align our reads.
+
+HISAT2 is fast and requires relatively low amounts of memory for the alignment,
+however the alignment will run much faster if you have access to a muli-core
+processor - 6-8 cores is ideal. 
+
+The indexing process on the other hand is slow and requires **a lot** of memory,
+- on our high performance cluster we had to give it >200G of memory for the 
+human GRCh38 reference. This is how HISAT2 can be fast in the alignment - it 
+does a lot of work once, making a very detailed index, which means it can align
+read more quickly and with less memory usage later.
+
+### Download and Install HISAT2
+
+```{bash}
+mkdir hisat2
+wget ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/downloads/hisat2-2.1.0-Linux_x86_64.zip
+unzip hisat2-2.1.0-Linux_x86_64.zip
+rm hisat2-2.1.0-Linux_x86_64.zip
+export PATH=$PWD/hisat2-2.1.0:${PATH}
+```
+
+Note that this method uses a pre-compiled binary, however, you may wish to 
+build the package from source for your particular system, please see the
+[manual](http://ccb.jhu.edu/software/hisat2/manual.shtml) for instructions on
+building from source.
+
+### Index the reference genome
+
+Indexing the genome allows HISAT2 to more rapidly carry out the read alignment.
+Before indexing the genome we first need to extract information about splice
+sites and exons from the GTF file that we downloaded. HISAT2 will create a
+number of index files, we will provide a 'base name' for these files to which
+HISAT2 will add various suffixes.
+
+```{bash}
+hisat2_extract_splice_sites.py -v \
+    referenceData/annotations/Mus_musculus.GRCm38.80.gtf \
+    > referenceData/hisat2_index/splice_sites.txt
+
+hisat2_extract_exons.py -v \
+    referenceData/annotations/Mus_musculus.GRCm38.80.gtf \
+    > referenceData/hisat2_index/exons.txt
+
+hisat2-build referenceData/fasta/Mus_musculus.GRCm38.dna_sm.primary_assembly.fa \
+    --ss referenceData/hisat2_index/splice_sites.txt \
+    --exon referenceData/hisat2_index/exons.txt \
+    referenceData/hisat2_index/GRCm38.hisat2
+```
+Note that the final indexing step can take more than an hour to run, if your
+computer has multiple processors/cores, use `-p` to speed up the indexing by
+using multiple processors.
+
+### Download and install samtools
+
+We will also need `samtools` to process the files produced by HISAT2. The SAM
+file format is a standard for storing aligned sequenced; you can find a
+detailed description of the contents of the file
+[here](https://samtools.github.io/hts-specs/SAMv1.pdf). The associated BAM file
+format is compressed version of SAM. Samtools provides a number of different
+utilities for viewing, indexing and analysing SAM and BAM format files.
+
+Samtools is distributed as source code and needs to be built.
+
+```{bash}
+# download samtools - note you may need to change the verion number (1.8)
+wget https://github.com/samtools/samtools/releases/download/1.8/samtools-1.8.tar.bz2
+# build and install
+cd samtools-1.8
+./configure --prefix=$PWD/../samtools # this is where to install
+make
+make install
+cd ../
+rm -rf samtools-1.8 # remove source code directory
+# add samtools to the PATH
+export PATH=$PWD/samtools/bin:${PATH}
+```
+
+### Align the raw reads
+
+We will now align the raw reads (fastq format) using HISAT2 this will generate
+aligned read files in SAM format. We will then use samtools to compress the
+file to BAM format and to index the resulting bam file.
+
+Alignment takes a long time. In practice, we would run the alignment of each
+sample in *parallel* using a high-performance cluster, however, for
+illustration purposes, we give the script that will align each sample
+individually.
+
+Note that this process will also be greatly speeded up by using multiple
+processors, here were use only one. Again, use the option `-p` to have HISAT2
+use multiple processors.
+
+```{bash}
+hisat2Ref=referenceData/hisat2_index/GRCm38.hisat2
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552444.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552444.bam
+samtools index SRR1552444.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552445.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552445.bam
+samtools index SRR1552445.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552446.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552446.bam
+samtools index SRR1552446.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552447.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552447.bam
+samtools index SRR1552447.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552448.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552448.bam
+samtools index SRR1552448.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552449.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552449.bam
+samtools index SRR1552449.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552450.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552450.bam
+samtools index SRR1552450.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552451.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552451.bam
+samtools index SRR1552451.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552452.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552452.bam
+samtools index SRR1552452.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552453.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552453.bam
+samtools index SRR1552453.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552454.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552454.bam
+samtools index SRR1552454.bam
+
+hisat2 -x ${hisat2Ref} \
+       -U fastq/SRR1552455.fastq.gz |
+       samtools view -bh - |
+       samtools sort - > bam/SRR1552455.bam
+samtools index SRR1552455.bam
+```
+
+## Renaming to be consistent with GEO
+
+The files we have just created are named according to their SRA identifier.
+However, these names are not very useful for analysis. The Gene Expression
+Omnibus (GEO) entry for the dataset has the mapping information between SRA and
+sample identifiers.
+
+```{r message=FALSE}
+library(GEOquery)
+tmp <- getGEO("GSE60450")
+gseInf <- pData(tmp[[1]])
+gseInf
+
+```
+
+We obtain a new name for each bam file by joining the metadata from SRA and
+GEO.
+
+```{r}
+
+library(dplyr)
+sraInf <- mutate(sraInf, bam=paste0(run, ".sorted.bam"))
+
+gseInf <- mutate(gseInf, experiment = basename(as.character(supplementary_file_2)),
+                 newbam = gsub("Sample name: ","", description),
+                 newbam = gsub("-",".",newbam,fixed=TRUE),
+                 newbam = paste0(newbam, ".bam"))
+gseInf
+combinedInf <- left_join(gseInf, sraInf, by="experiment")
+combinedInf %>% select(description,description.1,experiment,bam,newbam)
+combinedInf
+```
+
+The base R function `file.symblink` can be used to create *symbolic links* from
+one file to another; thus retaining the original file name and avoid creating a
+complete copy of each file. Such links are often used when we don't
+want to create copies of files that are potentially rather large. With this
+approach, when we want to access `MCL1.LA.bam` (for example), the file system
+will know to actually access `SRR1552444.sorted.bam`.
+
+```{r}
+for(i in seq_along(combinedInf$bam)){
+  
+  file.symlink(combinedInf$bam[i], combinedInf$newbam[i])
+  file.symlink(paste0(combinedInf$bam[i],".bai"), paste0(combinedInf$newbam[i],".bai"))
+  
+}
+list.files()
+```

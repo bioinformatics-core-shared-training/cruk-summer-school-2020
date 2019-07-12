@@ -1,0 +1,482 @@
+---
+title: "RNA-seq Analysis in R"
+subtitle: "Annotation and Visualisation of RNA-seq results - Supplementary Materials"
+author: "Stephane Ballereau, Abbi Edwards, Oscar Rueda, Ashley Sawle"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_notebook:
+    toc: yes
+  html_document:
+    toc: yes
+minutes: 300
+layout: page
+bibliography: ref.bib
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, message=FALSE}
+library(biomaRt)
+library(DESeq2)
+library(tidyverse)
+```
+
+Load in the datasets from the Annotation and Visualisation main session
+
+```{r loadData}
+load("../Course_Materials/Robjects/Ensembl_annotations.RData")
+load("../Course_Materials/Robjects/Annotated_Results_LvV.RData")
+```
+
+### Working with Genomic Locations - Transcript database packages
+
+There is a whole suite of annotation packages that can be used to access and for
+perform advanced queries on information about the genomic location of genes, 
+trancripts and exons. These are listed on the Bioconductor [annotation 
+page](http://bioconductor.org/packages/release/BiocViews.html#___AnnotationData)
+and have the prefix `TxDb.` (where "tx" is "transcript"). In addition there are 
+a large number of packages that make use of these annotations for downstream 
+analyses and visualisations. 
+
+Unfortunately, these packages do not cover all species and tend only to be
+available for UCSC genomes. Thankfully, there is a way to build your own 
+database from either a GTF file or from various online resources such as Biomart
+using the package
+[`GenomicFeatures`](https://bioconductor.org/packages/release/bioc/html/GenomicFeatures.html).
+
+#### Creating a TxDb database from a GTF file
+
+The created database is only loaded into the current R session. You will need 
+to run this command each time - it can be a little slow.
+
+```{r createTxDBGTF, eval=FALSE}
+library(GenomicFeatures)
+txMm <- makeTxDbFromGFF(file = "../Course_Materials/counts/Mus_musculus.GRCm38.80.gtf", format = "gtf")
+```
+
+#### Creating a TxDb database from Biomart
+The created database is only loaded into the current R session. You will need to
+run this command each time.
+
+```{r createTxDBBiomart, eval=FALSE}
+library(GenomicFeatures)
+txMm <- makeTxDbFromBiomart(dataset="mmusculus_gene_ensembl")
+```
+
+#### Creating a TxDb package from Biomart
+
+This creates an R package that can be installed just like a package that you
+might download from Bioconductor or CRAN. This can then loaded as normal 
+whenever it is needed, saving you having to build the database each time.
+
+A little extra work is needed at the command line to build the package from the 
+files produced by this method. Feel free to skip this section if you want - the 
+previous two methods are adequate if you can tolderate the short wait each time 
+you create the database.
+
+```{r creatTxDBpackage, eval=FALSE}
+library(GenomicFeatures)
+makeTxDbPackageFromBiomart(version="0.01",
+                           destDir = "~",
+                           maintainer="Some One <so@someplace.org>",
+                           author="Some One <so@someplace.com>",
+                           dataset="mmusculus_gene_ensembl")
+```
+
+This creates a new folder in your *home* directory (`~` is a shortcut for home).
+
+We will not go into detail about how to contruct an R package, or the contents
+of the package directory. This method generates all the files you need. More 
+information on contructing R packages can be found in Hadely Wickham's 
+["R Packages" book](http://r-pkgs.had.co.nz/).
+
+The directory created will be something like `TxDb.Mmusculus.BioMart.ENSEMBLMARTENSEMBL.GRCm38.p6`. This going to be the 
+packaged name and is referenced in various files in the package directory. We
+recommend changing it to something more manageable such as 
+`TxDb.Mmusculus.Ens.GRCm38`. We need to change the directory name, the database
+file name and each reference in the `DESCRIPTION` and `man/package.Rd` files.
+
+To do this run the following chunk of code. This code is actually run in 'bash',
+the language used in the terminal rather than R. This shows how versatile 
+RStudio is, you can run code from languages other than R when it is more 
+convenient for you to do so.
+
+
+```{bash, eval=FALSE}
+OldName=TxDb.Mmusculus.BioMart.ENSEMBLMARTENSEMBL.GRCm38.p6
+NewName=TxDb.Mmusculus.Ens.GRCm38
+
+cd ~
+# rename the package directory
+mv ${OldName} ${NewName}
+
+cd ${NewName}
+# rename the database file
+mv inst/extdata/${OldName}.sqlite inst/extdata/${NewName}.sqlite
+
+# replace the references in the old directory
+sed -i s/${OldName}/${NewName}/ DESCRIPTION 
+sed -i s/${OldName}/${NewName}/ man/package.Rd 
+
+cd ~
+# Build the package from the directory of files created by the above command
+R CMD build TxDb.Mmusculus.Ens.GRCm38
+# Install the package from the tarball created
+R CMD INSTALL TxDb.Mmusculus.Ens.GRCm38.p6_0.01.tar.gz
+```
+
+```{r loadTxDBlibrary, eval=FALSE}
+library(TxDb.Mmusculus.Ens.GRCm38)
+txMm <- TxDb.Mmusculus.Ens.GRCm38
+```
+
+
+### Retrieving information from TxDb packages
+
+Accessing the information in these TxDb databases is similar to the way in which
+we accessed information using `biomaRt` except that `filters` (the information
+we are filtering on) are now called `keys` and `attributes` (things we want to
+retrieve) are `columns`.
+
+First we need to decide what information we want. In order to see what we can 
+extract we can run the `columns` function on the annotation database.
+
+```{r checkColumns}
+library(GenomicFeatures)
+columns(txMm)
+```
+
+We are going to filter the database by a key or set of keys in order to extract
+the information we want. Valid names for the key can be retrieved with the 
+`keytypes` function.
+
+```{r checkKeytypes}
+keytypes(txMm)
+```
+
+To extract information we use the `select` function. Let's get transcript 
+information for our most highly differentially expressed gene.
+
+```{r select}
+keyList <- ensemblAnnot$GeneID[ensemblAnnot$Symbol=="Wap"]
+select(txMm, 
+       keys=keyList,
+       keytype = "GENEID",
+       columns=c("TXNAME", "TXCHROM", "TXSTART", "TXEND", "TXSTRAND", "TXTYPE")
+      )
+```
+ 
+
+> ### Challenge 3 {.challenge}
+>
+> Use the txMm to retrieve the exon coordinates for the genes: 
+    + `ENSMUSG00000021604`
+    + `ENSMUSG00000022146`
+    + `ENSMUSG00000040118` 
+>
+
+```{r solutionChallenge3, echo=FALSE, warning=FALSE, message=FALSE}
+
+```
+
+## Overview of GenomicRanges
+
+One of the real strengths of the `txdb..` databases is the ability to interface 
+with `GenomicRanges`, which is the object type used throughout Bioconductor 
+[to manipulate Genomic 
+Intervals](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3738458/pdf/pcbi.1003118.pdf). 
+
+These object types permit us to perform common operations on intervals such as 
+overlapping and counting. We can define the chromosome, start and end position 
+of each region (also strand too, but not shown here).
+
+```{r simpleGR}
+library(GenomicRanges)
+simple_range <- GRanges(seqnames = "1", ranges = IRanges(start=1000, end=2000))
+simple_range
+```
+
+We don't have to have all our ranges located on the same chromosome
+
+```{r grForThreeGenes}
+chrs <- c("13", "15", "5")
+start <- c(73000000, 6800000, 15000000)
+end <- c(74000000, 6900000, 16000000)
+
+my_ranges <- GRanges(seqnames = rep(chrs, 3),
+                     ranges = IRanges(start = rep(start, each = 3),
+                                      end = rep(end, each = 3))
+                     )
+my_ranges
+```
+
+There are a number of useful functions for calculating properties of the data 
+(such as *coverage* or sorting). Not so much for RNA-seq analysis, but 
+`GenomicRanges` are used throughout Bioconductor for the analysis of NGS data. 
+
+For instance, we can quickly identify overlapping regions between two 
+`GenomicRanges`. 
+
+```{r findOverlaps}
+keys <- c("ENSMUSG00000021604", "ENSMUSG00000022146", "ENSMUSG00000040118")
+genePos <- select(txMm,
+                  keys = keys,
+                  keytype = "GENEID",
+                  columns = c("EXONCHROM", "EXONSTART", "EXONEND")
+                  )
+
+geneRanges <- GRanges(genePos$EXONCHROM, 
+                      ranges = IRanges(genePos$EXONSTART, genePos$EXONEND), 
+                      GENEID = genePos$GENEID)
+geneRanges
+
+findOverlaps(my_ranges, geneRanges)
+```
+
+However, we have to pay attention to the naming convention used for each object. 
+`seqlevelsStyle` can help.
+
+```{r seqNamingStyle}
+seqlevelsStyle(simple_range)
+seqlevelsStyle(my_ranges)
+seqlevelsStyle(geneRanges)
+```
+
+
+### Exporting tracks
+
+It is also possible to save the results of a Bioconductor analysis in a browser 
+to enable interactive analysis and integration with other data types, or sharing 
+with collaborators. For instance, we might want a browser track to indicate 
+where our differentially-expressed genes are located. We shall use the `bed` 
+format to display these locations. We will annotate the ranges with information 
+from our analysis such as the fold-change and significance.
+
+First we create a data frame for just the DE genes.
+```{r tableOfDEGenes}
+sigGenes <- filter(shrinkLvV, FDR <= 0.01)
+message("Number of significantly DE genes: ", nrow(sigGenes))
+head(sigGenes)
+```
+
+### Create a genomic ranges object
+
+Several convenience functions exist to retrieve the structure of every gene from
+a given TxDb object in one list. The output of `exonsBy` is a list, where each 
+item in the list is the exon co-ordinates of a particular gene, however, we do 
+not need this level of granularity for the bed output, so we will collapse to a 
+single region for each gene. 
+
+First we use the `range` function to obtain a single range for every gene and 
+tranform to a more convenient object with `unlist`.
+
+```{r getGeneRanges}
+exoRanges <- exonsBy(txMm, "gene") %>% 
+    range() %>% 
+    unlist()
+
+sigRegions <- exoRanges[na.omit(match(sigGenes$GeneID, names(exoRanges)))]
+sigRegions
+```
+
+For visualisation purposes, we are going to restrict the data to genes that are 
+located on chromosomes 1 to 19 and the sex chromosomes. This can be done with 
+the `keepSeqLevels` function.
+
+```{r trimSequences}
+seqlevels(sigRegions)
+sigRegions <- keepSeqlevels(sigRegions, 
+                            value = c(1:19,"X","Y"),
+                            pruning.mode="tidy")
+seqlevels(sigRegions)
+```
+
+### Add metadata to GRanges object
+
+A useful propery of GenomicRanges is that we can attach *metadata* to each range
+using the `mcols` function. The metadata can be supplied in the form of a data 
+frame.
+
+```{r addDEResults}
+mcols(sigRegions) <- sigGenes[match(names(sigRegions), sigGenes$GeneID), ]
+sigRegions
+```
+
+### Scores and colour on exported tracks
+
+The `.bed` file format is commonly used to store genomic locations for display 
+in genome browsers (e.g. the UCSC browser or IGV) as tracks. Rather than just 
+representing the genomic locations, the `.bed` format is also able to colour 
+each range according to some property of the analysis (e.g. direction and 
+magnitude of change) to help highlight particular regions of interest. A score
+can also be displayed when a particular region is clicked-on.
+
+For the score we can use the $-log_{10}$ of the adjusted p-value and 
+colour scheme for the regions based on the fold-change
+
+`colorRampPalette` is a useful function in base R for constructing a palette between two extremes. **When choosing colour palettes, make sure they are colour blind friendly**. The red / green colour scheme traditionally-applied to microarrays is a ***bad*** choice.
+
+We will also truncate the fold-changes to between -5 and 5 to and divide this range into 10 equal bins
+
+```{r createPalette}
+rbPal <- colorRampPalette(c("red", "blue"))
+logFC <- pmax(sigRegions$logFC, -5)
+logFC <- pmin(logFC , 5)
+
+Cols <- rbPal(10)[as.numeric(cut(logFC, breaks = 10))]
+```
+
+The colours and score have to be saved in the GRanges object as `score` and `itemRgb` columns respectively, and will be used to construct the browser track. The rtracklayer package can be used to import and export browsers tracks.
+
+Now we can export the signifcant results from the DE analysis as a `.bed` track using `rtracklayer`. You can load the resulting file in IGV, if you wish.
+
+```{r addMetaData}
+mcols(sigRegions)$score <- -log10(sigRegions$FDR)
+mcols(sigRegions)$itemRgb <- Cols
+sigRegions
+```
+
+```{r exportTrack, eval=FALSE}
+library(rtracklayer)
+export(sigRegions , con = "../Course_Materials/results/topHits.bed")
+```
+
+## Extracting Reads
+
+As we have been using counts as our starting point, we haven't investigated the aligned reads from our experiment, and how they are represented. As you may be aware, aligned reads are usually stored in a *bam* file that can be manipulated with open-source command-line tools such as [*samtools*](http://www.htslib.org/) and [*picard*](https://broadinstitute.github.io/picard/). Bioconductor provide a low-level interface to data/bam/sam files in the form of the `Rsamtools` package. The `GenomicAlignments` package can also be used to retrieve the reads mapping to a particular genomic region in an efficient manner.
+
+```{r message=FALSE}
+library(GenomicAlignments)
+```
+
+In the directory `small_bams` there should be `.bam` files for some of the samples in the example study. The workflow to produce these files is described in a [supplmentary page](../Supplementary_Materials/S1_Getting_raw_reads_from_SRA.nb.html) for the course. In brief, the raw reads (`fastq`) were downloaded from the Short Read Archive (SRA) and aligned with `hisat2`. Each bam file was named according to the file name in SRA, but we have renamed the files according to their name in the study. An index file (`.bai`) has been generated for each bam file. In order to reduce the size, the bam files used here only contain a subset of the reads that were aligned in the region chr15:101707000-101713000.
+
+
+```{r bamFiles}
+list.files("../Course_Materials/counts/small_bams/")
+```
+
+The `readGAlignments` function provides a simple interface to interrogate the aligned reads for a particular sample. It can also utilise the *index* file in order to retrieve only the reads that correspond to a specific region in an efficient manner. The output includes the genomic location of each aligned read and the CIGAR (**C**ompact **I**diosyncratic **G**apped **A**lignment **R**eport); where *M* denotes an match to the genome and *I*, *D* correspond to insertions and deletions.
+
+```{r readReads}
+exo <- exonsBy(txMm, "gene") 
+generegion <- exo[["ENSMUSG00000022146"]] %>% 
+    keepSeqlevels(value = 15, pruning.mode="tidy")
+
+my.reads <- readGAlignments(file="../Course_Materials/counts/small_bams/MCL1.DG.15.sm.bam",
+                       param=ScanBamParam(which=generegion))
+my.reads
+```
+
+It is possible to tweak the function to retrieve other potentially-useful information from the bam file, such as the mapping quality and flag.
+
+```{r additionalInfo}
+my.reads <- readGAlignments(file="../Course_Materials/counts/small_bams/MCL1.DG.15.sm.bam",
+                       param=ScanBamParam(which=generegion,
+                                          what=c("seq","mapq","flag")))
+my.reads
+```
+
+The flag can represent useful QC information. e.g.
+
+  + Read is unmapped
+  + Read is paired / unpaired
+  + Read failed QC
+  + Read is a PCR duplicate (see later)
+
+The combination of any of these properties is used to derive a numeric value, as illustrated in this useful [resource](https://broadinstitute.github.io/picard/explain-flags.html)
+
+Particular attributes of the reads can be extracted and visualised
+
+```{r}
+hist(mcols(my.reads)$mapq, main="", xlab="MAPQ")
+```
+
+However, there are more-sophisticated visualisation options for aligned reads and range data. We will use the `ggbio` package, which first requires some discussion of the `ggplot2` plotting package.
+
+
+## Composing plots with ggbio
+
+We will now take a brief look at one of the visualisation packages in Bioconductor that takes advantage
+of the GenomicRanges and GenomicFeatures object-types. In this section we will show a worked
+example of how to combine several types of genomic data on the same plot. The documentation for
+ggbio is very extensive and contains lots of examples.
+
+http://www.tengfei.name/ggbio/docs/
+
+The `Gviz` package is another Bioconductor package that specialising in genomic visualisations, but we
+will not explore this package in the course.
+
+The Manhattan plot is a common way of visualising genome-wide results, especially when one is concerned with the results of a GWAS study and identifying strongly-associated hits. 
+
+The profile is supposed to resemble the Manhattan skyline with particular skyscrapers towering about the lower level buildings.
+
+![](https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png)
+
+This type of plot is implemented as the `plotGrandLinear` function. We have to supply a value to display on the y-axis using the `aes` function,
+which is inherited from ggplot2. The positioning of points on the x-axis is handled automatically by
+ggbio, using the ranges information to get the genomic coordinates of the ranges of interest.
+
+To stop the plots from being too cluttered we will consider the top 200 genes only.
+
+```{r manhattanPlot, fig.width=12, fig.height=5}
+library(ggbio)
+top200 <- sigRegions[order(sigRegions$FDR)[1:200]]
+
+plotGrandLinear(top200 , aes(y = logFC))
+
+```
+
+`ggbio` has alternated the colours of the chromosomes. However, an appealing feature of `ggplot2` is the ability to map properties of your plot to variables present in your data. For example, we could create a variable to distinguish between up- and down-regulated genes. The variables used for aesthetic mapping must be present in the `mcols` section of your ranges object.
+
+```{r manPlot2, fig.width=12, fig.height=5}
+mcols(top200)$UpRegulated <- mcols(top200)$logFC > 0
+
+plotGrandLinear(top200, aes(y = logFC, col = UpRegulated))
+```
+
+`plotGrandLinear` is a special function in `ggbio` with preset options for the manhattan style of plot. More often, users will call the `autoplot` function and `ggbio` will choose the most appropriate layout. One such layout is the *karyogram*. 
+
+```{r karyogram, fig.width=12, fig.height=5}
+
+autoplot(top200, layout="karyogram", aes(color=UpRegulated, fill=UpRegulated))
+
+```
+
+
+
+`ggbio` is also able to plot the structure of genes according to a particular model represented by a `GenomicFeatures` object, such as the object we created earlier with the exon coordinates for each gene in the GRCm38 genome.
+
+
+```{r geneModelPlot}
+autoplot(txMm, which=exo[["ENSMUSG00000022146"]])
+```
+
+We can even plot the location of sequencing reads if they have been imported using readGAlignments function (or similar).
+
+```{r coveragePlot}
+myreg <- exo[["ENSMUSG00000022146"]] %>% 
+    GenomicRanges::reduce() %>% 
+    flank(width = 1000, both = T) %>% 
+    keepSeqlevels(value = 15, pruning.mode="tidy")
+
+bam <- readGappedReads(file="../Course_Materials/counts/small_bams/MCL1.DG.15.sm.bam",
+                       param=ScanBamParam(which=myreg), use.names = TRUE)
+
+autoplot(bam, geom = "rect") + 
+    xlim(GRanges("15", IRanges(6800000, 6900000)))
+```
+
+Like ggplot2, ggbio plots can be saved as objects that can later be modified, or combined together to
+form more complicated plots. If saved in this way, the plot will only be displayed on a plotting device
+when we query the object. This strategy is useful when we want to add a common element (such as
+an ideogram) to a plot composition and don’t want to repeat the code to generate the plot every time.
+
+```{r combinePl, message=FALSE}
+geneMod <- autoplot(txMm, which = myreg)  + 
+    xlim(GRanges("15", IRanges(6810000, 6880000)))
+reads.MCL1.DG <- autoplot(bam, stat = "coverage")  + 
+    xlim(GRanges("15", IRanges(6810000, 6880000))) +
+    labs(title="MCL1.DG")
+tracks(GRCm38=geneMod, MCL1.DG=reads.MCL1.DG)
+```
