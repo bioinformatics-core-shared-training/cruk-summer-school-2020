@@ -125,8 +125,10 @@ __C-M Training room__.
 5.      Practical: Checking gene signatures with SigCheck 15:30 – 16:00
 
 **SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:00 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below)    
-[Drinks Reception 18:00- 19:45 West Lodge    
-Dinner 19:45 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwiptLD_s7zcAhXEy4UKHU0CDgkQjRx6BAgBEAU&url=https%3A%2F%2Fwww.downing-conferences-cambridge.co.uk%2Fabout-us%2Fvisitor-map&psig=AOvVaw1kbZkL02AvKqsWtNfNzNTJ&ust=1532682124262374) **    
+ reception at 6pm and dinner at 7.45pm
+[Drinks Reception 18:30- 19:30 West Lodge    
+Dinner 19:30 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwiptLD_s7zcAhXEy4UKHU0CDgkQjRx6BAgBEAU&url=https%3A%2F%2Fwww.downing-conferences-cambridge.co.uk%2Fabout-us%2Fvisitor-map&psig=AOvVaw1kbZkL02AvKqsWtNfNzNTJ&ust=1532682124262374) 
+Plus post-Dinner talk **    
 
 # Day 4 (July 18th)
 
