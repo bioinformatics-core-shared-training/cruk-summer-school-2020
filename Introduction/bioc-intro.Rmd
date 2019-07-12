@@ -1,21 +1,18 @@
 ---
-title: "R and Bioconductor Introduction"
+title: "Bioconductor Introduction"
 author: "Alistair Martin <br> (based on Mark Dunning's 2017 slides)"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
   html_document:
-    df_print: paged
     toc: yes
-  html_notebook:
-    toc: yes
-    toc_float: yes
+    toc_float: true
 ---
 
 # About R
 
 If you haven't learned the basics of R prior to attending this course, you should check out our [R crash course](https://bioinformatics-core-shared-training.github.io/r-crash-course/) for an overview of R's syntax. It's also a great refresher if you feel it has been a while since you last worked with R.
 
-## About the practicals for this workshop
+# About the practicals for this workshop
 
 - The traditional way to enter R commands is via opening a Terminal or, or using the console in RStudio (bottom-left panel when RStudio opens for first time).
 - For this course we will instead be using a relatively new feature called *R Notebooks*.
@@ -35,7 +32,9 @@ If you haven't learned the basics of R prior to attending this course, you shoul
 print("Hello World")
 ```
 
-When viewing the R notebooks directly, not the compiled documents, sections may have additional characters so as to format them nicely when compiled. For example:
+When viewing the R notebooks directly, not the compiled documents, sections may have additional characters so as to format them nicely when compiled. This is markdown, a simple language that formats the text whle, crucially, being still readable in the raw state.
+
+For example:
 
 *This will be displayed in italic*
 
@@ -76,27 +75,30 @@ On the [Bioconductor website](www.bioconductor.org), you will find
 - [Course Materials](http://bioconductor.org/help/course-materials/)
 - [Support forum](https://support.bioconductor.org/)
     + a means of communicating with developers and power-users
+    + Stack Overflow tends to get faster/better responses [](https://bioinformatics.stackexchange.com/)
 - [Example datasets](http://bioconductor.org/packages/release/BiocViews.html#___ExperimentData)
 - [Annotation Resources](http://bioconductor.org/packages/release/BiocViews.html#___AnnotationData)
 - Conferences
 
 For this session, we will introduce the Bioconductor project as a means of analysing high-throughput data
 
-## Installing a package
+# Installing a package
 
 All Bioconductor software packages are listed under
 
 - bioconductor.org -> Install -> Packages -> Analysis *software* packages
     + Many thousands of packages have been added over the years, so I would suggest just googling "bioconductor [package_name]"
     + e.g. [edgeR landing page](http://bioconductor.org/packages/release/bioc/html/edgeR.html)
-- installation instructions are given, which involves running the `biocLite` command
+- installation instructions are given, which involves running the `install` command from the BiocManager package
     + this will install and update any additional dependencies
+    + Running `BiocManager::install` forgoes needing to load the package manager into the work enviroment
 - you only need to run this procedure once for each version of R
 
 ```{r eval=FALSE}
 ## You don't need to run this, edgeR should already be installed for the course
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("edgeR")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("edgeR")
 ```
 
 Once installed, a Bioconductor package can be loaded in the usual way with the `library` function. All packages are required to have a *vignette* which gives detailed instructions on how to use the package and the workflow of commands. Some packages such as `edgeR` have very comprehensive *user guides* with lots of use-cases.
@@ -113,17 +115,17 @@ Package documentation can also be accessed via the *Help* tab in RStudio, which 
 ?edgeR
 ```
 
-## Structures for data analysis
+# Structures for data analysis
 
-Complex data structures are used in Bioconductor to represent high-throughput data, but we often have simple functions that we can use to access the data. We will use some example data available through Bioconductor to demonstrate how high-throughput data can be represented, and also to review some basic concepts in data manipulation in R.
+Complex data structures are used in Bioconductor to represent high-throughput data, but we often have simple functions that we can use to access the data. We will use some example data available via Bioconductor to demonstrate how high-throughput data can be represented, and also to review some basic concepts in data manipulation in R.
 
-- the data are from a *microarray* experiment. We will be concentrating on more modern technologies in this class, but most of the R techniques required will be similar
+- This data is from a *microarray* experiment. We will be concentrating on more modern technologies in this class, but most of the R techniques required will be eaxctly the same or at least very similar.
 - [experimental data](http://bioconductor.org/packages/release/BiocViews.html#___ExperimentData) packages are available through Bioconductor, and can be installed in the way we just described
   + the package should already be installed on your computer, so you won't need to run this.
 
 ```{r eval=FALSE}
 ## No need to run this - for reference only!
-biocLite("breastCancerVDX")
+BiocManager::install("breastCancerVDX")
 ```
 
 To make the dataset accessible in R, we first need to load the package. If we navigate to the documentation for `breastCancerVDX` in RStudio, we find that it provides an object called `vdx` which we load into R's memory using the `data` function.
@@ -143,9 +145,9 @@ The object `vdx` is a representation of breast cancer dataset that has been conv
 vdx
 ```
 
-## Accessing expression values
+# Accessing expression values
 
-The expression values can be obtained by the `exprs` function:-
+The expression values can be obtained by the `exprs` function:
 
 - remember, `<-` is used for assignment to create a new variable
 - the data are stored in a `matrix` in R
@@ -180,7 +182,7 @@ eValues[1:3,1:4][,2:3]
 eValues[1:3,1:4][,-(2:3)]
 ```
 
-## Simple visualisations
+# Simple visualisations
 
 The most basic plotting function in R is `plot`
 
@@ -194,14 +196,14 @@ plot(eValues[1,])
 - one possible use is to compare the values in a vector with respect to a given factor
 - but we don't know the clinical variables in our dataset yet (to come later)
 - a boxplot can also accept a matrix or data frame as an argument
-- what do you think the following plot shows?
+  + what do you think the following plot shows?
 
 ```{r fig.width=12}
 boxplot(eValues,outline=FALSE)
 ```
 
 
-## Accessing patient data
+# Accessing patient data
 
 The *metadata*, or phenotypic data, for the samples is retrieved using the `pData` function.
 
@@ -211,12 +213,13 @@ head(metadata)
 ```
 
 - head prints only the first few rows/values.
+  + you can specificy the exact number of rows to output, e.g., `head(metadata,10)`
 - individual columns can be accessed using the `$` notation. 
 - columns are returned as a *vector*, which can be fed into other standard plotting and analysis functions.
 - *auto-complete* is available in RStudio; once you type the `$`, it should give you a list of possible options.
 
 ```{r}
-head(metadata$samplename)
+head(metadata$samplename,15)
 ```
 
 
@@ -236,7 +239,6 @@ head(metadata$samplename)
 - calculate the average age of patients in the study with the `mean` function
     + what do you notice about the result?
     + can you change the arguments to mean to get a more meaningful result
-
 
 ******
 ******
@@ -267,7 +269,7 @@ Such a logical vector can then be used for subsetting
 - here, we don't specify any column indices inside the `[]`
     + R will print all the columns
     + however, don't forget the ,
-    + if you do, R will still try and do something. It almost certainly be what you expected
+    + if you do, R will still try and do something. It will almost certainly be not what you expected
 
 ```{r}
 metadata[which(metadata$grade == 3),]
@@ -316,7 +318,7 @@ boxplot(eValues[1,] ~ fac,
 Performing a test to assess significance follows similar syntax
 
 - `t.test` is the generic function to perform a t-test, and can be adapted to different circumstances
-    + e.g. if our data are paired, or not
+    + e.g., if our data are paired, or not
     + see the help for `t.test` for more details
 - for now, we will gloss over testing assumptions on the data such as requiring a *normal* (Gaussian) distribution and multiple testing correction
     
@@ -325,11 +327,11 @@ Performing a test to assess significance follows similar syntax
 t.test(eValues[1,]~fac)
 ```
 
-## Accessing feature (gene) information 
+# Accessing feature (gene) information 
 
 We could be lucky, and the first row in the expression matrix could be our favourite gene of interest! However, this is unlikely to be the case and we will have to figure out which row we want to plot
 
-- we can use another aspect of the `nki` object; the *feature data*
+- we can use another aspect of the `vdx` object; the *feature data*
 - there is a handy `fData` function to access these data
 - again, this gives us a *data frame*
 - this is a pre-built table supplied with the dataset
@@ -354,6 +356,7 @@ We could inspect the data frame manually (e.g. using `View(features)`) and ident
 - `match` will return the *index* of the first match
 - `grep` can be used for partial matches
 - each of the above will give an *vector* that can be used to subset the expression values
+  + Why do we get different results from the various commands?
 
 ```{r}
 which(features$Gene.symbol == "BRCA1")
@@ -386,7 +389,7 @@ grep("BRCA",features$Gene.symbol)
 ```
 
 
-## Testing all genes for significance
+# Testing all genes for significance
 
 Later in the course we will see how to execute a *differential expression* analysis for RNA-seq data, and discuss some of the issues surrounding this. For now we will perform a simple two-sample t-test for all genes in our study, and derive a results table
 
@@ -426,7 +429,6 @@ sort(x)
 head(tstats[order(tstats$p.value,decreasing = FALSE),])
 ```
 
-
 However, the table we get isn't immediately useful unless we can recognise the manufacturer probe IDs
 
 - to provide extra annotation to the table, we can *column bind* (`cbind`) the columns of test statistic with those from the feature matrix
@@ -434,7 +436,7 @@ However, the table we get isn't immediately useful unless we can recognise the m
 
 ```{r}
 table(rownames(tstats) == rownames(features))
-tstats.annotated <- cbind(tstats, features[,c("Gene.symbol","EntrezGene.ID","Chromosome.location")])
+tstats.annotated <- cbind(features[,c("Gene.symbol","EntrezGene.ID","Chromosome.location")], tstats)
 head(tstats.annotated)
 ```
 
@@ -475,3 +477,56 @@ tstats.ordered[tstats.ordered$Gene.symbol %in% c("ESR1","GATA3","FOXA1"),]
 ```{r}
 #FILL IN SOLUTIONS HERE
 ```
+
+# Using your own data
+
+The object `vdx`, which contains the data we've been using, is an ExpressionSet object (check using the `class` function). ExpressionSet's are used as input in a variety of bioinformatic packages and pipelines. As we found above, an ExpressionSet usually contains the following data:
+
+- expression data
+- meta data (optional)
+- feature data (optional)
+
+Let's generate some data and create our own ExpressionSet from scratch
+- `rnorm` generates normally distrubruted values
+- `matrix` takes a vector and arranges it into the specified number of rows and columns
+- `rep` is used to repeat a vector or its elements
+- `sample` *samples* the input vector, with or without replacement
+- `AnnotatedDataFrame` is a special container that conveniently stores and manipulates data 
+- Remeber that you can use help (`?`) to understand unknown functions
+
+```{r}
+eData <- matrix(rnorm(100000),nrow = 1000,ncol = 100)
+mData <- AnnotatedDataFrame(data.frame(Sex=rep(c("M","F"),each=50),biomarker.X=rnorm(100)))
+fData <- AnnotatedDataFrame(data.frame(Gene=1:1000,Chr=sample(1:23,1000,replace = T)))
+
+exampleSet <-  ExpressionSet(
+  assayData=eData,
+  phenoData=mData,
+  featureData=fData
+)
+```
+
+
+******
+******
+******
+
+
+## Exercise
+
+- Are any genes differentially expressed in our toy dataset with respect to gender?
+  + Hopefully these dissapear if you correct for multiple testing (`p.adjust`)
+- Now perform the following:
+  + run `eData[sample(1:1000,1),1:50] <- rnorm(50) + 1`
+  + remake the ExpressionSet
+- Using what you know from above, can you identify which gene was randomly increased in men?
+
+
+******
+******
+******
+
+```{r}
+#FILL IN SOLUTIONS HERE
+```
+
