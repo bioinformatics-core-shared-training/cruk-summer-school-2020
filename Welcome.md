@@ -8,7 +8,7 @@ We have booked 7 punts (@6 people/punt we have a capacity of 42 people). We have
 if you are not one of them and would like to change your mind and come, please talk to Mark.   
 
 * Wednesday - Summer School Dinner at Downing College
- Drinks Reception 18:30- 19:30, Dinner 19:30 -22:30 Grace Howard Room Plus post-Dinner talk.  
+ Drinks Reception 18:30- 19:30, Dinner 19:30 -22:30 Grace Howard Room Plus post-Dinner talk: "Perspectives in AI for Cancer Bioinformatics"..  
  
  * Friday - If you want to stay for Lunch on Friday please add your name to the     
 [Doodle Poll](https://doodle.com/poll/mng5eccnytcyd7sr) which can also be found on the Etherpad.   
