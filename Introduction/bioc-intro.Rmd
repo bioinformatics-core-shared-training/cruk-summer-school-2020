@@ -6,6 +6,7 @@ output:
   html_document:
     toc: yes
     toc_float: true
+    df_print: paged
 ---
 
 # About R
