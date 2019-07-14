@@ -44,8 +44,8 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 During this course you will learn about:-
 
 - How aligned sequencing reads, genome sequences and genomic regions are represented in R.
-- How to handle NGS data and read sequencing data with R, performe quality assessment and execute standard pipelines for (bulk) RNA-Seq, ChIP-Seq and ATAC-seq analysis
-- How to analyse transcription factor (TF) and epigenomic (histone mark) ChIP-seq data.  
+- How to handle NGS data and read sequencing data with R, perform quality assessment and execute standard pipelines for (bulk) RNA-Seq, ChIP-Seq and ATAC-seq analysis
+- How to do downstream analysis of transcription factor (TF) and epigenomic (histone mark) ChIP-seq data.  
 
 ### Objectives
 After the course you should be able to:-
@@ -87,7 +87,7 @@ __C-M Training room__.
   + Lecture 3: [Quality control and artefact removal](Introduction/SS_DB/Materials/Lectures/L3_qualityControl_artefactRemoval_DB.pdf) (3.00- 3.45pm)
   + Practical 1: [learn to use FastQC and Cutadapt](Introduction/SS_DB/Materials/Practicals/Practical1_fastQC_DB.html) (20 min) on a sample dataset
   + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4-shortread_Alignment_JK.pdf) (3.45-5.00pm)
-  + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_SS.html) (45 min)
+  + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html) (45 min)
     
 # Day 2 (July 16th)
 
@@ -134,16 +134,16 @@ Dinner 19:30 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
 # Day 4 (July 18th)
 
 - ChIP-seq data analysis
-    + Lecture 1: [Introduction to ChIP-seq (and Peak Calling)](ChIP/Lectures/L5_Introduction_to_ChIP-seq_SS.pdf)(ChIP/Lectures/L6_Peak_Calling_SS.pdf)(9.30-10.30am)
+    + Lecture 1: [Introduction to ChIP-seq (and Peak Calling)](ChIPSeq/Materials/Lectures/Day4/L1.1_Introduction_to_ChIP-seq_SS.pdf)(ChIPSeq/Materials/Lectures/Day4/L1.2_Peak_Calling_SS.pdf)(9.30-10.30am)
     + Practical 1: [Peak calling with MACS2](ChIP/Practicals/Practical3_peakcalling_SS.html) (10.30-11.00am)
-    + Lecture 2: [Differential binding analysis](ChIP/Lectures/L7_Differential_binding_analysis_DB.pdf) (11.00-11.30am)
+    + Lecture 2: [Differential binding analysis](ChIPSeq/Materials/Lectures/Day4/L2_Differential_Binding_Analysis_DB.pdf) (11.00-11.30am)
     + Practical 2: [THOR (and Diffbind)](ChIP/Practicals/Practical4_differentialBinding_DB.html) (11.30-12.00pm)
-    + Lecture 3: [Quality control methods for ChIP-seq](ChIP/Lectures/L8_Quality_control_methods_for_ChIP-seq_DB.pdf) (12.00-12.30pm)
+    + Lecture 3: [Quality control methods for ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L3_Quality_Control_Methods_for_ChIPseq_DB.pdf) (12.00-12.30pm)
   
    
     LUNCH (12.30-1.30pm)
      + Practical 4: [Integrative Genome Viewer](ChIP/Practicals/Practical6_IGV_DB.html) (1.30-2.00 min)
-    + Lecture 4: [Downstream analysis of ChIP-seq](ChIP/Lectures/L9_Downstream_Analysis_of_ChIP-seq_data_SS.pdf) (2.00-2.30pm)
+    + Lecture 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L4_Downstream_Analysis_of_ChIPseq_SS.pdf) (2.00-2.30pm)
     + Practical 5: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (2.30-3.15pm)
     + Lecture 5: [Introduction to (epi)Genomic data integration](3.15-3.45pm)
     + Practical 6: [Data Integration for Genomics (TF direct targets & chromatin modifications)](ChIP/Practicals/Practical8_Rcade_SS.pdf) (3.45-5.00 min)
