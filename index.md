@@ -91,9 +91,6 @@ __C-M Training room__.
     
 # Day 2 (July 16th)
 
-**Please note we use several Rstudio Notebook html files as material for the RNAseq course. To obtain the source code
-(.Rmd file) you can simply click on the code button in the top right-hand corner).**
-
 - 09:00 - 09:30; 
   + [Introduction to RNA-seq](RNAseq/html/00_Introduction_to_RNAseq_Analysis_in_R.html)
 - 09:30 - 11:00; 
