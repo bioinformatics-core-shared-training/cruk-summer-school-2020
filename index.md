@@ -134,15 +134,16 @@ Dinner 19:30 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&
 # Day 4 (July 18th)
 
 - ChIP-seq data analysis
-    + Lecture 1: [Introduction to ChIP-seq (and Peak Calling)](ChIPSeq/Materials/Lectures/Day4/L1.1_Introduction_to_ChIP-seq_SS.pdf)(ChIPSeq/Materials/Lectures/Day4/L1.2_Peak_Calling_SS.pdf)(9.30-10.30am)
-    + Practical 1: [Peak calling with MACS2](ChIP/Practicals/Practical3_peakcalling_SS.html) (10.30-11.00am)
+    + Lecture 1a: [Introduction to ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L1.1_Introduction_to_ChIP-seq_SS.pdf)(9.30-9.45am)
+    + Lecture 1b: [Introduction to Peak Calling](ChIPSeq/Materials/Lectures/Day4/L1.2_Peak_Calling_SS.pdf)(9.45-10.30am)
+    + Practical 1: [Peak calling with MACS2](ChIPSeq/Materials/Practicals/Day4/Practical1_PeakCalling_SS.html) (10.30-11.00am)
     + Lecture 2: [Differential binding analysis](ChIPSeq/Materials/Lectures/Day4/L2_Differential_Binding_Analysis_DB.pdf) (11.00-11.30am)
-    + Practical 2: [THOR (and Diffbind)](ChIP/Practicals/Practical4_differentialBinding_DB.html) (11.30-12.00pm)
+    + Practical 2: [THOR (and Diffbind)](ChIPSeq/Materials/Practicals/Day4/Practical2_diffbind_practical_DB.html) (11.30-12.00pm)
     + Lecture 3: [Quality control methods for ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L3_Quality_Control_Methods_for_ChIPseq_DB.pdf) (12.00-12.30pm)
   
    
     LUNCH (12.30-1.30pm)
-     + Practical 4: [Integrative Genome Viewer](ChIP/Practicals/Practical6_IGV_DB.html) (1.30-2.00 min)
+    + Practical 4: [Integrative Genome Viewer](ChIP/Practicals/Practical6_IGV_DB.html) (1.30-2.00 min)
     + Lecture 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L4_Downstream_Analysis_of_ChIPseq_SS.pdf) (2.00-2.30pm)
     + Practical 5: [Downstream analysis of ChIP-seq](ChIP/Practicals/Practical7_Downstream_Analysis_of_ChIP-seq_SS.html) (2.30-3.15pm)
     + Lecture 5: [Introduction to (epi)Genomic data integration](3.15-3.45pm)
