@@ -1,1 +1,1 @@
-directory for practicals
+directory for day1 practicals
