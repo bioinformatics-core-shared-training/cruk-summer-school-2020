@@ -96,6 +96,7 @@ __C-M Training room__.
 - 09:30 - 11:00; 
   + [Counting](RNAseq/html/01_Read_Counts_with_Subread.html)
   + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
+  + [Supplementary Material: Obtaining raw reads from SRA](RNAseq/Supplementary_Materials/S1_Getting_raw_reads_from_SRA.html)
 - 11:00 - 12:30 Linear models & differential expression
   + [Slides](RNAseq/slides/LinearModels.pdf)
   + [Linear models html nb](RNAseq/html/03_Linear_Models.nb.html)
@@ -110,8 +111,11 @@ __C-M Training room__.
 
 # Day 3 (July 17th)
 
-- 09:30 - 11:00; [Annotation and Visualisation of Differential Expression](RNAseq/html/05_Annotation_and_Visualisation.html)
-- 11:00 - 12:30; [Gene set analysis and Gene Ontology testing](RNAseq/html/06_Gene_set_testing.html)
+- 09:30 - 11:00; 
+  + [Annotation and Visualisation of Differential Expression](RNAseq/html/05_Annotation_and_Visualisation.html)
+  + [Supplementary Material: Further visualistations](RNAseq/Supplementary_Materials/S3_Annotation_and_Visualisation.nb.html)
+- 11:00 - 12:30; 
+  + [Gene set analysis and Gene Ontology testing](RNAseq/html/06_Gene_set_testing.html)
 
 - 12:30 - 13:30; LUNCH
 - 13:30 - 16:30; Prognostic Gene Signatures
