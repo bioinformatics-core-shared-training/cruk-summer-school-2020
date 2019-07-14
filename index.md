@@ -43,9 +43,9 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 ### Aims
 During this course you will learn about:-
 
-- To provide an understanding of how aligned sequencing reads, genome sequences and genomic regions are represented in R.
-- To encourage confidence in reading sequencing reads into R, performing quality assessment and executing standard pipelines for (bulk) RNA-Seq, ChIP-Seq and ATAC-seq analysis 
-- Analysis of transcription factor (TF) and epigenomic (histone mark) ChIP-seq data.  
+- How aligned sequencing reads, genome sequences and genomic regions are represented in R.
+- How to handle NGS data and read sequencing data with R, performe quality assessment and execute standard pipelines for (bulk) RNA-Seq, ChIP-Seq and ATAC-seq analysis
+- How to analyse transcription factor (TF) and epigenomic (histone mark) ChIP-seq data.  
 
 ### Objectives
 After the course you should be able to:-
@@ -54,7 +54,7 @@ After the course you should be able to:-
 - Process and quality control short read sequencing data 
 - Given a set of gene identifiers, find out whereabouts in the genome they are located, and vice-versa 
 - Produce a list of differentially expressed genes from an RNA-Seq experiment.
-- Import a set of ChIP-Seq peaks and investigate their biological context.
+- Import a set of ChIP-Seq or ATAC-seq peaks and investigate their biological context.
 
 # Day 0 (July 14th )
 
@@ -82,11 +82,11 @@ __C-M Training room__.
 - 13:30 - 14:30 [Principles of Experimental Design](Introduction/Experimental_Design.pdf)
 - 14:30 - 17:00;
 - Data processing for Next Generation Sequencing
-  + Lecture 1: [Introduction to next generation sequencing](Introduction/SS_DB/Materials/Lectures/L1_Introduction_to_Next_Generation_Sequencing_SS.pdf) (2.30- 2.45pm)
+  + Lecture 1: [Introduction to next generation sequencing](Introduction/SS_DB/Materials/Lectures/L1-Introduction_to_NGS_JK.pdf) (2.30- 2.45pm)
   + Lecture 2: [Brief introduction to file formats](Introduction/SS_DB/Materials/Lectures/L2_fileFormats_DB.pdf) (2.45- 3.00pm)
   + Lecture 3: [Quality control and artefact removal](Introduction/SS_DB/Materials/Lectures/L3_qualityControl_artefactRemoval_DB.pdf) (3.00- 3.45pm)
   + Practical 1: [learn to use FastQC and Cutadapt](Introduction/SS_DB/Materials/Practicals/Practical1_fastQC_DB.html) (20 min) on a sample dataset
-  + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4_Short_Read_Alignment_to_a_Reference-Genome_SS.pdf) (3.45-5.00pm)
+  + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4-shortread_Alignment_JK.pdf) (3.45-5.00pm)
   + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_SS.html) (45 min)
     
 # Day 2 (July 16th)
