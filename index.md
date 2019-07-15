@@ -91,18 +91,19 @@ __C-M Training room__.
     
 # Day 2 (July 16th)
 
-- 09:00 - 09:30; 
+- 09:30 - 10:00; 
   + [Introduction to RNA-seq](RNAseq/html/00_Introduction_to_RNAseq_Analysis_in_R.html)
-- 09:30 - 11:00; 
+- 10:00 - 11:30; 
   + [Counting](RNAseq/html/01_Read_Counts_with_Subread.html)
   + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
   + [Supplementary Material: Obtaining raw reads from SRA](RNAseq/Supplementary_Materials/S1_Getting_raw_reads_from_SRA.html)
-- 11:00 - 12:30 Linear models & differential expression
+- 11:30 - 12:30 Linear models & differential expression
   + [Slides](RNAseq/slides/LinearModels.pdf)
   + [Linear models html nb](RNAseq/html/03_Linear_Models.nb.html)
 - 12:30 - 13:30; LUNCH
-- 13:30 - 15:00; Linear models & differential expression
-- 15:00 - 17:30 
+- 13.30 - 14:00; Linear Models (cont)
+- 134:00 - 15:30; Linear models & differential expression
+- 15:30 - 17:30 
   + [Differential expression analysis with DESeq2](RNAseq/html/04_DE_analysis_with_DESeq2.html)
 
 **SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
