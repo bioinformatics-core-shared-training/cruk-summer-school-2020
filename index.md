@@ -101,9 +101,8 @@ __C-M Training room__.
   + [Slides](RNAseq/slides/LinearModels.pdf)
   + [Linear models html nb](RNAseq/html/03_Linear_Models.nb.html)
 - 12:30 - 13:30; LUNCH
-- 13.30 - 14:00; Linear Models (cont)
-- 134:00 - 15:30; Linear models & differential expression
-- 15:30 - 17:30 
+- 13.30 - 15:00; Linear models & differential expression (cont)
+- 15:00 - 17:30 
   + [Differential expression analysis with DESeq2](RNAseq/html/04_DE_analysis_with_DESeq2.html)
 
 **SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
