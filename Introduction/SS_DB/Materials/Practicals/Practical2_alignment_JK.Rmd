@@ -1,0 +1,229 @@
+---
+title: "Practical 2: Short Read Alignment"
+author: "Shamith Samarajiiwa, Dora Bihary, Joanna Krupka"
+date: "15th July 2019"
+output: 
+  BiocStyle::html_document
+  #BiocStyle::pdf_document
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+---
+---
+
+# Introduction
+
+## Datasets 
+
+We'll be using ChIP-seq and RNA-seq datasets to demonstrate how to align ChIP-seq and RNA-seq data to the `GRCh38` reference genome. GRCh38/hg38 is the latest assembly of the human genome released December of 2013, that greatly expanded alternate (ALT) contigs. These alternate haplotypes includes highly variable HLA loci and represent common complex variation of the human genome. You can read more about GRCh38/hg38 [here](https://gatkforums.broadinstitute.org/gatk/discussion/11010/human-genome-reference-builds-grch38-hg38-b37-hg19).
+
+
+The dataset for this practical is a publicly available dataset downloaded from the `NCBI GEO` repository with the accession [GSE15780](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE15780). These data were already used in the paper: ["Crosstalk between c-Jun and TAp73alpha/beta contributes to the apoptosis-survival balance" by Koeppel et al.](https://www.ncbi.nlm.nih.gov/pubmed/21459846) to explores genome wide binding of two transcription factors (`TP53` and `TP73` splice variants) and gene expression in a human cancer cell line. 
+
+## Analysis stages  
+
+1. `BWA` alignment of ChIP-seq to `GRCh38` reference
+2. `Bowtie2` alignmnet of ChIP-seq to `GRCh38` reference
+3.  Basic BAM/SAM files operations with `SAM Tools` 
+4.  Alignment quality check with `SAM Stat`
+4. `STAR` alignment of RNA-seq data
+
+
+# Preparing a Reference Genome
+
+## Downloading  
+
+A sequence mapping (alignment) is a way of arranging biological sequence (DNA or RNA), so that it reflects a given order, for example similarity to a reference genome. Reference genomes can be downloaded from UCSC, Ensembl or NCBI genome resources. Here's the UCSC genome browser url for the human reference FASTA file, that can be used to align your sequencing reads [(hg38.fa)](http://hgdownload.cse.ucsc.edu/goldenpath/hg38/bigZips/). Detailed download instructions are on that page. 
+
+Whole genomic alignments can be time consuming and not realistic to do in the short time we have. Therefore, we downloaded and preprocessed a single chromosome [(chr3.fa)](http://hgdownload.cse.ucsc.edu/goldenpath/hg38/chromosomes/) from UCSC to save time. 
+
+## Dealing with incomplete, repeat-rich sequences  
+
+Despite significant improvement in the accuracy and completeness of the human genome, presence of repeat-rich sequences in centromeric and acrocentric short arms regions may affect mapping of short-reads datasets. 
+The preprocessing step includes aligning to a GRCh38 genome with a *sponge-database* (which removes artefacts and non-chromosomal sequences) and then regenerating the chr3 fastq file. Because we've done this for you there is no need for you to use a sponge database again when you do the tutorial below. You can read more about this problem here: [Miga K. et al. (2015)](https://academic.oup.com/nar/article/43/20/e133/1398360)
+
+## Reference genome index  
+
+Mapping of milions of short reads to a very large reference sequence is a challenging task. In order to accelerate short reads mapping, most of the modern alignment tools use a strategy of *'indexing'* (think about it as indexing of a book), see: [Trapnell C. and Salzberg SL (2009)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2836519/). Indexing is specific to an aligner and reference sequence used. All thr detailed informations about required genome indexes can be found in a software documentation. 
+
+
+# Sequence alignment with BWA
+
+We'll use BWA to align a fastq ChIP-seq sample to the GRCh38 reference genome. Before running the command we need to make sure that we are in the correct directory:
+
+```{bash, eval=FALSE}
+cd ~/Course_Materials/Introduction/SS_DB
+pwd
+```
+
+First, we need to create a BWA hg38chr3 index. You can access BWA docummentation [here](http://bio-bwa.sourceforge.net/bwa.shtml) or just simply type in the terminal window:
+
+```{bash, eval=FALSE}
+bwa index
+```
+
+This command will display all the parameters that you can use when creating the reference genome (in today's example - chromosome) index. Now we will run:
+
+```{bash, eval=FALSE}
+bwa index -p Reference/BWA/hg38_chr3_BWA_idx -a bwtsw Reference/BWA/hg38_chr3.fa
+```
+
+The command should take couple of minutes to finish, so let's explore parameters used: 
+
+* -p gives the name of a directory where indexed files will be placed (you can call this whatever you want, we named it hg38_chr3_BWA_idx)
+* -a chooses one of the indexing algorithm within bwa
+
+Normally you would use a complete genome build fasta (eg. hg38.fa) file to build a bwa index. In this case we're using only chromosome 3: hg38_chr3.fa.
+
+Once we created the reference index we can run main mapping command:
+
+```{bash, eval=FALSE}
+bwa mem -M -t 8 Reference/BWA/hg38_chr3_BWA_idx QC_Trimming/tp53_r2.fastq_trimmed.fastq.gz > Alignment/BWA/tp53_r2.sam
+```
+
+Parameters we used:
+
+* -M leaves the best (longest) alignment for a read as primary alignment and additional alignments for the read as secondary  
+* -t indicates number of processor cores used to do the alignment  
+
+
+# A Samtools tutorial  
+
+Samtools is an open source toolkit for next generation sequence data manipulation. It is patriculairly useful to modify and reformat sequence alignment files (SAM/BAM) for downstream processing. We'll demonstrate only a few examples of samtools utilities, full documentation can be accessed [here](http://www.htslib.org/doc/samtools.html).
+
+**Generate BAM file from the alignment SAM file.**  
+
+A BAM file (.bam) is the binary version of a SAM file. BAM occupies less disk space than SAM and is a default input required by some bioinformatic tools.
+
+```{bash, eval=FALSE}
+# Let's first look at the first 10 lines of your SAM file
+head -n 10 Alignment/BWA/tp53_r2.sam
+
+# Convert SAM to BAM
+samtools view -bT Reference/BWA/hg38_chr3.fa Alignment/BWA/tp53_r2.sam > Alignment/BWA/tp53_r2.bam
+
+# Now in order to look at the first few lines of BAM file we need to use `samtools view`
+samtools view Alignment/BWA/tp53_r2.bam | head -n 10
+```
+
+
+**Sort BAM file.**  
+
+Many programs that use alignment files need sorted BAM files.
+
+```{bash, eval=FALSE}
+samtools sort Alignment/BWA/tp53_r2.bam -o Alignment/BWA/tp53_r2_sorted.bam
+```
+
+**Generate BAM index.** 
+
+This makes accessing these large files faster and again, is usually required by programs that process alingment files. 
+
+```{bash, eval=FALSE}
+samtools index Alignment/BWA/tp53_r2_sorted.bam
+```
+
+**Convert BAM to SAM**
+
+```{bash, eval=FALSE}
+samtools view -h Alignment/BWA/tp53_r2_sorted.bam > Alignment/BWA/tp53_r2_sorted.sam
+```
+
+**Filter unmapped reads in BAM**
+
+During running the alignment command, each read from the input has been assigned flags according to its properties (see: [SAM flags](https://broadinstitute.github.io/picard/explain-flags.html)). We can filter BAM/SAM files by including/excluding reads with certain flags. For example, in order to remove all the unmapped reads we can run:
+
+```{bash, eval=FALSE}
+samtools view -F 4 Alignment/BWA/tp53_r2_sorted.sam > Alignment/BWA/tp53_r2_sorted_mapped.bam
+```
+
+* -F allows only reads with none of flags in the output file  
+
+If we want all reads mapping within given genomic coordinates, eg: chr3:200000-500000, we can run:
+
+```{bash, eval=FALSE}
+samtools view Alignment/BWA/tp53_r2_sorted.bam chr3:200000-500000 > Alignment/BWA/tp53_r2_sorted_slice.bam
+```
+
+**Simple statistics using SAM Tools flagstat**
+
+```{bash, eval=FALSE}
+samtools flagstat Alignment/BWA/tp53_r2_sorted.bam
+```
+
+**Create a `FASTQ` file from a `BAM` file**
+
+```{bash, eval=FALSE}
+samtools bam2fq Alignment/BWA/tp53_r2_sorted.bam > Alignment/BWA/tp53_r2_sorted.fastq
+# Look at the FASTQ file
+head -n 10 Alignment/BWA/tp53_r2_sorted.fastq
+```
+
+## BAM QC with SAMStat
+
+In order to examine BAM/SAM files mapping quality we can run:  
+
+```{bash, eval=FALSE}
+samstat Alignment/BWA/tp53_r2_sorted.bam
+```
+
+Generate a tdf (tile data format) file for viewing in `IGV` browser.
+
+```{bash, eval=FALSE}
+igvtools count -z 5 -w 25 -e 250 Alignment/BWA/tp53_r2_sorted.bam Alignment/BWA/tp53_r2_sorted.tdf hg38
+```
+
+
+# Sequence alignment with Bowtie2
+
+First, let's explore bowtie2 options:
+
+```{bash, eval=FALSE}
+bowtie2 -h
+```
+
+Similairly to BWA workflow, we need to index a reference sequence before running main mapping algorithm:
+
+```{bash, eval=FALSE}
+bowtie2-build -f Reference/Bowtie2/hg38_chr3.fa Reference/Bowtie2/hg38_chr3_bowtie2_idx
+```
+
+Then, ChIP-Seq reads alignment: 
+
+```{bash, eval=FALSE}
+bowtie2 -x Reference/Bowtie2/hg38_chr3_bowtie2_idx -U QC_Trimming/tp53_r2.fastq_trimmed.fastq.gz -S Alignment/Bowtie2/tp53_r2.sam
+```
+
+## Exercise 1.
+
+Now it is your turn to type a commands that first convert a SAM to BAM, then sort and finally index generated BAM file. All output files should be saved in `Alignment/Bowtie2` directory. 
+
+```{bash, eval=FALSE, echo = FALSE}
+# SAM to BAM
+samtools view -bT Reference/Bowtie2/hg38_chr3.fa Alignment/Bowtie2/tp53_r2.sam > Alignment/Bowtie2/tp53_r2.bam
+# Sorting
+samtools sort Alignment/Bowtie2/tp53_r2.bam -o Alignment/Bowtie2/tp53_r2_sorted.bam
+# Indexing
+samtools index Alignment/Bowtie2/tp53_r2_sorted.bam
+```
+
+# Transcriptome alignment with STAR
+
+We downloaded GTF file from [GENCODE](https://www.gencodegenes.org/human/)
+
+**Generate genome indices:**   
+
+```{bash, eval=FALSE}
+STAR --runThreadN 4 --runMode genomeGenerate --genomeDir Reference/STAR/ --genomeFastaFiles Reference/STAR/hg38_chr3.fa --sjdbGTFfile Reference/STAR/gencode.v31.basic.annotation.gtf --sjdbOverhang 100
+```
+
+**Align reads to the genome:**  
+
+```{bash, eval=FALSE}
+STAR --runThreadN 4 --genomeDir Reference/STAR/ --readFilesIn RawData/RNAseq/tp53_rep1_trimmed.fastq.gz --readFilesCommand zcat --outFileNamePrefix Alignment/STAR/tp53_rep1_ --outSAMtype BAM SortedByCoordinate --sjdbGTFfile Reference/STAR/gencode.v31.basic.annotation.gtf --sjdbOverhang 100 --twopassMode Basic --outWigType bedGraph --outWigStrand Stranded
+```
+
+While STAR is running, the status messages will be appearing on the screen and the progress of the mapping job can be checked in the Log.progress.out
+
+This should give you basic skills for doing next generation sequence alignment, and this is also the end of this practical!
