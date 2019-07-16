@@ -1,0 +1,283 @@
+---
+title: "Prognostic Signature Practical"
+author: "Rory Stark"
+date: "16/07/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading and pre-processing the NKI data
+
+We start by loading the NKI breast cancer microarray data set:
+
+```{r echo=TRUE, message=FALSE, results="hide"}
+library(breastCancerNKI)
+data(nki)
+```
+```{r }
+nki
+```
+
+There are some missing data elements in the data set, which we'll eliminate or 
+replace to make life easier.
+
+First we'll get rid of samples for which we don't have survival data:
+
+```{r }
+nki$e.dmfs
+nki <- nki[,!is.na(nki$e.dmfs)]
+ncol(nki)
+```
+
+Next we'll impute some missing values. Less represent less than 1% of the
+total data so this shouldn't be a problem:
+
+```{r}
+library(e1071)
+sum(is.na(exprs(nki)))
+exprs(nki)=impute(exprs(nki))
+```
+
+# Separating Training and Validation sets of samples
+
+```{r}
+totalSamples      <- ncol(nki)
+validationSamples <- rep(TRUE,totalSamples)
+trainingSamples   <- sample(totalSamples,totalSamples * .75)
+validationSamples[trainingSamples] <- FALSE
+validationSamples <- which(validationSamples)
+training   <- nki[,trainingSamples]
+validation <- nki[,validationSamples]
+```
+
+# Differential Expression Analysis
+
+Next we'll do a differential expression analysis. For this we use the "event"
+data which separates the samples into "high" and a "low" risk groups. 
+We can use these groups to make a design matrix.
+
+```{r}
+SampleGroup <- factor(training$e.dmfs)
+design <- model.matrix(~0+SampleGroup)
+colnames(design) <- c("Low","High")
+```
+
+Next we'll filter out probes with low variability:
+
+```{r}
+library(genefilter)
+nrow(training)
+training <- varFilter(training)
+nrow(training)
+```
+
+Now we can use the *limma* package to fit a linear model and test our contrast: :
+
+```{r}
+library(limma)
+fit <- lmFit(exprs(training), design)
+contrasts <- makeContrasts(High - Low, levels=design)
+fit2 <- contrasts.fit(fit, contrasts)
+fit2 <- eBayes(fit2)
+```
+
+# Extracting the 70-gene Signature
+
+We can add gene symbol annotations before extracting the 70 features with
+the lowest FDR:
+
+```{r}
+anno <- fData(training)[,"NCBI.gene.symbol"]
+sig <-topTable(fit2,genelist=anno,number=70)
+head(sig)
+```
+
+
+# Testing the 70-gene Signature
+
+Now that we have a 70-gene signature, we'll need to test it.
+We'll test it separately on the training set, and then on the validation set.
+
+First we extract the data we are interested in:
+
+```{r}
+ids <- rownames(sig)
+sigTrain <- training[(rownames(training) %in% ids),]
+trainExpr <- exprs(sigTrain)
+sigValid <- validation[(rownames(validation) %in% ids),]
+validExpr <- exprs(sigValid)
+```
+
+## Generating Low and High Risk expression templates
+
+Now we need a way to map the signature to a predicted outcome class.
+We create a "template" expression vector for the Low and High risk groups
+by taking the mean value for each gene amongst samples in that group:
+
+```{r}
+riskTrain <- sigTrain$e.dmfs
+
+lowOnly <- sigTrain[,riskTrain==0]
+lowTemplate <- rowMeans(exprs(lowOnly))
+
+highOnly <- sigTrain[,riskTrain==1]
+highTemplate <- rowMeans(exprs(highOnly))
+
+riskValid <- sigValid$e.dmfs
+```
+
+Now we can evaluate each sample by computing how well they are 
+correlated to the Low Risk and the High Risk templates:
+
+```{r}
+numSamplesTrain <- ncol(sigTrain)
+
+lows  <- rep(0,numSamplesTrain)
+highs <- rep(0,numSamplesTrain)
+for(i in 1:numSamplesTrain) {
+   lows[i]  <- cor(lowTemplate,trainExpr[,i])
+   highs[i] <- cor(highTemplate,trainExpr[,i])
+}
+
+resultsTrain <- cbind(lows,highs,riskTrain)
+colnames(resultsTrain) <- c("Low","High","Risk")
+```
+
+## Plotting correlations with the templates
+
+We can plot the the correlation values comparing each sample to each 
+of the two vectors:
+
+```{r}
+plot(resultsTrain)
+```
+
+Showing that the values are themselves negatively correlated,
+which is what we expect. 
+
+We can also make some boxplots showing how the correlation
+values for each sample are distributed based on their known risk group. 
+We can compare how they correlate with the Low Risk template, and then with
+the High Risk template:
+
+```{r}
+par(mfrow=c(1,2))
+boxplot(Low~Risk,resultsTrain,sub="Training Set - Low Risk Template")
+boxplot(High~Risk,resultsTrain,sub="Training Set - High Risk Template")
+```
+
+We can see that Low Risk samples correlate more highly with the 
+Low Risk template, and High Risk Samples correlate more
+highly with the High Risk template.
+
+## Validation set
+
+Now let's try to correlate the expression vectors for the signature genes 
+for the samples in the validation set.
+```{r}
+numSamplesValid <- ncol(sigValid)
+lows  <- rep(0,numSamplesValid)
+highs <- rep(0,numSamplesValid)
+for(i in 1:numSamplesValid) {
+   lows[i]  <- cor(lowTemplate,validExpr[,i])
+   highs[i] <- cor(highTemplate,validExpr[,i])
+}
+resultsValid <- cbind(lows,highs,riskValid)
+colnames(resultsValid) <- c("Low","High","Risk")
+par(mfrow=c(1,2))
+boxplot(Low~Risk,resultsValid,sub="Validation Set - Low Risk Template")
+boxplot(High~Risk,resultsValid,sub="Validation Set - High Risk Template")
+```
+
+# Survival Analysis
+
+Now, we want to do some survival analysis. We need to separate
+the samples into two risk groups based on the correlation values.
+There are many ways to do this. We'll look at two of them
+
+## Classifying samples
+
+First, we can assign each sample to a risk group based on which template
+it is more highly correlated with:
+
+```{r}
+classifyTrain <- apply(resultsTrain[,1:2],1,which.max)-1
+resultsTrain  <- cbind(resultsTrain,classifyTrain)
+colnames(resultsTrain)[4] <- "Predicted"
+```
+
+We can look at some stats to see how will this does as a classifier:
+
+```{r}
+cor(classifyTrain,riskTrain)
+correct <- riskTrain == classifyTrain
+lowErr  <- riskTrain < classifyTrain
+highErr <- riskTrain > classifyTrain
+sum(correct)/numSamplesTrain
+sum(lowErr)/sum(riskTrain==0)
+sum(highErr)/sum(riskTrain==1)
+```
+
+Now we can do the same for the samples in the validation set:
+```{r}
+classifyValid <- apply(resultsValid[,1:2],1,which.max)-1
+resultsValid <- cbind(resultsValid,classifyValid)
+colnames(resultsValid)[4] <- "Predicted"
+cor(classifyValid,riskValid)
+correct <- riskValid == classifyValid
+lowErr  <- riskValid < classifyValid
+highErr <- riskValid > classifyValid
+sum(correct)/numSamplesValid
+sum(lowErr)/sum(riskValid==0)
+sum(highErr)/sum(riskValid==1)
+```
+
+## Computing a p-value using ChiSq test
+
+Now we can get a p-value indicating how well the two groups separate
+in terms of survival, based on expression of genes in the signature.
+We can do this separately for the training set and the validation set.
+
+```{r}
+library(survival)
+trainDMFS <- sigTrain$t.dmfs
+pvalTrain <- pchisq(survdiff(Surv(trainDMFS, riskTrain) ~classifyTrain)$chisq,
+               1, lower.tail=FALSE)
+pvalTrain
+
+validDMFS <- sigValid$t.dmfs
+pvalValid <- pchisq(survdiff(Surv(validDMFS, riskValid) ~classifyValid)$chisq,
+               1, lower.tail=FALSE)
+pvalValid
+```
+
+## Kaplan-Meier Plot
+
+Finally, KM plots show us visually how the samples separate.
+
+```{r}
+par(mfrow=c(1,2))
+plot(survfit(Surv(trainDMFS, riskTrain) ~ classifyTrain),col=c(4,2),sub=pvalTrain)
+plot(survfit(Surv(validDMFS, riskValid) ~ classifyValid),col=c(4,2),sub=pvalValid)
+```
+
+
+#Conclusion
+
+If you have time, some things to try include:
+* Try other values for the length of the gene signatures. 
+You can try increasing numbers to see what is
+the optimal signature length.
+
+* Given a signature of a certain size n, 
+the genes don't necessary have to be the top n genes from topTable. 
+What other ways can you try to select genes (eg by fold change)
+
+* Try other methods of classifying the samples based on the signature
+
+* Try the signature in another data set
+
+
