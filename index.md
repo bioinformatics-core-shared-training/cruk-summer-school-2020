@@ -109,6 +109,8 @@ __C-M Training room__.
 [Google Map](https://www.google.com/maps/dir/Craik-Marshall+Building,+Cambridge/Scudamore's+Mill+Lane+Punting+Station,+Mill+Ln,+Cambridge+CB2+1RS/@52.2021771,0.1169979,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x47d8709788f7fb6b:0x117c3858ab077fb0!2m2!1d0.1224918!2d52.2019233!1m5!1m1!1s0x47d870a335f0f833:0xdb33dae59780b590!2m2!1d0.115892!2d52.201511!3e3). 
 [Scudamore's Web-site & Mill lane map](https://www.scudamores.com/punting-mill-lane). 
 
+<img src="http://newsimg.bbc.co.uk/media/images/46874000/jpg/_46874885_shada_river_bbc.jpg"></>
+
 # Day 3 (July 17th)
 
 - 09:30 - 11:00; 
