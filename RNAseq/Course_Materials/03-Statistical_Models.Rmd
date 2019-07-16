@@ -1,0 +1,233 @@
+
+
+
+---
+title: "Statistical analysis of RNAseq data: 
+analysis of the *microarrays* dataset" 
+author: "D.-L. Couturier and Oscar Rueda"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    theme: united 
+    highlight: tango
+    code_folding: show    
+    toc: true           
+    toc_depth: 2       
+    toc_float: true     
+    fig_width: 8
+    fig_height: 6
+---
+
+
+<!--- rmarkdown::render("/Volumes/Files/cruk/RNAseqWithR/201907/tex/sc/03-StatisticalModels.Rmd") --->
+<!--- rmarkdown::render("~/courses/cruk/RNAseqWithR/201907/tex/sc/03-StatisticalModels.Rmd") --->
+<!--- rmarkdown::render("~/courses/cruk/RNAseqWithR/201907/git_cruk-summer-school-2019/RNAseq/Course_Materials/03-Statistical_Models.Rmd") --->
+
+```{r message = FALSE, warning = FALSE, echo = FALSE} 
+# change working directory: should be the directory containg the Markdown files:
+#setwd("~/courses/cruk/RNAseqWithR/201907/tex/sc/")
+#setwd("/Volumes/Files/courses/cruk/RNAseqWithR/201907/tex/sc")
+
+```
+
+# Section 0: Contrast matrices
+
+
+## One 3-level factor:
+
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+one3levelfactor = data.frame(condition =
+rep(c("TreatmentA", "TreatmentB", "Control"), 2))
+# model without intercept and default levels:
+model.matrix(~ condition - 1, data = one3levelfactor)
+# model with intercept and default levels
+model.matrix(~ condition, data = one3levelfactor)
+# model with intercept and self-defined levels
+levels(one3levelfactor$condition)
+levels(one3levelfactor$condition) = c("TreatmentB", "TreatmentA", "Control") 
+model.matrix(~ condition, data = one3levelfactor)
+```
+
+## Two categorical predictors:
+
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+# create dataset
+two2levelfactor = data.frame(treatment = rep(c("TreatA","NoTreat"),4), er = rep(c("+","-"),each=4))
+# design matrix without interaction
+model.matrix(~ treatment + er, data=two2levelfactor)
+# design matrix with interaction
+model.matrix(~ treatment + er + treatment:er, data=two2levelfactor)
+model.matrix(~ treatment * er, data=two2levelfactor)
+```
+
+## Two categorical predictors:
+
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+# create dataset
+two2levelfactor = data.frame(treatment = rep(c("TreatA","NoTreat"),4), er = rep(c("+","-"),each=4))
+# design matrix without interaction
+model.matrix(~ treatment + er, data=two2levelfactor)
+# design matrix with interaction
+model.matrix(~ treatment + er + treatment:er, data=two2levelfactor)
+model.matrix(~ treatment * er, data=two2levelfactor)
+```
+
+
+# Section 1: Analysis of gene expression measured with Microarrays 
+
+
+Lets starts by
+
+* importing the data set *microarrays* with the function `read.csv()`  
+
+## Section 1B: Student T-test
+
+Boxplot of the data:
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+microarrays = read.csv("data/03-microarrays.csv",row.names=1)
+boxplot(expression~celltype,data=microarrays,col="light gray",
+        ylab = "Gene expression", xlab = "Cell type")
+```
+
+
+As a linear model:
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+fit = lm(expression~celltype-1,data=microarrays)
+summary(fit)
+#
+fit = lm(expression~celltype,data=microarrays)
+summary(fit)
+```
+
+relationship with a Student's T-test:
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+Basal = microarrays$expression[microarrays$celltype=="Basal"]
+Luminal = microarrays$expression[microarrays$celltype=="Luminal"]
+t.test(Basal,Luminal,var.equal=TRUE)
+```
+
+
+
+
+## Section 1C: One-way ANOVA
+
+Regression model:
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+# model 1
+summary(lm(expression~mousetype-1,data=microarrays))
+# model 2
+summary(lm(expression~mousetype,data=microarrays))
+```
+
+Relationship with Fisher's one-way ANOVA (functions `aov()`)
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+# model 1
+summary(aov(expression~mousetype-1,data=microarrays))
+# model 2
+summary(aov(expression~mousetype,data=microarrays))
+```
+
+
+## Section 1D: Two-way ANOVA
+
+Regression model:
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+# without interactions
+summary(lm(expression~mousetype+celltype,data=microarrays))
+anova(lm(expression~mousetype+celltype,data=microarrays))
+# with interactions
+summary(lm(expression~mousetype*celltype,data=microarrays))
+anova(lm(expression~mousetype*celltype,data=microarrays))
+```
+
+Relationship with the two-way ANOVA (functions `aov()`)
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+# without interactions
+summary(aov(expression~mousetype+celltype,data=microarrays))
+# with interactions
+summary(aov(expression~mousetype*celltype,data=microarrays))
+```
+
+
+## Section 1E: Linear model
+
+Estimate the regression coefficients of the model with interation by hand 
+
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+# prepare 
+Y = microarrays$expression
+X = model.matrix(~mousetype*celltype,data=microarrays)
+# estimate
+Beta.hat = solve(t(X)%*%X)%*%t(X)%*%Y
+```
+
+For fun, simulate data with sigma = 2
+```{r message = FALSE, warning = FALSE, echo = TRUE}
+# prepare 
+E  = rnorm(nrow(X),mean=0,sd=.25)
+Y  = X%*%Beta.hat + E 
+# estimate
+summary(lm(Y~microarrays$mousetype*microarrays$celltype))
+```
+
+
+# Section 3: Large Scale Hypothesis testing: FDR
+
+
+When we are doing thousands of tests for differential expression, the overall significance level of a test is very difficult to control. Let's see why:
+First, we simulate 40,000 genes not differentially expressed (with a mean of zero). We assume that we have 10 replicates of this experiment:
+```{r}
+
+N <- 40000
+R <- 10
+X <- matrix(rnorm(N* R, 0, 1), nrow=N)
+```
+Now we assume that we run a t-test under the null hypothesis that the mean is zero for each of these genes, that is each row in the matrix:
+```{r}
+t.test(X[1,])$p.value
+pvals <- apply(X, 1, function(y) t.test(y)$p.value)
+```
+Because we have generated this data with mean zero, we know that none of these genes are differentially expressed, so we would like to be able to not reject any of the hypothesis. However, if you choose a significance level of 0.05 we get 
+```{r}
+sum(pvals<0.05)
+```
+Too many rejections!!!
+In fact, if we look at the distributions of the p-values obtained we get:
+```{r}
+hist(pvals)
+```
+
+
+That is, if the null hypothesis is true, the p-values will follow a uniform distribution.
+This is the key to all methods that aim to control the proportion of false positives amongs the genes that we call differentially expressed. Let's add 1000 genes to our set that are really differentially expressed (mean of 1):
+```{r}
+df <- 1000
+Y <- matrix(rnorm(df* R, 1, 1), nrow=df)
+Z <- rbind(X, Y)
+pvals <- apply(Z, 1, function(y) t.test(y)$p.value)
+#
+plot(pvals,col=rep(1:2,c(40000,1000)))
+plot(p.adjust(pvals, method="BH"),col=rep(1:2,c(40000,1000)))
+#
+tapply(p.adjust(pvals, method="BH")<0.05,rep(1:2,c(40000,1000)),mean)
+```
+Let's look at the distribution of p-values now:
+```{r}
+hist(pvals)
+```
+
+
+What would be the number of false positives now? How many would we expect if we reject p-values samller than our significance level, 0.05?
+```{r}
+exp.sig<- (nrow(Z))*0.05
+obs.sig <- sum(pvals<0.05)
+FDR <- exp.sig / obs.sig
+FDR
+```
+We can compare this with the Benjamini-Hochberg method:
+```{r}
+pvals.adj <- p.adjust(pvals, method="BH")
+plot(pvals, pvals.adj)
+abline(v=0.05, col=2)
+```
+

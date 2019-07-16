@@ -98,8 +98,8 @@ __C-M Training room__.
   + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
   + [Supplementary Material: Obtaining raw reads from SRA](RNAseq/Supplementary_Materials/S1_Getting_raw_reads_from_SRA.html)
 - 11:30 - 12:30 Linear models & differential expression
-  + [Slides](RNAseq/slides/LinearModels.pdf)
-  + [Linear models html nb](RNAseq/html/03_Linear_Models.nb.html)
+  + [Slides](RNAseq/html/03-Statistical_Models.pdf)
+  + [Linear models html nb](RNAseq/Course_Materials/03-Statistical_Models.Rmd)
 - 12:30 - 13:30; LUNCH
 - 13.30 - 15:00; Linear models & differential expression (cont)
 - 15:00 - 17:30 
