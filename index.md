@@ -109,7 +109,7 @@ __C-M Training room__.
 [Google Map](https://www.google.com/maps/dir/Craik-Marshall+Building,+Cambridge/Scudamore's+Mill+Lane+Punting+Station,+Mill+Ln,+Cambridge+CB2+1RS/@52.2021771,0.1169979,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x47d8709788f7fb6b:0x117c3858ab077fb0!2m2!1d0.1224918!2d52.2019233!1m5!1m1!1s0x47d870a335f0f833:0xdb33dae59780b590!2m2!1d0.115892!2d52.201511!3e3). 
 [Scudamore's Web-site & Mill lane map](https://www.scudamores.com/punting-mill-lane). 
 
-<img src="http://newsimg.bbc.co.uk/media/images/46874000/jpg/_46874885_shada_river_bbc.jpg"></>
+<img src="http://newsimg.bbc.co.uk/media/images/46874000/jpg/_46874885_shada_river_bbc.jpg"/>
 
 # Day 3 (July 17th)
 
@@ -120,18 +120,22 @@ __C-M Training room__.
   + [Gene set analysis and Gene Ontology testing](RNAseq/html/06_Gene_set_testing.html)
 
 - 12:30 - 13:30; LUNCH
-- 13:30 - 16:30; Prognostic Gene Signatures
-1.      Prognostic Gene Signatures (RS) 13:30 -14:00
-    + [Slides](Signatures/Lectures/Prognostic gene signatures.pdf)
-    + [R Markdown doc.](Signatures/Practicals/Prognostic Signature Practical.Rmd)
-2.      Survival Analysis (DL) 14:00 – 14:30
-  	+ [Slides](Signatures/Lectures/Survival_Analysis.pdf)
-  	+ [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)
-3.      Practical: Deriving a Predictive Gene Signature from DEGs 14:30 – 15:00
-4.      Issues with prognostic gene signatures (RS) 15:00 – 15:30
-    + [Slides](Signatures/Lectures/Limitations of prognostic gene signatures.pdf)
-5.      Practical: Checking gene signatures with SigCheck 15:30 – 16:00
-    + (Sigcheck practical](Signatures/Practicals/Practical2_SigCheck.pdf)
+- 13:30 - 16:30; Prognostic Gene Signatures    
+1.      Prognostic Gene Signatures (RS) 13:30 -14:00   
+    + [Slides](Signatures/Lectures/Prognostic gene signatures.pdf)  
+    
+2.      Survival Analysis (DL) 14:00 – 14:30   
+  	+ [Slides](Signatures/Lectures/Survival_Analysis.pdf)    
+  	+ [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)    
+    
+3.      Practical: Deriving a Predictive Gene Signature from DEGs 14:30 – 15:00  
+    + [R Markdown doc.](Signatures/Practicals/Prognostic Signature Practical.Rmd)   
+    
+4.      Issues with prognostic gene signatures (RS) 15:00 – 15:30    
+    + [Slides](Signatures/Lectures/Limitations of prognostic gene signatures.pdf)   
+    
+5.      Practical: Checking gene signatures with SigCheck 15:30 – 16:00    
+    + (Sigcheck practical](Signatures/Practicals/Practical2_SigCheck.pdf)   
 
 **SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:00 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below)        
 The reception is at 6.30pm and dinner at 7.430m Plus post-Dinner talk: "Perspectives in AI for Cancer Bioinformatics". **     
