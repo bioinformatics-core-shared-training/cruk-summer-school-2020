@@ -123,8 +123,8 @@ __C-M Training room__.
 - 13:30 - 16:30; Prognostic Gene Signatures
 1.      Prognostic Gene Signatures (RS) 13:30 -14:00
 2.      Survival Analysis (DL) 14:00 – 14:30
-  + [Slides](Signatures/Lectures/Survival_Analysis.pdf)
-  + [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)
+  	+ [Slides](Signatures/Lectures/Survival_Analysis.pdf)
+  	+ [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)
 3.      Practical: Deriving a Predictive Gene Signature from DEGs 14:30 – 15:00
 4.      Issues with prognostic gene signatures (RS) 15:00 – 15:30
 5.      Practical: Checking gene signatures with SigCheck 15:30 – 16:00
