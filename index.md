@@ -96,6 +96,7 @@ __C-M Training room__.
 - 10:00 - 11:30; 
   + [Counting](RNAseq/html/01_Read_Counts_with_Subread.html)
   + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
+    + [Challenge Solutions](RNAseq/Course_Materials/solutions/02_Preprocessing_Data.Solutions.html)
   + [Supplementary Material: Obtaining raw reads from SRA](RNAseq/Supplementary_Materials/S1_Getting_raw_reads_from_SRA.html)
 - 11:30 - 12:30 Linear models & differential expression
   + [Slides](RNAseq/html/03-Statistical_Models.pdf)
@@ -104,6 +105,7 @@ __C-M Training room__.
 - 13.30 - 15:00; Linear models & differential expression (cont)
 - 15:00 - 17:30 
   + [Differential expression analysis with DESeq2](RNAseq/html/04_DE_analysis_with_DESeq2.html)
+    + [Challenge Solutions](RNAseq/Course_Materials/solutions/04_DE_analysis.Solutions.html)
 
 **SOCIAL: Punting trip - leave from Mill Lane punting site at 18:00 (~10 min walk from Craik-Marshall)**
 [Google Map](https://www.google.com/maps/dir/Craik-Marshall+Building,+Cambridge/Scudamore's+Mill+Lane+Punting+Station,+Mill+Ln,+Cambridge+CB2+1RS/@52.2021771,0.1169979,17z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x47d8709788f7fb6b:0x117c3858ab077fb0!2m2!1d0.1224918!2d52.2019233!1m5!1m1!1s0x47d870a335f0f833:0xdb33dae59780b590!2m2!1d0.115892!2d52.201511!3e3). 
@@ -115,9 +117,11 @@ __C-M Training room__.
 
 - 09:30 - 11:00; 
   + [Annotation and Visualisation of Differential Expression](RNAseq/html/05_Annotation_and_Visualisation.html)
+    + [Challenge Solutions](RNAseq/Course_Materials/solutions/05_Annotation_and_Visualisation.Solutions.html)
   + [Supplementary Material: Further visualistations](RNAseq/Supplementary_Materials/S3_Annotation_and_Visualisation.nb.html)
 - 11:00 - 12:30; 
   + [Gene set analysis and Gene Ontology testing](RNAseq/html/06_Gene_set_testing.html)
+    + [Challenge Solutions](RNAseq/Course_Materials/solutions/06_Gene_set_testing.Solutions.html)
 
 - 12:30 - 13:30; LUNCH
 - 13:30 - 16:30; Prognostic Gene Signatures
