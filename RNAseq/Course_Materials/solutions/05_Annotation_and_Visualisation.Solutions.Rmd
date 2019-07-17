@@ -21,14 +21,11 @@ library(DESeq2)
 library(tidyverse)
 ```
 
-```{r prepareData, cache=TRUE}
+```{r prepareData, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE}
 # load data
 load("../Robjects/DE.RData")
 ## set up connection to ensembl database
-ensembl=useMart("ENSEMBL_MART_ENSEMBL")
-# list the available datasets (species)
-listDatasets(ensembl) %>% 
-    filter(str_detect(description, "Mouse"))
+ensembl=useMart("ENSEMBL_MART_ENSEMBL", host="uswest.ensembl.org")
 # specify a data set to use
 ensembl = useDataset("mmusculus_gene_ensembl", mart=ensembl)
 # Set the filter type and values
@@ -56,18 +53,20 @@ txMm <- makeTxDbFromGFF("../data/counts/Mus_musculus.GRCm38.97.gtf.gz")
 >
 > (a) Search the attributes and add the following to our list of attributes:  
 >       (i) The gene description   
->       (ii) The genomic position - chromosome, start, end, and strand (4 columns) 
->       (iii) The gene biotype  
+>       (ii) The gene biotype  
 > (b) Query BioMart using all of the genes in our results table (`resLvV`)  
 > (c) How many Ensembl genes have multipe Entrez IDs associated with them?  
-> (d) How many Ensembl genes in `resLvV` don't have any annotation? Why is this?
 
-```{r solutionChallenge1}
+```{r solutionChallenge1, message=FALSE, warnings=FALSE}
 filterValues <- rownames(resLvV)
 
 # check the available "attributes" - things you can retreive
 listAttributes(ensembl) %>%
-    head(20)
+    filter(str_detect(name, "description"))
+
+listAttributes(ensembl) %>%
+    filter(str_detect(name, "biotype"))
+
 attributeNames <- c('ensembl_gene_id',
                     'entrezgene_id',
                     'external_gene_name',
@@ -81,9 +80,13 @@ annot <- getBM(attributes=attributeNames,
                mart = ensembl)
 
 # dulicate ids
-sum(duplicated(annot$ensembl_gene_id))
+annot %>%
+  add_count(ensembl_gene_id) %>% 
+  filter(n>1) %>% 
+  distinct(ensembl_gene_id) %>% 
+  nrow()
 
-# missing gens
+# missing genes
 missingGenes <- !rownames(resLvV)%in%annot$ensembl_gene_id
 rownames(resLvV)[missingGenes]
 ```
@@ -111,17 +114,19 @@ ggplot(filtTab, aes(x = logFC, y=`-log10(FDR)`)) +
 
 > ### Challenge 3 {.challenge} - In Supplementary Materials
 >
-> Use the txMm to retrieve the exon coordinates for the genes: 
-    + `ENSMUSG00000021604`
-    + `ENSMUSG00000022146`
-    + `ENSMUSG00000040118` 
+> Use the txMm to retrieve the exon coordinates for the genes:    
+>
+> * `ENSMUSG00000021604`  
+> * `ENSMUSG00000022146`  
+> * `ENSMUSG00000040118`   
 >
 
-```{r solutionChallenge3, echo=FALSE, warning=FALSE, message=FALSE}
+```{r solutionChallenge3, warning=FALSE, message=FALSE}
 keyList <- c("ENSMUSG00000021604", "ENSMUSG00000022146", "ENSMUSG00000040118")
+
 AnnotationDbi::select(txMm, 
-       keys=keyList,
-       keytype = "GENEID",
-       columns=c("TXNAME", "TXCHROM", "TXSTART", "TXEND", "TXSTRAND", "TXTYPE")
-      )
+                      keys=keyList, 
+                      keytype = "GENEID", 
+                      columns=c("TXNAME", "TXCHROM", "TXSTART", "TXEND", "TXSTRAND", "TXTYPE"))
 ```
+

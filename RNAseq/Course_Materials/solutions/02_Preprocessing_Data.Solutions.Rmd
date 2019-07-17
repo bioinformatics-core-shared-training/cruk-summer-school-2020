@@ -3,9 +3,6 @@ title: "RNA-seq analysis in R"
 author: "Stephane Ballereau, Mark Dunning, Oscar Rueda, Ashley Sawle"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
-  html_notebook:
-    toc: yes
-    toc_float: yes
   html_document:
     toc: yes
     toc_float: yes
@@ -23,7 +20,7 @@ library(limma)
 library(tidyverse)
 ```
 
-```{r prepareData, message=FALSE}
+```{r prepareData, message=FALSE, include=FALSE}
 # Read the sample information into R
 sampleinfo <- read.delim("../data/SampleInfo.Corrected.txt", 
                          stringsAsFactors = F)
@@ -85,7 +82,7 @@ abline(h=median(as.matrix(logcounts)), col="blue")
 > before and after normalisation.
 >
 
-```{r solutionChallenge3, fig.height=10, fig.width=10}
+```{r solutionChallenge3, fig.height=10, fig.width=10, collapse=TRUE}
 par(mfrow=c(2,2))
 plotMA(logcounts, array = 7, main="MCL1.LA - Raw")
 abline(h=0,col="grey")
