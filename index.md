@@ -141,7 +141,7 @@ Issues with prognostic gene signatures (RS)
 Practical: Checking gene signatures with SigCheck     
     + [Practical](Signatures/Practicals/Practical2_SigCheck.pdf)   
 
-**SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:00 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below). The college should put up signage to help you find the venue.          
+**SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:30 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below). The college should put up signage to help you find the venue.          
 The reception is at 6.30pm and dinner at 7.430m Plus a post-Dinner talk: "Perspectives in AI for Cancer Bioinformatics by Rory Stark". **     
 [Drinks Reception 18:30- 19:30 Grace Howard Room, Dinner 19:30 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwiptLD_s7zcAhXEy4UKHU0CDgkQjRx6BAgBEAU&url=https%3A%2F%2Fwww.downing-conferences-cambridge.co.uk%2Fabout-us%2Fvisitor-map&psig=AOvVaw1kbZkL02AvKqsWtNfNzNTJ&ust=1532682124262374) 
    
