@@ -120,21 +120,25 @@ __C-M Training room__.
   + [Gene set analysis and Gene Ontology testing](RNAseq/html/06_Gene_set_testing.html)
 
 - 12:30 - 13:30; LUNCH
-- 13:30 - 16:30; Prognostic Gene Signatures    
-1.      Prognostic Gene Signatures (RS) 13:30 -14:00   
-    + [Slides](Signatures/Lectures/Prognostic gene signatures.pdf)  
+- 13:30 -14:00; 
+  Prognostic Gene Signatures (RS)    
+  + [Slides](Signatures/Lectures/Prognostic gene signatures.pdf)  
     
-2.      Survival Analysis (DL) 14:00 – 14:30   
+- 14:00 – 14:30; 
+Survival Analysis (DL)    
   	+ [Slides](Signatures/Lectures/Survival_Analysis.pdf)    
   	+ [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)    
     
-3.      Practical: Deriving a Predictive Gene Signature from DEGs 14:30 – 15:00  
+- 14:30 – 15:00; 
+Practical: Deriving a Predictive Gene Signature from DEGs   
     + [R Markdown doc.](Signatures/Practicals/Prognostic Signature Practical.Rmd)   
     
-4.      Issues with prognostic gene signatures (RS) 15:00 – 15:30    
+- 15:00 – 15:30; 
+Issues with prognostic gene signatures (RS)    
     + [Slides](Signatures/Lectures/Limitations of prognostic gene signatures.pdf)   
     
-5.      Practical: Checking gene signatures with SigCheck 15:30 – 16:00    
+- 15:30 – 16:00; 
+Practical: Checking gene signatures with SigCheck     
     + (Sigcheck practical](Signatures/Practicals/Practical2_SigCheck.pdf)   
 
 **SOCIAL: Summer School evening meal & Reception at the nearby Downing College at 18:00 to 22:30.. If you do not wish to attend this meal (free to attendees) then please let us know ASAP. Smart casual dress. http://www.dow.cam.ac.uk  Downing College, Regent Street, Cambridge, CB2 1DQ (Site map in link below)        
