@@ -1,0 +1,71 @@
+
+
+
+---
+title: "Basics of Survival analysis: 
+the R survival package" 
+author: "D.-L. Couturier"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    theme: united 
+    highlight: tango
+    code_folding: show    
+    toc: true           
+    toc_depth: 2       
+    toc_float: true     
+    fig_width: 8
+    fig_height: 6
+---
+
+
+<!--- rmarkdown::render("/Volumes/Files/courses/cruk/SurvivalAnalysis/201907/tex/sc/Survival_Analysis.Rmd") --->
+<!--- rmarkdown::render("~/courses/cruk/SurvivalAnalysis/201907/tex/sc/Survival_Analysis.Rmd") --->
+
+```{r message = FALSE, warning = FALSE, echo = FALSE} 
+# change working directory: should be the directory containg the Markdown files:
+#setwd("~/courses/cruk/SurvivalAnalysis/201907/tex/sc/")
+#setwd("/Volumes/Files/courses/cruk/SurvivalAnalysis/201907/tex/sc")
+
+```
+
+# Section 0: survival package and 'aml' dataset
+
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+library(survival)
+aml
+```
+
+
+# Section 1: Kaplan Meier plot
+
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+leukemia.surv <- survfit(Surv(time, status) ~ x, data = aml) 
+plot(leukemia.surv, col=c("red","blue"), 
+     mark.time=TRUE,
+     conf.int=FALSE,
+     axes=FALSE)
+axis(1,seq(0,200,10))
+axis(2,seq(0,1,.1),las=2)
+legend("topright", c("Maintenance", "No Maintenance"),lty=c(1,1), col=c("red","blue")) 
+title("Kaplan-Meier Curves\nfor AML Maintenance Study") 
+# 
+abline(h=0.5,lty=2)
+```
+
+# Section 2: Log-rank test
+
+
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+survdiff(Surv(time, status) ~ x, data = aml) 
+```
+
+# Section 3: Cox model
+
+```{r message = FALSE, warning = FALSE, echo = TRUE} 
+# Fit a stratified model 
+fit = coxph(Surv(time, status) ~ x,data=aml)
+summary(fit)
+```
+
+
