@@ -167,7 +167,7 @@ The reception is at 6.30pm and dinner at 7.30pm Plus a post-Dinner talk: "Perspe
     + Practical 3: [Integrative Genome Viewer](ChIPSeq/Materials/Practicals/Day4/Practical3_IGV_practical_DB.html) (1.30-2.00 min)
     + Lecture 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L4_Downstream_Analysis_of_ChIPseq_SS.pdf) (2.00-2.30pm)
     + Practical 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Practicals/Day4/Practical4_Downstream_Analysis_of_ChIP-seq_SS.html) (2.30-3.15pm)
-    + Lecture 5: [Introduction to (epi)Genomic data integration](3.15-3.45pm)
+    + Lecture 5: [Introduction to (epi)Genomic data integration](ChIPSeq/Materials/Lectures/Day4/L5_Introduction_to_Genomic_data_integration_SS.pdf)(3.15-3.45pm)
     + Practical 5: [Data Integration for Genomics (TF direct targets & chromatin modifications)](ChIPSeq/Materials/Practicals/Day4/Practical5a_Rcade_SS.pdf) (3.45-5.00 min)
  
 
