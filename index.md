@@ -132,6 +132,7 @@ __C-M Training room__.
 - 14:00 – 14:30; 
 Survival Analysis (DL)    
   	+ [Slides](Signatures/Lectures/Survival_Analysis.pdf)    
+  	+ [Annotated Slides](Signatures/Lectures/Survival_Analysis_Annotated.pdf)    
   	+ [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)    
     
 - 14:30 – 15:00; 
