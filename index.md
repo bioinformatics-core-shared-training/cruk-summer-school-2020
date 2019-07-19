@@ -132,6 +132,7 @@ __C-M Training room__.
 - 14:00 – 14:30; 
 Survival Analysis (DL)    
   	+ [Slides](Signatures/Lectures/Survival_Analysis.pdf)    
+  	+ [Annotated Slides](Signatures/Lectures/Survival_Analysis_Annotated.pdf)    
   	+ [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)    
     
 - 14:30 – 15:00; 
@@ -182,7 +183,8 @@ The reception is at 6.30pm and dinner at 7.30pm Plus a post-Dinner talk: "Perspe
 
 - 12:30 - 13:30; LUNCH
 - Some of you may now be going to the [CRUK Cambridge Centre Graduate Symposium](https://www.crukccgraduatesymposium.com/) Hope you enjoy it!    
-- Have a safe Journey home (Thank you for participating in the Summer School)
+- Have a safe Journey home (Thank you for participating in the Summer School).  
+<img src="http://38.media.tumblr.com/tumblr_m9t31sX4ER1qgcra2o1_500.gif" width="100" align="left"/><img src="http://38.media.tumblr.com/tumblr_m9t31sX4ER1qgcra2o1_500.gif" width="100" align="right"/>
 ## Please don't forget to fill in the [survey]( https://www.surveymonkey.co.uk/r/SumSch2019)   
 
 <!--
