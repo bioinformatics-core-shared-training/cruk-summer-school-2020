@@ -77,7 +77,10 @@ __C-M Training room__.
 - 09:30 [Course Introduction](Introduction/Session1-intro.html)
 - 09:30 - 10:30; [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf)
 - 10:30 - 12:30; [Introduction to Bioconductor](Introduction/bioc-intro.html)
+                 [Bioconductor answers](Introduction/bioc-intro.solutions.html).  
   + [source](Introduction/bioc-intro.Rmd)
+                 [Soource with solutions](Introduction/bioc-intro.solutions.Rmd).  
+  
 - 12:30 - 13:30; LUNCH
 - 13:30 - 14:30 [Principles of Experimental Design](Introduction/Experimental_Design.pdf)
 - 14:30 - 17:00;
