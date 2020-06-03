@@ -30,12 +30,13 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 
 - [Mark Fernandes (CRUK CI)](https://www.cruk.cam.ac.uk/author/mark-fernandes). 
 - [Rory Stark (CRUK CI)](https://www.cruk.cam.ac.uk/author/rory-stark).  
-- [Dora Bihary (MRC CU)](https://www.samarajiwa-lab.org/people). 
+- [Shoko Hirosue (MRC CU)](https://www.samarajiwa-lab.org/shokohirosue). 
 - [Joanna Krupka (MRC CU)](https://www.samarajiwa-lab.org/joannakrupka).  
-- [Ashley Sawle (CRUK CI)](https://www.cruk.cam.ac.uk/author/ashley-sawle).    
+- [Ashley Sawle (CRUK CI)](https://www.cruk.cam.ac.uk/author/ashley-sawle).  
+- [Abigail Edwards (CRUK CI](https://www.cruk.cam.ac.uk/author/abigail-edwards).  
 - [Stephane Ballereau (CRUK CI)](https://www.cruk.cam.ac.uk/author/stephane-ballereau).     
 - [Dominique-Laurent Couturier(CRUK CI)](https://www.cruk.cam.ac.uk/author/dominique-laurent-couturier).   
-- [Alistair Martin (CRUK CI)](http://www.cruk.cam.ac.uk/research-groups/caldas-group).  
+- [Zeynep Kalender Atak(CRUK CI)](http://www.miller-lab.org/cv_zka.html).  
 
 
 ### Aims
