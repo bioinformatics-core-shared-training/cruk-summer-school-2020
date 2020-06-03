@@ -1,4 +1,4 @@
-# CRUK Bioinformatics Summer School 2019: Functional Genomics
+# CRUK Bioinformatics Summer School 2020: Functional Genomics
 <img src="CRUK_CC_web.jpg" alt="CRUK Cambdridge Centre" width="200" align="right"/>.  
 **22nd - 28th July 2020: Zoom virtual school, University of Cambridge**
 
@@ -56,18 +56,16 @@ After the course you should be able to:-
 - Produce a list of differentially expressed genes from an RNA-Seq experiment.
 - Import a set of ChIP-Seq or ATAC-seq peaks and investigate their biological context.
 
-# Day 0 (July 14th )
+# Day 0 (July 21st )
 
 **SOCIAL
 18:00 - ..
-Informal get-together at The Grain and Hop Store (close to accommodation in Downing College). Meet fellow attendees and some of your trainers.    
-Join us for a drink and dinner (self-paying), and to meet your colleagues for the next few days
-http://www.grainandhopstore-cambridge.co.uk/ 
+Informal get-together on Zoom with optional pub-quiz. Meet fellow attendees and some of your trainers.    
 
 **Note that the Training Room in Craik-Marshall building (1st Floor) will be open from 9am. 
 School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2019-07-15-functional-genomics) **
 
-# Day 1 (July 15th)
+# Day 1 (July 22nd)
 
 Breakfast at Downing College is at 8.45-9.15am.    
 
@@ -90,7 +88,7 @@ __C-M Training room__.
   + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4-shortread_Alignment_JK.pdf) (3.45-5.00pm)
   + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html) (45 min)
     
-# Day 2 (July 16th)
+# Day 2 (July 23rd)
 
 - 09:30 - 10:00; 
   + [Introduction to RNA-seq](RNAseq/html/00_Introduction_to_RNAseq_Analysis_in_R.html)
@@ -115,7 +113,7 @@ __C-M Training room__.
 
 <img src="http://newsimg.bbc.co.uk/media/images/46874000/jpg/_46874885_shada_river_bbc.jpg"/>
 
-# Day 3 (July 17th)
+# Day 3 (July 24th)
 
 - 09:30 - 11:00; 
   + [Annotation and Visualisation of Differential Expression](RNAseq/html/05_Annotation_and_Visualisation.html)
@@ -152,8 +150,9 @@ Practical: Checking gene signatures with SigCheck
 The reception is at 6.30pm and dinner at 7.30pm Plus a post-Dinner talk: "Perspectives in AI for Cancer Bioinformatics by Rory Stark". **     
 [Drinks Reception 18:30- 19:30 Grace Howard Room, Dinner 19:30 -22:30 Grace Howard Room](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwiptLD_s7zcAhXEy4UKHU0CDgkQjRx6BAgBEAU&url=https%3A%2F%2Fwww.downing-conferences-cambridge.co.uk%2Fabout-us%2Fvisitor-map&psig=AOvVaw1kbZkL02AvKqsWtNfNzNTJ&ust=1532682124262374) 
    
+# Weekend - recharge your batteries!
 
-# Day 4 (July 18th)
+# Day 4 (July 27th)
 
 - ChIP-seq data analysis
     + Lecture 1a: [Introduction to ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L1.1_Introduction_to_ChIP-seq_SS.pdf) (9.30-9.45am)
@@ -172,9 +171,9 @@ The reception is at 6.30pm and dinner at 7.30pm Plus a post-Dinner talk: "Perspe
     + Practical 5: [Data Integration for Genomics (TF direct targets & chromatin modifications)](ChIPSeq/Materials/Practicals/Day4/Practical5a_Rcade_SS.pdf) (3.45-5.00 min)
  
 
-# Day 5 (July 19th)
+# Day 5 (July 28th)
 
-- 09:30 - 12:30; **A room in C-M building will be available for storing your baggage (There will be signage)
+- 09:30 - 12:30; 
 - Chromatin Accessibility
   + Lecture 1 [Chromatin accessibility and nucleosome occupancy with ATAC-seq](ChIPSeq/Materials/Lectures/Day5/L1_Introduction_to_ATAC-seq _SS.pdf) (9.30-10.00am)
   + Practical 1: [ATAC-seq analysis](ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html) (10.00-11.00am)
