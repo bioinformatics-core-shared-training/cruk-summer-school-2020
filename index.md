@@ -1,6 +1,6 @@
 # CRUK Bioinformatics Summer School 2019: Functional Genomics
 <img src="CRUK_CC_web.jpg" alt="CRUK Cambdridge Centre" width="200" align="right"/>.  
-**15th - 19th July 2019: Craik-Marshall Room, Downing Site, University of Cambridge**
+**22nd - 28th July 2020: Zoom virtual school, University of Cambridge**
 
 ## Overview
 
