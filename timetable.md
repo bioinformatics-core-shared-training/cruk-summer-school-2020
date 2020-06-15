@@ -1,44 +1,40 @@
 # Day 1
 
-- 09:30 - 10:30; Introduction to Functional Genomics (AM)
-- 10:30 - 12:30; Introduction (Recap) of R (AM)
-- 12:30 - 13:30; LUNCH
-- 13:30 - 14:30 Principles of Experimental Design (MF)
-- 14:30 - 17:00; Data Processing for Next Generation Sequencing (JK / DB)
-    + Introduction to next generation sequencing (JK)
-    + A brief Introduction to genomic file formats (DB)
-    + Quality control and artefact removal (DB)
+- 09:00 - 09:40; Welcome & Introduction to Functional Genomics (Mark & Rory?)
+- 09:40 - 10:15; Introduction (Recap) of R (Mark?)
+- 10:15 - 12:30; Data Processing for Next Generation Sequencing (Joanna & Shoko)
+    + Introduction to next generation sequencing ()
+    + A brief Introduction to genomic file formats ()
+    + Quality control and artefact removal ()
     + Practical - Learn to use FastQC and Cutadapt on a sample dataset
-    + Short Read alignment and quality control (JK)
+    + Short Read alignment and quality control ()
     + Practical - Alignment to reference genomes using BWA and STAR
+    
+- 12:30 - 13:30; LUNCH BREAK
+
+- 13:30 - 17:00; Bulk RNAseq (Ash, Abi & Stephane) 
     
 # Day 2
 
-- 09:30 - 10:30; Introduction to RNA-seq (AS)
-- 10:30 - 12:30; Importing and QC of RNA-seq data (AS)
+- 09:30 - 17:00; Bulk RNAseq (Ash, Abi & Stephane)
 - 12:30 - 13:30; LUNCH
-- 13:30 - 17:00; Differential Expression (DM)
 
 # Day 3
 
-- 09:30 - 11:00; Annotation and Visualisation of Differential Expression (SB)
-- 11:00 - 12:30; Gene set analysis and Gene Ontology testing (AM)
-- 12:30 - 13:30; LUNCH
-- 13:30 - 17:00; (SS / DB)
-  + Introduction to ChIP-seq
-  + Quality control methods for ChIP-seq 
-  + Introduction to BedTools, GenomicRanges et al 
+- 09:30 - 11:00; Bulk RNAseq (cont.) (Ash & Abi)
+- 12:30 - 13:30; LUNCH BREAK
+- 13:30 - 17:00; Single Cell RNAseq (Stephane & Zeynep)
+
+# ---- Weekend ----
 
 # Day 4
 
-- 09:30 - 17:00; (SS / DB)
-  + Downloading public ChIP-seq data
-  + Downstream analysis of public ChIP-seq datasets
-  + Differential binding analysis
-  + Identifying direct targets of Transcription Factors
-  + Introduction to the analysis of long distance interactions (Hi-C)
-  + Introduction to the analysis of specialised interaction data
+- 09:30 - 17:00; Single Cell RNAseq (cont.) (Stephane & Zeynep)
+- 12:30 - 13:30; LUNCH BREAK
   
-# Day 5
+# Day 5 (Tue 28/7/20)
 
-- 09:30 - 12:30; Introduction to single-cell sequencing (DM)
+- 09:30 - 17:00; ChIPseq (Joanna & Shoko)
+- 12:30 - 13:30; LUNCH BREAK
+
+-------------------------------------------------------------
