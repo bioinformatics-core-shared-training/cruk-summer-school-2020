@@ -12,7 +12,7 @@
     
 - 12:30 - 13:30; LUNCH BREAK
 
-- 13:30 - 17:00; Bulk RNAseq (Ash, Abi & Stephane) 
+- 13:30 - 17:00; Bulk RNAseq (Ash, Abi & Dom?) 
     
 # Day 2
 
