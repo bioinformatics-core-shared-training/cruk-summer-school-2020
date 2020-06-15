@@ -1,3 +1,4 @@
+**July 22nd - 28th 2020**
 # Day 1
 
 - 09:00 - 09:40; Welcome & Introduction to Functional Genomics (Mark & Rory?)
@@ -32,7 +33,7 @@
 - 09:30 - 17:00; Single Cell RNAseq (cont.) (Stephane & Zeynep)
 - 12:30 - 13:30; LUNCH BREAK
   
-# Day 5 (Tue 28/7/20)
+# Day 5 
 
 - 09:30 - 17:00; ChIPseq (Joanna & Shoko)
 - 12:30 - 13:30; LUNCH BREAK
