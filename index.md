@@ -85,7 +85,25 @@ __Zoom Virtual Training room__.
   + Practical 1: [learn to use FastQC and Cutadapt](Introduction/SS_DB/Materials/Practicals/Practical1_fastQC_DB.html) (20 min) on a sample dataset
   + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4-shortread_Alignment_JK.pdf) (3.45-5.00pm)
   + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html) (45 min)
+ **July 22nd - 28th 2020**
+# Day 1
+
+- 09:00 - 09:40; Welcome & Introduction to Functional Genomics (Mark & Rory?)
+- 09:40 - 10:15; Introduction (Recap) of R (Mark?)
+- 10:15 - 12:30; Data Processing for Next Generation Sequencing (Joanna & Shoko)
+    + Introduction to next generation sequencing ()
+    + A brief Introduction to genomic file formats ()
+    + Quality control and artefact removal ()
+    + Practical - Learn to use FastQC and Cutadapt on a sample dataset
+    + Short Read alignment and quality control ()
+    + Practical - Alignment to reference genomes using BWA and STAR
     
+- 12:30 - 13:30; LUNCH BREAK
+
+- 13:30 - 17:00; Bulk RNAseq (Ash, Abi & Dom?) 
+    
+<hr>
+ 
 # Day 2 (July 23rd)
 
 - 09:30 - 10:00; 
@@ -105,6 +123,12 @@ __Zoom Virtual Training room__.
   + [Differential expression analysis with DESeq2](RNAseq/html/04_DE_analysis_with_DESeq2.html)
     + [Challenge Solutions](RNAseq/Course_Materials/solutions/04_DE_analysis.Solutions.html)
 
+# Day 2
+
+- 09:30 - 17:00; Bulk RNAseq (Ash, Abi & Stephane)
+- 12:30 - 13:30; LUNCH
+<hr>
+
 # Day 3 (July 24th)
 
 - 09:30 - 11:00; 
@@ -121,6 +145,13 @@ __Zoom Virtual Training room__.
 
 **SOCIAL: Zoom Talk: "Perspectives in AI for Cancer Bioinformatics by Rory Stark". **     
 
+# Day 3
+
+- 09:30 - 11:00; Bulk RNAseq (cont.) (Ash & Abi)
+- 12:30 - 13:30; LUNCH BREAK
+- 13:30 - 17:00; Single Cell RNAseq (Stephane & Zeynep)
+
+<hr>
 # Weekend - recharge your batteries!
 
 # Day 4 (July 27th)
@@ -141,7 +172,11 @@ __Zoom Virtual Training room__.
     + Lecture 5: [Introduction to (epi)Genomic data integration](ChIPSeq/Materials/Lectures/Day4/L5_Introduction_to_Genomic_data_integration_SS.pdf)(3.15-3.45pm)
     + Practical 5: [Data Integration for Genomics (TF direct targets & chromatin modifications)](ChIPSeq/Materials/Practicals/Day4/Practical5a_Rcade_SS.pdf) (3.45-5.00 min)
  
+# Day 4
 
+- 09:30 - 17:00; Single Cell RNAseq (cont.) (Stephane & Zeynep)
+- 12:30 - 13:30; LUNCH BREAK
+<hr>
 # Day 5 (July 28th)
 
 - 09:30 - 12:30; 
@@ -157,6 +192,14 @@ __Zoom Virtual Training room__.
 - Have a safe Journey home (Thank you for participating in the Summer School).  
 <img src="http://38.media.tumblr.com/tumblr_m9t31sX4ER1qgcra2o1_500.gif" width="100" align="left"/><img src="http://38.media.tumblr.com/tumblr_m9t31sX4ER1qgcra2o1_500.gif" width="100" align="right"/>
 ## Please don't forget to fill in the [survey]( https://www.surveymonkey.co.uk/r/SumSch2019)   
+
+
+# Day 5 
+
+- 09:30 - 17:00; ChIPseq (Joanna & Shoko)
+- 12:30 - 13:30; LUNCH BREAK
+
+<hr>
 
 <!--
 ## Data
