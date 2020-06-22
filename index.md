@@ -67,7 +67,7 @@ School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2
 
 # Day 1 (July 22nd)
 
-__C-M Training room__.  
+__Zoom Virtual Training room__.  
 - 09:30 [Course Introduction](Introduction/Session1-intro.html)
 - 09:30 - 10:30; [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf)
 - 10:30 - 12:30; [Introduction to Bioconductor](Introduction/bioc-intro.html).  
@@ -117,28 +117,9 @@ __C-M Training room__.
 
 - 12:30 - 13:30; LUNCH
 - 13:30 -14:00; 
-  Prognostic Gene Signatures (RS)    
-  + [Slides](Signatures/Lectures/Prognostic gene signatures.pdf)  
-    
-- 14:00 – 14:30; 
-Survival Analysis (DL)    
-  	+ [Slides](Signatures/Lectures/Survival_Analysis.pdf)    
-  	+ [Annotated Slides](Signatures/Lectures/Survival_Analysis_Annotated.pdf)    
-  	+ [R Markdown doc.](Signatures/Practicals/Survival_Analysis.Rmd)    
-    
-- 14:30 – 15:00; 
-Practical: Deriving a Predictive Gene Signature from DEGs   
-    + [R Markdown doc.](Signatures/Practicals/Prognostic Signature Practical.Rmd)   
-    
-- 15:00 – 15:30; 
-Issues with prognostic gene signatures (RS)    
-    + [Slides](Signatures/Lectures/Limitations of prognostic gene signatures.pdf)   
-    
-- 15:30 – 16:00;    
-Practical: Checking gene signatures with SigCheck     
-    + [Practical](Signatures/Practicals/Practical2_SigCheck.pdf)   
 
-**SOCIAL: Talk: "Perspectives in AI for Cancer Bioinformatics by Rory Stark". **     
+
+**SOCIAL: Zoom Talk: "Perspectives in AI for Cancer Bioinformatics by Rory Stark". **     
 
 # Weekend - recharge your batteries!
 
