@@ -22,7 +22,7 @@
 
 # Day 3
 
-- 09:30 - 11:00; Bulk RNAseq (cont.) (Ash & Abi)
+- 09:30 - 12:30; Bulk RNAseq (cont.) (Ash & Abi)
 - 12:30 - 13:30; LUNCH BREAK
 - 13:30 - 17:00; Single Cell RNAseq (Stephane & Zeynep)
 
