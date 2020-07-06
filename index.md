@@ -2,6 +2,8 @@
 <img src="CRUK_CC_web.jpg" alt="CRUK Cambdridge Centre" width="200" align="right"/>.  
 **22nd - 28th July 2020: Zoom virtual school, University of Cambridge**
 
+Site short-cut: https://tinyurl.com/crukss2020
+
 ## Overview
 
 Functional genomics looks at the dynamic aspects of how the genome functions within cells,
