@@ -30,7 +30,7 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 
  # (**Data files for course are [here](https://www.dropbox.com/sh/l1qhs5tqwdxe81w/AAA2KGKXuMAPUwW1a9DGMS5la?dl=0). There is a zip-file for each course and a sizes.txt file with zip sizes **   )
 
-### Instructors
+### Instructors & helpers
 
 - [Mark Fernandes (CRUK CI)](https://www.cruk.cam.ac.uk/author/mark-fernandes). 
 - [Rory Stark (CRUK CI)](https://www.cruk.cam.ac.uk/author/rory-stark).  
@@ -41,6 +41,19 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 - [Stephane Ballereau (CRUK CI)](https://www.cruk.cam.ac.uk/author/stephane-ballereau).     
 - [Dominique-Laurent Couturier(CRUK CI)](https://www.cruk.cam.ac.uk/author/dominique-laurent-couturier).   
 - [Zeynep Kalender Atak(CRUK CI)](http://www.miller-lab.org/cv_zka.html).  
+- [Chandra Sekhar Reddy Chilamakuri]().  
+- [Gordon Brown]().  
+
+### Support
+
+Craik-Marshall team.  
+- Alexia   
+- Cathy.  
+- Paul.  
+CRUK Cambridge Centre.  
+- Louisa   
+- Justin   
+
 
 
 ### Aims
