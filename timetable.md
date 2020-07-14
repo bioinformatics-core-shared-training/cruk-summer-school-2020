@@ -1,5 +1,13 @@
 
 **July 22nd - 28th 2020**
+
+**Note:** You are expected to be familiar with Rstudio, MRarkdown documents and Bioconductor.
+If you are not then you are advised to work through this material **before** Summer School
+- [Introduction to Bioconductor](Introduction/bioc-intro.html).  
+- [Bioconductor answers](Introduction/bioc-intro.solutions.html).  
+  + [source](Introduction/bioc-intro.Rmd)
+  + [Source with solutions](Introduction/bioc-intro.solutions.Rmd). 
+
 # Day 1
 
 **Please note 9.00 Start**
