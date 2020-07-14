@@ -41,19 +41,20 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 - [Stephane Ballereau (CRUK CI)](https://www.cruk.cam.ac.uk/author/stephane-ballereau).     
 - [Dominique-Laurent Couturier(CRUK CI)](https://www.cruk.cam.ac.uk/author/dominique-laurent-couturier).   
 - [Zeynep Kalender Atak(CRUK CI)](http://www.miller-lab.org/cv_zka.html).  
-- [Chandra Sekhar Reddy Chilamakuri]().  
-- [Gordon Brown]().  
+- [Chandra Sekhar Reddy Chilamakuri (CRUK CI)](https://www.cruk.cam.ac.uk/author/chandra-chilamakuri).  
+- [Gordon Brown(CRUK CI)](https://www.cruk.cam.ac.uk/author/gordon-brown).  
+- [Matthew Eldridge (CRUK CI)](https://www.cruk.cam.ac.uk/author/matthew-eldridge).  
+- [Katarzyna Kania (CRUK CI)](https://www.cruk.cam.ac.uk/author/katarzyna-kania).  
 
-### Support
+### Support Team
 
-Craik-Marshall team.  
-- Alexia   
-- Cathy.  
-- Paul.  
-CRUK Cambridge Centre.  
-- Louisa   
-- Justin   
-
+**Craik-Marshall team**.  
+- Alexia Cordona.  
+- Cathy Hemmings. 
+- Paul Judge.  
+**CRUK Cambridge Centre**.  
+- Louisa Bellis.     
+- Justin Holt.    
 
 
 ### Aims
