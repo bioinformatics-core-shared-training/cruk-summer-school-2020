@@ -6,6 +6,9 @@
 - [Bioconductor answers](Introduction/bioc-intro.solutions.html).  
   + [source](Introduction/bioc-intro.Rmd)
   + [Source with solutions](Introduction/bioc-intro.solutions.Rmd). 
+# Day 0
+
+**6.30pm SOCIAL: Online meet-up & Quiz ** 
 
 # Day 1
 
@@ -47,7 +50,7 @@
     + scRNA-seq - preprocessing, inc cell calling
     + scRNA-seq - normalisation, visualisation, batch correction
     
-**SOCIAL: Zoom Talk: “Perspectives in AI for Cancer Bioinformatics by Rory Stark”. **)
+**6pm SOCIAL: Zoom Talk: “Perspectives in AI for Cancer Bioinformatics by Rory Stark”. **
 
 # ---- Weekend ----
 
@@ -68,7 +71,7 @@
     + Differential binding analysis 
     + Quality control methods for ChIP-seq 
     + Downstream analysis of ChIP-seq 
-    + Introduction to (epi)Genomic data integration(
+    + Introduction to (epi)Genomic data integration
     + Chromatin accessibility and nucleosome occupancy with ATAC-seq 
     + Useful software utilities for the analysis of genomic data 
 
