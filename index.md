@@ -140,48 +140,40 @@ __Zoom Virtual Training room__.
 
 # Day 4 (July 27th)
 
-- ChIP-seq data analysis
-    + Lecture 1a: [Introduction to ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L1.1_Introduction_to_ChIP-seq_SS.pdf) (9.30-9.45am)
-    + Lecture 1b: [Introduction to Peak Calling](ChIPSeq/Materials/Lectures/Day4/L1.2_Peak_Calling_SS.pdf) (9.45-10.30am)
-    + Practical 1: [Peak calling with MACS2](ChIPSeq/Materials/Practicals/Day4/Practical1_PeakCalling_SS.html) (10.30-11.00am)
-    + Lecture 2: [Differential binding analysis](ChIPSeq/Materials/Lectures/Day4/L2_Differential_Binding_Analysis_DB.pdf) (11.00-11.30am)
-    + Practical 2: [THOR (and Diffbind)](ChIPSeq/Materials/Practicals/Day4/Practical2_diffbind_practical_DB.html) (11.30-12.00pm)
-    + Lecture 3: [Quality control methods for ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L3_Quality_Control_Methods_for_ChIPseq_DB.pdf) (12.00-12.30pm)
-  
-   
-    LUNCH (12.30-1.30pm)
-    + Practical 3: [Integrative Genome Viewer](ChIPSeq/Materials/Practicals/Day4/Practical3_IGV_practical_DB.html) (1.30-2.00 min)
-    + Lecture 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L4_Downstream_Analysis_of_ChIPseq_SS.pdf) (2.00-2.30pm)
-    + Practical 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Practicals/Day4/Practical4_Downstream_Analysis_of_ChIP-seq_SS.html) (2.30-3.15pm)
-    + Lecture 5: [Introduction to (epi)Genomic data integration](ChIPSeq/Materials/Lectures/Day4/L5_Introduction_to_Genomic_data_integration_SS.pdf)(3.15-3.45pm)
-    + Practical 5: [Data Integration for Genomics (TF direct targets & chromatin modifications)](ChIPSeq/Materials/Practicals/Day4/Practical5a_Rcade_SS.pdf) (3.45-5.00 min)
- 
-# Day 4
-
 - 09:30 - 17:00; Single Cell RNAseq (cont.) (Stephane & Zeynep)
+    + [scRNA-seq - feature selection and dimension reduction]()
+    + [scRNA-seq - clustering and marker gene detection]() 
+    + [scRNA-seq - differential expression and differential abundance]() 
+    
 - 12:30 - 13:30; LUNCH BREAK
+
+
 <hr>
 # Day 5 (July 28th)
 
-- 09:30 - 12:30; 
+- 09:30 - 17:00; 
+- ChIP-seq data analysis
+    + Lecture 1a: [Introduction to ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L1.1_Introduction_to_ChIP-seq_SS.pdf) 
+    + Lecture 1b: [Introduction to Peak Calling](ChIPSeq/Materials/Lectures/Day4/L1.2_Peak_Calling_SS.pdf) 
+    + Practical 1: [Peak calling with MACS2](ChIPSeq/Materials/Practicals/Day4/Practical1_PeakCalling_SS.html)
+    + Lecture 2: [Differential binding analysis](ChIPSeq/Materials/Lectures/Day4/L2_Differential_Binding_Analysis_DB.pdf) 
+    + Practical 2: [THOR (and Diffbind)](ChIPSeq/Materials/Practicals/Day4/Practical2_diffbind_practical_DB.html) 
+    + Lecture 3: [Quality control methods for ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L3_Quality_Control_Methods_for_ChIPseq_DB.pdf)
+
+    + Practical 3: [Integrative Genome Viewer](ChIPSeq/Materials/Practicals/Day4/Practical3_IGV_practical_DB.html) 
+    + Lecture 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L4_Downstream_Analysis_of_ChIPseq_SS.pdf) 
+    + Practical 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Practicals/Day4/Practical4_Downstream_Analysis_of_ChIP-seq_SS.html) 
+    + Lecture 5: [Introduction to (epi)Genomic data integration](ChIPSeq/Materials/Lectures/Day4/L5_Introduction_to_Genomic_data_integration_SS.pdf)
+    + Practical 5: [Data Integration for Genomics (TF direct targets & chromatin modifications)](ChIPSeq/Materials/Practicals/Day4/Practical5a_Rcade_SS.pdf) 
+ 
 - Chromatin Accessibility
-  + Lecture 1 [Chromatin accessibility and nucleosome occupancy with ATAC-seq](ChIPSeq/Materials/Lectures/Day5/L1_Introduction_to_ATAC-seq _SS.pdf) (9.30-10.00am)
-  + Practical 1: [ATAC-seq analysis](ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html) (10.00-11.00am)
-  + Lecture 2: [Useful software utilities for the analysis of genomic data](ChIPSeq/Materials/Lectures/Day5/L2_Software_utilities_for_computational_genomics_SS.pdf) (11.00-11.30am)
-  + Practical 2: [Useful software utilities for the analysis of genomic data](ChIPSeq/Materials/Practicals/Day5/Practical2_Useful_software_utilities_for_the_analysis_of_genomic_data_SS.html) (11.30-12.30pm)
+  + Lecture 1 [Chromatin accessibility and nucleosome occupancy with ATAC-seq](ChIPSeq/Materials/Lectures/Day5/L1_Introduction_to_ATAC-seq _SS.pdf) 
+  + Practical 1: [ATAC-seq analysis](ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html) 
+  + Lecture 2: [Useful software utilities for the analysis of genomic data](ChIPSeq/Materials/Lectures/Day5/L2_Software_utilities_for_computational_genomics_SS.pdf) 
+  + Practical 2: [Useful software utilities for the analysis of genomic data](ChIPSeq/Materials/Practicals/Day5/Practical2_Useful_software_utilities_for_the_analysis_of_genomic_data_SS.html)
 
-
-- 12:30 - 13:30; LUNCH
-- Some of you may now be going to the [CRUK Cambridge Centre Graduate Symposium](https://www.crukccgraduatesymposium.com/) Hope you enjoy it!    
-- Have a safe Journey home (Thank you for participating in the Summer School).  
-<img src="http://38.media.tumblr.com/tumblr_m9t31sX4ER1qgcra2o1_500.gif" width="100" align="left"/><img src="http://38.media.tumblr.com/tumblr_m9t31sX4ER1qgcra2o1_500.gif" width="100" align="right"/>
-## Please don't forget to fill in the [survey]( https://www.surveymonkey.co.uk/r/SumSch2019)   
-
-
-# Day 5 
-
-- 09:30 - 17:00; ChIPseq (Joanna & Shoko)
 - 12:30 - 13:30; LUNCH BREAK
+## Please don't forget to fill in the [survey]()   
 
 <hr>
 
