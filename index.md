@@ -79,75 +79,47 @@ After the course you should be able to:-
 18:00 - ..
 Informal get-together on Zoom with optional pub-quiz. Meet fellow attendees and some of your trainers.    
 
-School etherpad (E-whiteboard) is [here](https://public.etherpad-mozilla.org/p/2019-07-15-functional-genomics) **
+School Shared document is [here](https://docs.google.com/document/d/1UDB3l7p7dScvxXEP3x8geiUWYj4ZeOp8x5tXq5Qe8YQ/edit) **
 
 # Day 1 (July 22nd)
 
 __Zoom Virtual Training room__.  
-- 09:30 [Course Introduction](Introduction/Session1-intro.html)
-- 09:30 - 10:30; [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf)
-- 10:30 - 12:30; [Introduction to Bioconductor](Introduction/bioc-intro.html).  
-- [Bioconductor answers](Introduction/bioc-intro.solutions.html).  
-  + [source](Introduction/bioc-intro.Rmd)
-  + [Source with solutions](Introduction/bioc-intro.solutions.Rmd).  
-  
-- 12:30 - 13:30; LUNCH
-- 13:30 - 14:30 [Principles of Experimental Design](Introduction/Experimental_Design.pdf)
-- 14:30 - 17:00;
-- Data processing for Next Generation Sequencing
-  + Lecture 1: [Introduction to next generation sequencing](Introduction/SS_DB/Materials/Lectures/L1-Introduction_to_NGS_JK.pdf) (2.30- 2.45pm)
-  + Lecture 2: [Brief introduction to file formats](Introduction/SS_DB/Materials/Lectures/L2_fileFormats_DB.pdf) (2.45- 3.00pm)
-  + Lecture 3: [Quality control and artefact removal](Introduction/SS_DB/Materials/Lectures/L3_qualityControl_artefactRemoval_DB.pdf) (3.00- 3.45pm)
-  + Practical 1: [learn to use FastQC and Cutadapt](Introduction/SS_DB/Materials/Practicals/Practical1_fastQC_DB.html) (20 min) on a sample dataset
-  + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4-shortread_Alignment_JK.pdf) (3.45-5.00pm)
-  + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html) (45 min)
  **July 22nd - 28th 2020**
-# Day 1
+- 09:00 - 09:40; Welcome (Paul & Mark)  &  [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf) (Rory)
+- 09:40 - 12:30; Data Processing for Next Generation Sequencing (Joanna & Shoko)
+  + Lecture 1: [Introduction to next generation sequencing](Introduction/SS_DB/Materials/Lectures/L1-Introduction_to_NGS_JK.pdf) 
+  + Lecture 2: [Brief introduction to file formats](Introduction/SS_DB/Materials/Lectures/L2_fileFormats_DB.pdf) 
+  + Lecture 3: [Quality control and artefact removal](Introduction/SS_DB/Materials/Lectures/L3_qualityControl_artefactRemoval_DB.pdf)
+  + Practical 1: [learn to use FastQC and Cutadapt](Introduction/SS_DB/Materials/Practicals/Practical1_fastQC_DB.html) 
+  + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4-shortread_Alignment_JK.pdf) 
+  + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html) 
 
-- 09:00 - 09:40; Welcome & Introduction to Functional Genomics (Mark & Rory?)
-- 09:40 - 10:15; Introduction (Recap) of R (Mark?)
-- 10:15 - 12:30; Data Processing for Next Generation Sequencing (Joanna & Shoko)
-    + Introduction to next generation sequencing ()
-    + A brief Introduction to genomic file formats ()
-    + Quality control and artefact removal ()
-    + Practical - Learn to use FastQC and Cutadapt on a sample dataset
-    + Short Read alignment and quality control ()
-    + Practical - Alignment to reference genomes using BWA and STAR
-    
 - 12:30 - 13:30; LUNCH BREAK
 
 - 13:30 - 17:00; Bulk RNAseq (Ash, Abi & Dom?) 
+  + [Introduction to RNA-seq](RNAseq/html/00_Introduction_to_RNAseq_Analysis_in_R.html)
+  + [Counting](RNAseq/html/01_Read_Counts_with_Subread.html)
+  + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
+    + [Challenge Solutions](RNAseq/Course_Materials/solutions/02_Preprocessing_Data.Solutions.html)
+  + [Supplementary Material: Obtaining raw reads from SRA](RNAseq/Supplementary_Materials/S1_Getting_raw_reads_from_SRA.html)
     
 <hr>
  
 # Day 2 (July 23rd)
 
-- 09:30 - 10:00; 
-  + [Introduction to RNA-seq](RNAseq/html/00_Introduction_to_RNAseq_Analysis_in_R.html)
-- 10:00 - 11:30; 
-  + [Counting](RNAseq/html/01_Read_Counts_with_Subread.html)
-  + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
-    + [Challenge Solutions](RNAseq/Course_Materials/solutions/02_Preprocessing_Data.Solutions.html)
-  + [Supplementary Material: Obtaining raw reads from SRA](RNAseq/Supplementary_Materials/S1_Getting_raw_reads_from_SRA.html)
-- 11:30 - 12:30 Linear models & differential expression
+- 09:30 - 17:00; 
+- Statistical Analysis of Bulk RNAseq Data
   + [Slides](RNAseq/html/03-Statistical_Models.pdf)
   + [Annotated Slides](RNAseq/html/03-Statistical_Models_Annotated.pdf)  
   + [Linear models html nb](RNAseq/Course_Materials/03-Statistical_Models.Rmd)
-- 12:30 - 13:30; LUNCH
-- 13.30 - 15:00; Linear models & differential expression (cont)
-- 15:00 - 17:30 
+  + [Experimental Design of Bulk RNAseq Studies]()
   + [Differential expression analysis with DESeq2](RNAseq/html/04_DE_analysis_with_DESeq2.html)
     + [Challenge Solutions](RNAseq/Course_Materials/solutions/04_DE_analysis.Solutions.html)
-
-# Day 2
-
-- 09:30 - 17:00; Bulk RNAseq (Ash, Abi & Stephane)
-- 12:30 - 13:30; LUNCH
 <hr>
 
 # Day 3 (July 24th)
 
-- 09:30 - 11:00; 
+- 09:30 - 12:30; 
   + [Annotation and Visualisation of Differential Expression](RNAseq/html/05_Annotation_and_Visualisation.html)
     + [Challenge Solutions](RNAseq/Course_Materials/solutions/05_Annotation_and_Visualisation.Solutions.html)
   + [Supplementary Material: Further visualistations](RNAseq/Supplementary_Materials/S3_Annotation_and_Visualisation.nb.html)
@@ -156,17 +128,13 @@ __Zoom Virtual Training room__.
     + [Challenge Solutions](RNAseq/Course_Materials/solutions/06_Gene_set_testing.Solutions.html)
 
 - 12:30 - 13:30; LUNCH
-- 13:30 -14:00; 
-
-
-**SOCIAL: Zoom Talk: "Perspectives in AI for Cancer Bioinformatics by Rory Stark". **     
-
-# Day 3
-
-- 09:30 - 11:00; Bulk RNAseq (cont.) (Ash & Abi)
-- 12:30 - 13:30; LUNCH BREAK
-- 13:30 - 17:00; Single Cell RNAseq (Stephane & Zeynep)
-
+- 13:30 - 17:00; Single Cell RNAseq (Stephane, & Kasia)
+    + [scRNA-seq - introduction, inc design]()
+    + [scRNA-seq - preprocessing, inc cell calling]()
+    + [scRNA-seq - normalisation, visualisation, batch correction]()
+    
+**6pm SOCIAL: Zoom Talk: “Perspectives in AI for Cancer Bioinformatics by Rory Stark”. **
+ 
 <hr>
 # Weekend - recharge your batteries!
 
