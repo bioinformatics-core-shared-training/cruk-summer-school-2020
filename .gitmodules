@@ -1,0 +1,3 @@
+[submodule "RNAseq"]
+	path = RNAseq
+	url = git@github.com:bioinformatics-core-shared-training/RNAseq_Summer_School_2020.git
