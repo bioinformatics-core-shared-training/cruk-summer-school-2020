@@ -61,7 +61,7 @@ Enthusiastic and motivated wet-lab biologists who want to gain more of an unders
 During this course you will learn about:-
 
 - How aligned sequencing reads, genome sequences and genomic regions are represented in R.
-- How to handle NGS data and read sequencing data with R, perform quality assessment and execute standard pipelines for (bulk) RNA-Seq, ChIP-Seq and ATAC-seq analysis
+- How to handle NGS data and read sequencing data with R, perform quality assessment and execute standard pipelines for (bulk) RNA-Seq and ChIP-Seq analysis
 - How to do downstream analysis of transcription factor (TF) and epigenomic (histone mark) ChIP-seq data.  
 
 ### Objectives
@@ -71,7 +71,7 @@ After the course you should be able to:-
 - Process and quality control short read sequencing data 
 - Given a set of gene identifiers, find out whereabouts in the genome they are located, and vice-versa 
 - Produce a list of differentially expressed genes from an RNA-Seq experiment.
-- Import a set of ChIP-Seq or ATAC-seq peaks and investigate their biological context.
+- Import a set of ChIP-Seq peaks and investigate their biological context.
 
 # Day 0 (July 21st )
 
@@ -87,12 +87,11 @@ __Zoom Virtual Training room__.
  **July 22nd - 28th 2020**
 - 09:00 - 09:40; Welcome (Paul & Mark)  &  [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf) (Rory)
 - 09:40 - 12:30; Data Processing for Next Generation Sequencing (Joanna & Shoko)
-  + Lecture 1: [Introduction to next generation sequencing](Introduction/SS_DB/Materials/Lectures/L1-Introduction_to_NGS_JK.pdf) 
-  + Lecture 2: [Brief introduction to file formats](Introduction/SS_DB/Materials/Lectures/L2_fileFormats_DB.pdf) 
-  + Lecture 3: [Quality control and artefact removal](Introduction/SS_DB/Materials/Lectures/L3_qualityControl_artefactRemoval_DB.pdf)
-  + Practical 1: [learn to use FastQC and Cutadapt](Introduction/SS_DB/Materials/Practicals/Practical1_fastQC_DB.html) 
-  + Lecture 4: [Short read alignment and Quality Control](Introduction/SS_DB/Materials/Lectures/L4-shortread_Alignment_JK.pdf) 
-  + Practical 2: [Alignment of a ChIP-seq dataset to a reference genome using BWA OR Bowtie2 and a RNA-seq dataset to STAR](Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html) 
+  + Lecture 1: [Introduction to next generation sequencing](Introduction/Preprocessing/slides/L1-summerSchool.pdf) 
+  + Lecture 2: [Quality control and trimming](Introduction/Preprocessing/slides/L2-summerSchool.pdf) 
+  + Practical 1: [QC and quality trimming of raw sequencing reads](Introduction/Preprocessing/practicals/P1_Preprocessing.html) 
+  + Lecture 3: [Short read alignment and Quality Control](Introduction/Preprocessing/slides/L3-summerSchool.pdf) 
+  + Practical 2: [Short read alignment with STAR](Introduction/Preprocessing/practicals/P2_Alignment.html) 
 
 - 12:30 - 13:30; LUNCH BREAK
 
@@ -169,15 +168,7 @@ __Zoom Virtual Training room__.
     + Practical 3: [Integrative Genome Viewer](ChIPSeq/Materials/Practicals/Day4/Practical3_IGV_practical_DB.html) 
     + Lecture 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Lectures/Day4/L4_Downstream_Analysis_of_ChIPseq_SS.pdf) 
     + Practical 4: [Downstream analysis of ChIP-seq](ChIPSeq/Materials/Practicals/Day4/Practical4_Downstream_Analysis_of_ChIP-seq_SS.html) 
-    + Lecture 5: [Introduction to (epi)Genomic data integration](ChIPSeq/Materials/Lectures/Day4/L5_Introduction_to_Genomic_data_integration_SS.pdf)
-    + Practical 5: [Data Integration for Genomics (TF direct targets & chromatin modifications)](ChIPSeq/Materials/Practicals/Day4/Practical5a_Rcade_SS.pdf) 
  
-- Chromatin Accessibility
-  + Lecture 1 [Chromatin accessibility and nucleosome occupancy with ATAC-seq](ChIPSeq/Materials/Lectures/Day5/L1_Introduction_to_ATAC-seq _SS.pdf) 
-  + Practical 1: [ATAC-seq analysis](ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html) 
-  + Lecture 2: [Useful software utilities for the analysis of genomic data](ChIPSeq/Materials/Lectures/Day5/L2_Software_utilities_for_computational_genomics_SS.pdf) 
-  + Practical 2: [Useful software utilities for the analysis of genomic data](ChIPSeq/Materials/Practicals/Day5/Practical2_Useful_software_utilities_for_the_analysis_of_genomic_data_SS.html)
-
 - 12:30 - 13:30; LUNCH BREAK
 ## Please don't forget to fill in the [survey]()   
 
