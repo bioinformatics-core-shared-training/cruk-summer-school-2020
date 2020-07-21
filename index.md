@@ -96,36 +96,42 @@ __Zoom Virtual Training room__.
 
 - 12:30 - 13:30; LUNCH BREAK
 
-- 13:30 - 17:00; Bulk RNAseq (Ash, Abi & Dom?) 
-  + [Introduction to RNA-seq](RNAseq/html/00_Introduction_to_RNAseq_Analysis_in_R.html)
-  + [Counting](RNAseq/html/01_Read_Counts_with_Subread.html)
-  + [Importing and QC of RNA-seq data](RNAseq/html/02_Preprocessing_Data.html)
-    + [Challenge Solutions](RNAseq/Course_Materials/solutions/02_Preprocessing_Data.Solutions.html)
-  + [Supplementary Material: Obtaining raw reads from SRA](RNAseq/Supplementary_Materials/S1_Getting_raw_reads_from_SRA.html)
-    
+- 13:30 - 17:00; Bulk RNAseq  
+  + [Introduction to RNA-seq](RNAseq/html/A_Introduction_to_RNAseq_Methods.html) - Ash Sawle  
+  + [Quantification with SubRead](RNAseq/html/E_Read_Counts_with_Subread.html) - Abbi Edwards  
+    - [Practical](RNAseq/html/E_Read_Counts_with_Subread.practical.html)    
+    - [Practical solutions](RNAseq/html/E_Read_Counts_with_Subread.Solutions.html)   
+  + [RNA-seq Pre-processing](RNAseq/html/02_Preprocessing_Data.html) - Chandra Chilamakuri   
+<!--    - [Practical solutions](RNAseq/html/02_Preprocessing_Data.Solutions.html)  -->
+
+  + [Extended Material](RNAseq/Extended_index.md)
+
 <hr>
  
 # Day 2 (July 23rd)
 
-- 09:30 - 17:00; 
-- Statistical Analysis of Bulk RNAseq Data
-  + [Slides](RNAseq/html/03-Statistical_Models.pdf)
-  + [Annotated Slides](RNAseq/html/03-Statistical_Models_Annotated.pdf)  
-  + [Linear models html nb](RNAseq/Course_Materials/03-Statistical_Models.Rmd)
-  + [Experimental Design of Bulk RNAseq Studies]()
-  + [Differential expression analysis with DESeq2](RNAseq/html/04_DE_analysis_with_DESeq2.html)
-    + [Challenge Solutions](RNAseq/Course_Materials/solutions/04_DE_analysis.Solutions.html)
+- 09:30 - 17:00; Bulk RNAseq
+  + [Introduction to RNAseq Analysis in R](RNAseq/html/01_Introduction_to_Differential_Gene_Expression_Analysis_in_R.html) - Ash Sawle 
+  + [Statistical Analysis of Bulk RNAseq Data](RNAseq/html/StatsRNAseq_Couturier_02-07-2020.pdf) - Dominique-Laurent Couturier     
+      - [Practical (html)](RNAseq/html/StatsRNAseq_Couturier_20-05-2020.html) [(rmd)](RNAseq/html/StatsRNAseq_Couturier_20-05-2020.Rmd)  
+  + [Experimental Design of Bulk RNAseq studies](RNAseq/html/ExperimentalDesignCourse_Nagarajan_20-05-2020.pdf) - Chandra Chilamakuri   
+      - [Practical](RNAseq/html/RNAseq_ExperimentalDesignPractical.pdf)    
+
+- 13:00 - 14:00; LUNCH BREAK
+
+  + [Differential Expression for RNA-seq](RNAseq/html/04_DE_analysis_with_DESeq2.html) - Abbi Edwards  
+<!--    - [practical solutions](RNAseq/html/04_DE_analysis.Solutions.html)   -->
+
 <hr>
 
 # Day 3 (July 24th)
 
-- 09:30 - 12:30; 
-  + [Annotation and Visualisation of Differential Expression](RNAseq/html/05_Annotation_and_Visualisation.html)
-    + [Challenge Solutions](RNAseq/Course_Materials/solutions/05_Annotation_and_Visualisation.Solutions.html)
-  + [Supplementary Material: Further visualistations](RNAseq/Supplementary_Materials/S3_Annotation_and_Visualisation.nb.html)
-- 11:00 - 12:30; 
-  + [Gene set analysis and Gene Ontology testing](RNAseq/html/06_Gene_set_testing.html)
-    + [Challenge Solutions](RNAseq/Course_Materials/solutions/06_Gene_set_testing.Solutions.html)
+- 09:30 - 12:30;  Bulk RNAseq
+  + [Annotation and Visualisation of RNA-seq results](RNAseq/html/05_Annotation_and_Visualisation.html) - Ash Sawle  
+<!--    - [practical solutions](RNAseq/html/05_Annotation_and_Visualisation.Solutions.html)  -->
+  + [Gene-set testing](RNAseq/html/06_Gene_set_testing.html) - Ash Sawle   
+<!--    - [practical solutions](RNAseq/html/06_Gene_set_testing.Solutions.html)  -->
+
 
 - 12:30 - 13:30; LUNCH
 - 13:30 - 17:00; Single Cell RNAseq (Stephane, & Kasia)
