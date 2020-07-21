@@ -1,0 +1,197 @@
+---
+title: "Practical 2: Short Read Alignment"
+author: "Joanna A. Krupka, Shoko Hirosue, Shamith Samarajiwa"
+date: "July 2020"
+output: 
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+
+---
+
+# Just to remind 
+
+**Course etiquette**  
+Please read the [course etiquette](https://docs.google.com/presentation/d/e/2PACX-1vQv9nTlsdRC9iZJU138tLL1jrwNoryp8P-FnXxb_ugOOWjbav4QHTLYLLZj2KK4kTO0_3x3VlzSdrUu/pub?start=false&loop=false&delayms=3000&slide=id.p1), if you haven't read that yet.  
+
+**Shared document**   
+We are using shared GoogleDocs documents for each of the main topics covered during the summer school. The document for this section can be found [here](https://docs.google.com/document/d/1pDTRtiG3LwTHxaIqWLy1QnddFu09Mv9OiBDUcPsJ6Do/edit#).  
+
+
+# Introduction  
+
+After successful quality check raw seqencing reads are ready to be aligned against the reference genome. The choice of aligner is usually a personal preference that might be directed by avaliability of computational resources and running time. Therefore, we will not align any raw `.fastq` files today.  Instead we will carefully go through a standard alignment workflow together. For a practical expercise, we will focus on already aligned sequences.   
+
+# Preparing a Reference Genome
+
+Reference genomes can be downloaded from UCSC, Ensembl or NCBI. We downloaded the most recent one version of the human genome (**hg38** a.k.a GRCh38) togther with matching GTF file with annotations from [Gencode](https://www.gencodegenes.org/human/). 
+
+## Reference genome index  
+
+Mapping of millions of short reads to a very large reference sequence is a challenging task. In order to accelerate short reads mapping, most of the modern alignment tools use a strategy of *'indexing'* (think about it as indexing of a book). Indexing is specific to an aligner and reference sequence / annotations used. All the detailed informations about required genome indexes can be found in a software documentation. For this tutorial we'll use **STAR** a splice-aware aligner that is very commonly used to map RNA-Seq reads. 
+
+Let's explore the most imporant parameters of `STAR` command to generate indexed reference genome. Full docummentation can be accessed [here](https://physiology.med.cornell.edu/faculty/skrabanek/lab/angsd/lecture_notes/STARmanual.pdf).
+
+`--runThreadN` : number of threads (cores)  
+`--runMode genomeGenerate` : will generate indexed reference genome  
+`--genomeDir` : specify the output directory  
+`--genomeFastaFiles` : path to the reference genome FASTA file  
+`--sjdbGTFfile`: path to the GTF file with annotations  
+`--sjdbOverhang`: max(readlength) - 1  
+
+So a basic command for `GRCh38` genome with `gencode.v29` annotations for a sequencing experiment with reads 100 bp long can be:
+
+```{bash eval = F, echo = T}
+** DO NOT RUN **
+STAR --runThreadN 6 \
+--runMode genomeGenerate \
+--genomeDir STAR_GRCh38_gencode29 \
+--genomeFastaFiles GRCh38.primary_assembly.genome.fa \
+--sjdbGTFfile gencode.v29.annotation.gtf \
+--sjdbOverhang 99  
+```
+
+## Alignment to the reference genome  
+
+Once we generated a reference genome we can move to the alignment stage.  
+
+```{bash eval = F, echo = T}
+** DO NOT RUN **
+STAR --runThreadN 6 \
+--genomeDir STAR_GRCh38_gencode29 \
+--readFilesIn data/tp53_rnaseq_rep1_trimmed.fastq.gz \
+--outFileNamePrefix aligned/tp53_rnaseq_rep1_trimmed \
+--outSAMtype BAM SortedByCoordinate \
+--outSAMunmapped Within \
+--outSAMattributes Standard   
+```
+
+# Quality check of aligned reads  
+
+**Option 1**: run multiqc on aligner log files
+
+```{bash, eval=FALSE}
+cd /home/ubuntu/Course_Materials/Introduction/Preprocessing
+multiqc -o data/multiqc data/sample1_STAR 
+```
+
+**Option 2**: Use Samstat  
+
+```{bash, eval=FALSE}
+cd /home/ubuntu/Course_Materials/Introduction/Preprocessing
+samstat data/sample1_STAR/Aligned.sortedByCoord.out.bam
+```
+
+# Manipulating aligned sequences  
+
+Samtools is an open source toolkit for next generation sequence data manipulation. It is patriculairly useful to modify and reformat sequence alignment files (SAM/BAM) for downstream processing. We'll demonstrate only a few examples of samtools utilities, full documentation can be accessed [here](http://www.htslib.org/doc/samtools.html).  
+
+## BAM to SAM
+
+A BAM file (.bam) is the binary version of a SAM file. BAM occupies less disk space than SAM and is a default input required by some bioinformatic tools.  
+
+```{bash eval = F, echo = T}
+# Go to the directory with STAR output
+cd data/sample1_STAR
+
+samtools view Aligned.sortedByCoord.out.bam > Aligned.sortedByCoord.out.sam
+
+# SAM file is just a text file, so in order to view first few reads we can do:
+head -n 10 Aligned.sortedByCoord.out.sam  
+
+# BAM file is a binary file
+samtools view Aligned.sortedByCoord.out.bam | head -n 10
+```
+
+## Sorting a BAM file  
+
+Many tools require sorted and indexed BAM/SAM files. In order to sort a BAM file we will use `samtools sort` command: 
+
+```{bash eval = F, echo = T}
+samtools sort Aligned.sortedByCoord.out.bam -o Aligned.sortedByCoord.out.sorted.bam
+```
+
+For indexing `samtools index` command:  
+
+```{bash eval = F, echo = T}
+samtools index Aligned.sortedByCoord.out.sorted.bam
+```
+
+## Filter a BAM file to contain only uniquely mapped reads   
+
+```{bash, eval = F, echo = T}
+samtools view -bh -q 255 Aligned.sortedByCoord.out.sorted.bam > Aligned.sortedByCoord.out.sorted.unique.bam
+```
+
+## Filter a BAM files to contain reads mapping to a specific region
+
+Let's extract reads mapping to PIK3CA, a gene that is essential for B-cell development and contributes to lymphomagenesis. We used **Ensembl** resources to know genomic coordinates of [PIK3CA](https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000121879;r=3:179148114-179240093).  
+
+```{bash, eval=FALSE}
+samtools view -bh Aligned.sortedByCoord.out.sorted.unique.bam "chr3:179148114-179240093" > PIK3CA.bam
+```
+
+## Exercise 1   
+
+> 1. Go to `data/sample2_STAR/` directory. 
+> 2. Convert `Aligned.sortedByCoord.out.bam` to `Aligned.sortedByCoord.out.sam`
+> 3. Compare the size of BAM and SAM file. 
+> 4. How many reads `Aligned.sortedByCoord.out.bam` out of first 10 reads was mapped uniquely? Hint: mapping quality = 255 for uniquely mapped reads.  
+> 5. Sort `Aligned.sortedByCoord.out.bam` using `samtools sort` command, save the output as `Aligned.sortedByCoord.out.sorted.bam`  
+> 6. Index `Aligned.sortedByCoord.out.sorted.bam` using `samtools index` command
+> 7. Extract only uniquely mapped reads from `Aligned.sortedByCoord.out.sorted.bam` and save them as `Aligned.sortedByCoord.out.sorted.unique.bam`  
+> 8. [ADVANCED] How many reads were mapped uniquely?  
+> 9. [ADVANCED] How many reads mapped uniquely to PIK3CA?  
+
+
+# Further reading  
+Benchmarking of the most popular short-read aligners:  
+[Otto C, Stadler PF, Hoffmann S, Lacking alignments? The next-generation sequencing mapper segemehl revisited, Bioinformatics, Volume 30, Issue 13, 1 July 2014, Pages 1837–1843,](https://academic.oup.com/bioinformatics/article/30/13/1837/2422281)   
+
+# Suplemmentary Materials: Alignment of ChIP-Seq readswith BWA
+
+We'll use BWA to align a fastq ChIP-seq sample to the GRCh38 reference genome. First, we need to create a BWA hg38chr3 index. You can access BWA docummentation [here](http://bio-bwa.sourceforge.net/bwa.shtml) or just simply type in the terminal window:
+
+```{bash, eval = F, echo = T}
+bwa index
+```
+
+This command will display all the parameters that you can use when creating the reference genome (in today's example - chromosome) index. Now we will run:
+
+```{bash, eval = F, echo = T}
+bwa index -p hg38_chr3_BWA_idx -a bwtsw reference/hg38_chr3.fa
+```
+
+The command should take couple of minutes to finish, so let's explore parameters used: 
+
+`-p`: gives the name of a directory where indexed files will be placed (you can call this whatever you want, we named it hg38_chr3_BWA_idx)
+`-a`: chooses one of the indexing algorithm within bwa
+
+Normally you would use a complete genome build fasta (eg. hg38.fa) file to build a bwa index. In this case we're using only chromosome 3: hg38_chr3.fa.
+
+Once we created the reference index we can run main mapping command:
+
+```{bash, eval = F, echo = T}
+bwa mem -M -t 8 hg38_chr3_BWA_idx data/tp53_r2.fastq_trimmed.fastq.gz > BWA/tp53_r2.sam
+```
+
+Parameters we used:
+
+`-M`: leaves the best (longest) alignment for a read as primary alignment and additional alignments for the read as secondary  
+`-t`: indicates number of processor cores used to do the alignment  
+
+# Acknowledgements  
+
+**Dora Bihary**  
+VIB Center for Cancer Biology, University of Leuven, BE  
+MRC Cancer Unit, University of Cambridge, UK  
+
+[**Harvard Chan Bioinformatics Core**](https://bioinformatics.sph.harvard.edu)
+
+
+
+

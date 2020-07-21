@@ -1,0 +1,177 @@
+---
+title: "Practical 1: Preprocessing of Next Generation Sequencing data"
+author: "Joanna A. Krupka, Shoko Hirosue, Shamith Samarajiwa"
+date: "July 2020"
+output: 
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+
+---
+
+# Before we start
+
+**Course etiquette**  
+Please read the [course etiquette](https://docs.google.com/presentation/d/e/2PACX-1vQv9nTlsdRC9iZJU138tLL1jrwNoryp8P-FnXxb_ugOOWjbav4QHTLYLLZj2KK4kTO0_3x3VlzSdrUu/pub?start=false&loop=false&delayms=3000&slide=id.p1), if you haven't read that yet.  
+
+**Shared document**   
+We are using shared GoogleDocs documents for each of the main topics covered during the summer school. The document for this section can be found [here](https://docs.google.com/document/d/1pDTRtiG3LwTHxaIqWLy1QnddFu09Mv9OiBDUcPsJ6Do/edit#).  
+
+
+# Introduction
+
+It is difficult to overestimate the impact that development of next generation sequencing (a.k.a high-throughput sequencing) had on modern biology and medicine. Taking genome-wide perspective in research greatly increased our understanding of interconectivity between physiological or pathological processes and greatly accelerated the development of new treatment strategies. 
+
+By definition NGS involves parallel sequencing of milions of DNA or RNA fragments. It is the "catch-all" term used to describe a number of different modern sequencing technologies. Although there are many variants and applications of NGS, first few steps of data analysis are the same for the vast majority of sequencing techniques. 
+
+## Learning objectives  
+
+During this tutorial you will learn how to:  
+
+* perform quality check of raw sequencing data using `FastQC`   
+* perform quality trimming of raw sequencing data using cutadapt    
+* combine many FastQC reports into one using `MultiQC`  
+
+# Quality check of raw FASTQ files  
+
+*Dear diary, today I got my data back from sequencing facilities...*
+
+Typically, the sequencer output consits of sequenced fragments (reads) and per-base sequencing quality measurments, that are saved as text file in a `FASTQ` format. More detailed informations about `FASTQ` format can be found [here](https://emea.support.illumina.com/bulletins/2016/04/fastq-files-explained.html). 
+
+## FastQC
+
+We will use a virtual desktop to run this tutorial. Once logged in we need to open a terminal window and navigate to: `/home/ubuntu/Course_Materials/Introduction`. Two example RNA-Seq samples that we will use for this tutorial are located in the `data` folder. Let's check that:  
+
+```{bash eval = F, echo = T}
+cd /home/ubuntu/Course_Materials/Introduction/Preprocessing
+ls data/*.fastq.gz
+```
+
+FASTQ files were saved compressed in the GNU zip format (an open source file compression program), as indicated by the `.gz` file extension. This is a standard form that you are likely to receive from sequencing facilities.  
+
+Lets have a quick look at the first two reads in the `FASTQ` file so we can see how the data are organised. We'll use a command `gunzip` to decompress the `FASTQ` file and pipe `|` the output directly to another command `head -n 8`, that will allow us to see first 8 lines of the files (a.k.a first 4 reads):    
+
+```{bash eval = T, echo = T}
+gunzip -c data/raji_rnaseq_rep1.fastq.gz | head -n 8
+```
+
+Line 4th contains base call quality scores encoded using ASCII characters, see [here](https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/QualityScoreEncoding_swBS.htm). It would be impossible to look at the quality of all reads manually, so we will use a command `fastqc` to generate quaity report of our `.fq` files. **FastQC**^[FastQC: A Quality Control Tool for High Throughput Sequence Data [Online]. Available online at: http://www.bioinformatics.babraham.ac.uk/projects/fastqc/ (2015)] is a very popular tool that provides basic quality control metrics for raw NGS data.
+
+**NOTE:** This is a standard first step in NGS data analysis that should never be skipped! 
+
+```{bash eval = F, echo = T}
+# Quick look at the documentation of fastqc command
+fastqc --help
+```
+
+We'll save the quality report in a separate folder 'fastqc', so let's create a new directory:  
+
+```{bash eval = F, echo = T}
+mkdir fastqc
+```
+
+Now run `fastqc` with `-o fastqc` option to save the output in the `fastqc` folder.  
+
+```{bash eval = F, echo = T}
+fastqc data/raji_rnaseq_rep1.fastq.gz -o fastqc
+```
+
+The output from **FastQC** is an html file that may be viewed in your browser.  
+
+## Exercise 1   
+
+> 1. Navigate to `/home/ubuntu/Course_Materials/Introduction/Preprocessing`. 
+> 2. Check if the `fastqc` folder is present. 
+> 3. Run `fastqc` command for `tp53_chipseq_rep1.fastq.gz` and save the output in the `fastqc` folder.     
+> 4. Open the FastQC report in your browser.    
+> 5. Compare the results of the two files.   
+
+# Trimming and artefact removal (optional)  
+
+In order to increase our chances to align sequenced reads accurately, only a small number of mismatched bases is allowed. If a read contains too many mismatches, it is marked as unaligned. If we want to accurately align as many reads as possible, we may remove unwanted/noisy information from our data, eg:  
+
+* Poor quality bases at read ends (either 3'end or 5'end)   
+* Leftover adapter sequences   
+* Known contaminants (strings of As/Ts, other sequences, primers etc.)   
+
+**NOTE:** Some aligners, like **STAR**, are able to account for low-quality bases at the ends of reads. 
+
+**NOTE:** Agressive quality-based trimming of RNA-Seq reads was found to affect gene expression estimates. Imposing minimum read length requirements reverts gene expression estimates to values closer to estimates produced from untrimmed reads. Another potential improvement may be to use longer sequencing reads, such as 100 or 150 bases^[ [Williams, C.R., Baccarella, A., Parrish, J.Z. et al. Trimming of sequence reads alters RNA-Seq gene expression estimates. BMC Bioinformatics 17, 103 (2016)](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-0956-2#)]. 
+
+**NOTE:** If the source of contamination cannot be identified, [**FastQScreen**](https://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/), aligns the reads against a standard set of libraries. It was built as a QC check for sequencing pipelines but may also be useful in characterising metagenomic samples. 
+
+## Quality based trimming using Cutadapt  
+
+Once you had a closer look at the quality report you can realize that the data quality is not toot bad, however we still might be able to improve the quality with a quality based trimming since the quality drops towards the end of the reads:  
+
+We will use Cutadapt for trimming, so let’s have a look at its help page:  
+
+```{bash eval = F, echo = T}
+cutadapt --help
+```
+
+As you can see Cutadapt has many options for:  
+
+* Trimming based on quality threshold  
+* Trimming some bases from the 5’ or 3’ ends of reads, removing adapter contaminations  
+
+In our case all we want to do is to remove low quality bases from our reads. We can use the following command to do this:  
+
+```{bash eval = F, echo = T}
+cutadapt -m 10 -q 20 -j 4 -o data/raji_rnaseq_rep1_trimmed.fastq.gz data/raji_rnaseq_rep1.fastq.gz
+```
+
+Let’s go through the trimming parameters we are using in the command above:    
+
+`-m 10`: will discard all reads that would be shorter than a read length of 10 after the trimming,  
+`-q 20`: will trim low-quality bases from the 3’ end of the reads; if two comma-separated cutoffs are given, the 5’ end is trimmed with the first cutoff, the 3’ end with the second.  
+`-j 4`: number of cores  
+`-o data/tp53_rnaseq_rep1_trimmed.fastq.gz`: will specify name of the output file 
+
+Now we can check how trimming affected quality of our reads:  
+
+```{bash eval = F, echo = T}
+fastqc data/raji_rnaseq_rep1_trimmed.fastq.gz -o fastqc
+```
+
+## Exercise 1
+
+> 1. Run `cutadapt` for `tp53_chipseq_rep2.fastq.gz` setting the trimming quality to `20` for both read ends and discarding all reads shorter than `10`. Save the output as `tp53_chipseq_rep2_trimmed.fastq.gz` 
+> 2. Run `fastqc` for trimmed `.fastq.gz` files. Compare the files before and after trimming 
+
+## MultiQC for aggregating results across many samples  
+
+Looking at the FastQC reports one by one may be time-consuming and tiresome. **MultiQC** searches a given folder for analysis logs and compiles a single HTML report. Full documentation can be viewed [here](https://multiqc.info/docs/#running-multiqc). By now the folder `fastqc` should contain two FastQC reports. We will run `multiquc` to generate summarised report. We'll save the output in a separate `multiqc` folder. 
+
+```{bash eval = F, echo = T}
+mkdir multiqc
+multiqc -s -o multiqc fastqc 
+```
+
+**NOTE:** We are using a parameter `-s` to use unique naming for all analysed samples.  
+
+## Exercise 2  
+
+> 1. Run `multiqc` to generate a summarised report for all `fastqc` runs generated so far.   
+> 2. Compare the quality reports before and after trimming.     
+
+## Further reading   
+[Video explaining Illumina sequenicng by synthesis](https://www.youtube.com/watch?v=fCd6B5HRaZ8)  
+
+Detailed overview of NGS techniques:  
+[Goodwin S. et al. *Nature Reviews Genetics* 17, 333–351 (2016)](https://www.nature.com/articles/nrg.2016.49)   
+
+FastQC has a solid documented [manual page](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) with more details about all the plots in the report. 
+Looking at [this post](http://bioinfo-core.org/index.php/9th_Discussion-28_October_2010) for more information on what bad plots look like and what they mean for your data.
+
+# Acknowledgements  
+
+**Dora Bihary**  
+VIB Center for Cancer Biology, University of Leuven, BE  
+MRC Cancer Unit, University of Cambridge, UK  
+
+[**Harvard Chan Bioinformatics Core**](https://bioinformatics.sph.harvard.edu)
