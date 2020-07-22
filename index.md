@@ -85,7 +85,7 @@ School Shared document is [here](https://docs.google.com/document/d/1UDB3l7p7dSc
 
 __Zoom Virtual Training room__.  
  **July 22nd - 28th 2020**
-- 09:00 - 09:40; Welcome (Paul & Mark)  &  [Introduction to Functional Genomics](Introduction/Functional_Genomics_Overview.pdf) (Rory)
+- 09:00 - 09:40; Welcome (Paul & Mark)  &  [Introduction to Functional Genomics](Introduction/What is Functional Genomics.pdf) (Rory)
 - 09:40 - 12:30; Data Processing for Next Generation Sequencing (Joanna & Shoko)
   + Lecture 1: [Introduction to next generation sequencing](Introduction/Preprocessing/slides/L1-summerSchool.pdf) 
   + Lecture 2: [Quality control and trimming](Introduction/Preprocessing/slides/L2-summerSchool.pdf) 
