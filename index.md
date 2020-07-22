@@ -142,6 +142,11 @@ __Zoom Virtual Training room__.
  
 <hr>
 # Weekend - recharge your batteries!
+[Virtual punting tour of Cambridge](https://www.tripadvisor.co.uk/LocationPhotoDirectLink-g186225-d2281676-i235494912-Cambridge_River_Tour-Cambridge_Cambridgeshire_England.html)
+
+[Virtual tour of Cambridge University Botanical Gardens](https://youtu.be/MyCGUi0WKN4)
+
+[For those who feel the need to brush up on their linux skills]()
 
 # Day 4 (July 27th)
 
