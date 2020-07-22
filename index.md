@@ -141,6 +141,7 @@ __Zoom Virtual Training room__.
 **6pm SOCIAL: Zoom Talk: “Perspectives in AI for Cancer Bioinformatics by Rory Stark”. **
  
 <hr>
+
 # Weekend - recharge your batteries!
 
 [Virtual punting tour of Cambridge](https://www.tripadvisor.co.uk/LocationPhotoDirectLink-g186225-d2281676-i235494912-Cambridge_River_Tour-Cambridge_Cambridgeshire_England.html)
