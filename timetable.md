@@ -1,7 +1,10 @@
 
 **July 22nd - 28th 2020**
 
-## **Note:** You are expected to be familiar with Rstudio, RMarkdown documents and Bioconductor. If you are not then you are advised to work through the material  (below) **before** attending Summer School
+# For [Course materials and detailed timetable visit here](https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2020/)
+
+
+# **Note:** You are expected to be familiar with Rstudio, RMarkdown documents and Bioconductor. If you are not then you are advised to work through the material  (below) **before** attending Summer School
 - [Introduction to Bioconductor](Introduction/bioc-intro.html).  
 - [Bioconductor answers](Introduction/bioc-intro.solutions.html).  
   + [source](Introduction/bioc-intro.Rmd)
