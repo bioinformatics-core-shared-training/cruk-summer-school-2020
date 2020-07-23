@@ -111,8 +111,8 @@ __Zoom Virtual Training room__.
 
 - 09:30 - 17:00; Bulk RNAseq
   + [Introduction to RNAseq Analysis in R](RNAseq/html/01_Introduction_to_Differential_Gene_Expression_Analysis_in_R.html) - Ash Sawle 
-  + [Statistical Analysis of Bulk RNAseq Data](RNAseq/html/StatsRNAseq_Couturier.pdf) - Dominique-Laurent Couturier     
-      - [Practical (html)](RNAseq/html/StatsRNAseq_Couturier.html) [(rmd)](StatsRNAseq_Couturier.Rmd)  
+  + [Statistical Analysis of Bulk RNAseq Data](Stats/StatsRNAseq_Couturier.pdf) - Dominique-Laurent Couturier     
+      - [Practical (html)](Stats/StatsRNAseq_Couturier.html) [(rmd)](Stats /StatsRNAseq_Couturier.Rmd)  
   + [Experimental Design of Bulk RNAseq studies](RNAseq/html/ExperimentalDesignCourse_Nagarajan_20-05-2020.pdf) - Chandra Chilamakuri   
       - [Practical](RNAseq/html/RNAseq_ExperimentalDesignPractical.pdf)    
 
