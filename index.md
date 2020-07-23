@@ -130,6 +130,7 @@ __Zoom Virtual Training room__.
   + [Annotation and Visualisation of RNA-seq results](RNAseq/html/05_Annotation_and_Visualisation.html) - Ash Sawle  
 <!--    - [practical solutions](RNAseq/html/05_Annotation_and_Visualisation.Solutions.html)  -->
   + [Gene-set testing](RNAseq/html/06_Gene_set_testing.html) - Ash Sawle   
+        - [slides](RNAseq/html/06_Introduction_to_Functional_Analysis_in_R.html)  
 <!--    - [practical solutions](RNAseq/html/06_Gene_set_testing.Solutions.html)  -->
 
 
