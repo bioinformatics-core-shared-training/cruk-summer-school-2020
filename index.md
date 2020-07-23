@@ -101,7 +101,7 @@ __Zoom Virtual Training room__.
     - [Practical](RNAseq/html/E_Read_Counts_with_Subread.practical.html)    
     - [Practical solutions](RNAseq/html/E_Read_Counts_with_Subread.Solutions.html)   
   + [RNA-seq Pre-processing](RNAseq/html/02_Preprocessing_Data.html) - Chandra Chilamakuri   
-<!--    - [Practical solutions](RNAseq/html/02_Preprocessing_Data.Solutions.html)  -->
+    - [Practical solutions](RNAseq/html/02_Preprocessing_Data.Solutions.html)
 
   + [Extended Material](RNAseq/Extended_index.md)
 
@@ -119,7 +119,8 @@ __Zoom Virtual Training room__.
 - 13:00 - 14:00; LUNCH BREAK
 
   + [Differential Expression for RNA-seq](RNAseq/html/04_DE_analysis_with_DESeq2.html) - Abbi Edwards  
-<!--    - [practical solutions](RNAseq/html/04_DE_analysis.Solutions.html)   -->
+    - [practical solutions](RNAseq/html/04_DE_analysis.Solutions.html)
+    - [Abbi's live script](liveScripts/deseq2.R)
 
 <hr>
 
