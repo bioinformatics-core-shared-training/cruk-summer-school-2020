@@ -148,9 +148,9 @@ __Zoom Virtual Training room__.
 
 [SOCIAL: Virtual tour of Cambridge University Botanical Gardens](https://youtu.be/MyCGUi0WKN4)
 
-[WORK: For those who feel the need to brush up on their linux skills](https://datacarpentry.org/shell-genomics/)
+[WORK: For those who feel the need to brush up on their linux skills]]https://datacarpentry.org/shell-genomics/)
 
-{WORK: For those wanting an R course with extensive use of Tidyverse](https://bioinformatics-core-shared-training.github.io/bite-size-r-intermediate/)
+[WORK: For those wanting an R course with extensive use of Tidyverse](https://bioinformatics-core-shared-training.github.io/bite-size-r-intermediate/)
 
 # Day 4 (July 27th)
 
