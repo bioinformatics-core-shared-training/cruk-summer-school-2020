@@ -21,6 +21,20 @@ Please read the [course etiquette](https://docs.google.com/presentation/d/e/2PAC
 **Shared document**   
 We are using shared GoogleDocs documents for each of the main topics covered during the summer school. The document for this section can be found [here](https://docs.google.com/document/d/1pDTRtiG3LwTHxaIqWLy1QnddFu09Mv9OiBDUcPsJ6Do/edit#).  
 
+**Prerequisites**   
+If you want to follow this tutorial using your own machine, you need to install the following command line tools:  
+
+* [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)  
+* [Samstat](http://samstat.sourceforge.net)  
+* [MultiQC](https://multiqc.info)  
+* [STAR](https://github.com/alexdobin/STAR) (optional)  
+* [BWA](http://bio-bwa.sourceforge.net) (optional)
+* [Samtools](https://samtools.github.io)  
+
+You can install the tools one by one, but a very convenient way to manage installed tools/packages and their dependencies is [Conda](https://docs.conda.io/en/latest/). If you are new to Conda, please follow this [tutorial](https://bioconda.github.io/user/install.html).  
+
+**Sample dataset**  
+A dataset for this tutorial is avaliable [here](https://github.com/bioinformatics-core-shared-training/cruk-summer-school-2020/tree/master/Introduction/Preprocessing/practicals). Please keep in mind that, the directories and folder structure in your machine may differ from the one we used during the course.  
 
 # Introduction  
 
