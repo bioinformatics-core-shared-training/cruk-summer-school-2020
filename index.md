@@ -131,14 +131,15 @@ __Zoom Virtual Training room__.
     - [practical solutions](RNAseq/html/05_Annotation_and_Visualisation.Solutions.html)
     - [Ash's live script](RNAseq/liveScripts/05_Annotation_and_Visualisation.R)
   + [Gene-set testing](RNAseq/html/06_Gene_set_testing.html) - Ash Sawle   
-        - [slides](RNAseq/html/06_Introduction_to_Functional_Analysis_in_R.html)  
-<!--    - [practical solutions](RNAseq/html/06_Gene_set_testing.Solutions.html)  -->
+    - [slides](RNAseq/html/06_Introduction_to_Functional_Analysis_in_R.html)  
+    - [Ashs' live script](RNAseq/liveScripts/06_Geneset_testing.R)
+    - [practical solutions](RNAseq/html/06_Gene_set_testing.Solutions.html)
 
 
 - 12:30 - 13:30; LUNCH
 - 13:30 - 17:00; Single Cell RNAseq (Stephane, & Kasia)
     + [scRNA-seq - introduction, inc design - PDF version](scRNAseq/
-Single_Cell_Kania.pdf)
+Introduction_to_Single_Cell_RNAseq.pdf)
     + [scRNA-seq - preamble](scRNAseq/html/index2.nb.html)
     + [scRNA-seq - sequencing QC](scRNAseq/html/seqQual.nb.html)
     + [scRNA-seq - alignment and cellranger](scRNAseq/html/cellRanger.html)
