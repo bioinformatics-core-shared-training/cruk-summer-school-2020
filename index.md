@@ -158,6 +158,8 @@ Introduction_to_Single_Cell_RNAseq.pdf)
 
 [SOCIAL/WORK: Virtual tour of CRUK Cambridge Institute](https://poly.google.com/view/bjq4wL5U1Fo)
 
+[SOCIAL: Aeriel 360 panoramas of Cambridge venues](https://www.xcopters.co.uk/virtualtours.html)
+
 [WORK: For those who feel the need to brush up on their linux skills](https://datacarpentry.org/shell-genomics/)
 
 [WORK: For those wanting an R course with extensive use of Tidyverse](https://bioinformatics-core-shared-training.github.io/bite-size-r-intermediate/)
