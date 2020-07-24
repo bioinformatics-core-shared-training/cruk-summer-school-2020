@@ -120,7 +120,7 @@ __Zoom Virtual Training room__.
 
   + [Differential Expression for RNA-seq](RNAseq/html/04_DE_analysis_with_DESeq2.html) - Abbi Edwards  
     - [practical solutions](RNAseq/html/04_DE_analysis.Solutions.html)
-    - [Abbi's live script](liveScripts/deseq2.R)
+    - [Abbi's live script](RNAseq/liveScripts/deseq2.R)
 
 <hr>
 
@@ -128,7 +128,8 @@ __Zoom Virtual Training room__.
 
 - 09:30 - 12:30;  Bulk RNAseq
   + [Annotation and Visualisation of RNA-seq results](RNAseq/html/05_Annotation_and_Visualisation.html) - Ash Sawle  
-<!--    - [practical solutions](RNAseq/html/05_Annotation_and_Visualisation.Solutions.html)  -->
+    - [practical solutions](RNAseq/html/05_Annotation_and_Visualisation.Solutions.html)
+    - [Ash's live script](RNAseq/liveScripts/05_Annotation_and_Visualisation.R)
   + [Gene-set testing](RNAseq/html/06_Gene_set_testing.html) - Ash Sawle   
         - [slides](RNAseq/html/06_Introduction_to_Functional_Analysis_in_R.html)  
 <!--    - [practical solutions](RNAseq/html/06_Gene_set_testing.Solutions.html)  -->
