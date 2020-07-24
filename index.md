@@ -139,8 +139,11 @@ __Zoom Virtual Training room__.
     + [scRNA-seq - introduction, inc design](scRNAseq/
 Single_Cell_Kania.pptx).  [PDF version](scRNAseq/
 Single_Cell_Kania.pdf)
-    + [scRNA-seq - preprocessing, inc cell calling]()
-    + [scRNA-seq - normalisation, visualisation, batch correction]()
+    + [scRNA-seq - preamble](scRNAseq/html/index2.nb.html)
+    + [scRNA-seq - sequencing QC](scRNAseq/html/seqQual.nb.html)
+    + [scRNA-seq - alignment and cellranger](scRNAseq/html/cellRanger.html)
+    + [scRNA-seq - preprocessing, inc cell calling](scRNAseq/html/preProc.html)
+    + [scRNA-seq - normalisation](scRNAseq/html/normalisation_GSM3872434_simple.html)
     
 **6pm SOCIAL: Zoom Talk: “Perspectives in AI for Cancer Bioinformatics by Rory Stark”. **
  
