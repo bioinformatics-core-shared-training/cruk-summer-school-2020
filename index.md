@@ -137,7 +137,8 @@ __Zoom Virtual Training room__.
 - 12:30 - 13:30; LUNCH
 - 13:30 - 17:00; Single Cell RNAseq (Stephane, & Kasia)
     + [scRNA-seq - introduction, inc design](scRNAseq/
-Single_Cell_Kania.pptx)
+Single_Cell_Kania.pptx).  [PDF version](scRNAseq/
+Single_Cell_Kania.pdf)
     + [scRNA-seq - preprocessing, inc cell calling]()
     + [scRNA-seq - normalisation, visualisation, batch correction]()
     
