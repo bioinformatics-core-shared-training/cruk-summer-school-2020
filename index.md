@@ -144,7 +144,6 @@ Introduction_to_Single_Cell_RNAseq.pdf)
     + [scRNA-seq - sequencing QC](scRNAseq/html/seqQual.nb.html)
     + [scRNA-seq - alignment and cellranger](scRNAseq/html/cellRanger.html)
     + [scRNA-seq - preprocessing, inc cell calling](scRNAseq/html/preProc.html)
-    + [scRNA-seq - normalisation](scRNAseq/html/normalisation_GSM3872434_simple.html)
     
 **6pm SOCIAL: Zoom Talk: “Perspectives in AI for Cancer Bioinformatics by Rory Stark”. **
  
@@ -168,10 +167,19 @@ Introduction_to_Single_Cell_RNAseq.pdf)
 # Day 4 (July 27th)
 
 - 09:30 - 17:00; Single Cell RNAseq (cont.) (Stephane & Zeynep)
-    + [scRNA-seq - feature selection and dimension reduction]()
-    + [scRNA-seq - clustering and marker gene detection]() 
-    + [scRNA-seq - differential expression and differential abundance]() 
-    
+    + [scRNA-seq - normalisation](scRNAseq/html/normalisation_GSM3872434_simple.html)
+    + [scRNA-seq - dimension reduction for visualisation](scRNAseq/html/dimRedForViz.nb.html)
+    + [scRNA-seq - detecting confounding factors](scRNAseq/html/confounding_caron.nb.html)
+    + [scRNA-seq - feature selection](scRNAseq/html/featSelec.nb.html)
+    + [scRNA-seq - batch correction](scRNAseq/html/batch_GSM3872442.nb.html)
+    + [scRNA-seq - dimensionality reduction for analysis](scRNAseq/html/dimRedForAna.nb.html)
+    + [scRNA-seq - clustering](scRNAseq/html/clustering.nb.html)
+    + [scRNA-seq - marker gene identification](scRNAseq/html/clusterMarkerGenes.nb.html)
+    + [scRNA-seq - cell cycle assignment](scRNAseq/html/cellCyclePhases.nb.html)
+    + [scRNA-seq - data set integration - PBMMC](scRNAseq/html/dataSetIntegration_PBMMC.html) [- whole](dataSetIntegrationWhole_1kCps.nb.html) 
+    + [scRNA-seq - diff exp between condition](scRNAseq/html/multiSplComp.nb.copy.html)
+    + [scRNA-seq - trajectory analysis - 1](scRNAseq/html/trajectory1.nb.html) [2](scRNAseq/html/trajectory2.nb.html) [3](scRNAseq/html/trajectory3.nb.html) 
+
 - 12:30 - 13:30; LUNCH BREAK
 
 
