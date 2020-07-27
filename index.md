@@ -176,15 +176,14 @@ Introduction_to_Single_Cell_RNAseq.pdf)
     + [scRNA-seq - clustering](scRNAseq/html/clustering.nb.html) [Rmd](clustering.Rmd)
     + [scRNA-seq - marker gene identification](scRNAseq/html/clusterMarkerGenes.nb.html) [Rmd](clusterMarkerGenes.Rmd)
     + [scRNA-seq - cell cycle assignment](scRNAseq/html/cellCyclePhases.nb.html) [Rmd](cellCyclePhases.Rmd)
-    + [scRNA-seq - data set integration - PBMMC](scRNAseq/html/dataSetIntegration_PBMMC.nb.html) [Rmd](dataSetIntegration.Rmd]
-    + [scRNA-seq - data set integration - whole](scRNAseq/html/dataSetIntegrationWhole_1kCps.nb.html) [Rmd](dataSetIntegrationWhole.Rmd]
+    + [scRNA-seq - data set integration - PBMMC](scRNAseq/html/dataSetIntegration_PBMMC.nb.html) [Rmd](dataSetIntegration.Rmd)
+    + [scRNA-seq - data set integration - whole](scRNAseq/html/dataSetIntegrationWhole_1kCps.nb.html) [Rmd](dataSetIntegrationWhole.Rmd)
     + [scRNA-seq - diff exp between condition](scRNAseq/html/multiSplComp.nb.html) [Rmd](multiSplComp.Rmd)
     + [scRNA-seq - trajectory analysis - 1](scRNAseq/html/01_Extract_Tcells.nb.html) [Rmd](scRNAseq/Scripts/01_Extract_Tcells.Rmd)
     + [scRNA-seq - trajectory analysis - 2](scRNAseq/html/02_Pseudotime_Analysis.nb.html) [Rmd](scRNAseq/Scripts/02_Pseudotime_Analysis.Rmd)
     + [scRNA-seq - trajectory analysis - 3](scRNAseq/html/03_Pseudotime_alignment.nb.html) [Rmd](scRNAseq/Scripts/03_Pseudotime_alignment.Rmd)
 
 - 12:30 - 13:30; LUNCH BREAK
-
 
 <hr>
 # Day 5 (July 28th)
