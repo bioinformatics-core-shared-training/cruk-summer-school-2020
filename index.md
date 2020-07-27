@@ -176,8 +176,8 @@ Introduction_to_Single_Cell_RNAseq.pdf)
     + [scRNA-seq - clustering](scRNAseq/html/clustering.nb.html)
     + [scRNA-seq - marker gene identification](scRNAseq/html/clusterMarkerGenes.nb.html)
     + [scRNA-seq - cell cycle assignment](scRNAseq/html/cellCyclePhases.nb.html)
-    + [scRNA-seq - data set integration - PBMMC](scRNAseq/html/dataSetIntegration_PBMMC.html) [- whole](dataSetIntegrationWhole_1kCps.nb.html) 
-    + [scRNA-seq - diff exp between condition](scRNAseq/html/multiSplComp.nb.copy.html)
+    + [scRNA-seq - data set integration - PBMMC](scRNAseq/html/dataSetIntegration_PBMMC.nb.html) [- whole](scRNAseq/html/dataSetIntegrationWhole_1kCps.nb.html) 
+    + [scRNA-seq - diff exp between condition](scRNAseq/html/multiSplComp.nb.html)
     + [scRNA-seq - trajectory analysis - 1](scRNAseq/html/trajectory1.nb.html) [2](scRNAseq/html/trajectory2.nb.html) [3](scRNAseq/html/trajectory3.nb.html) 
 
 - 12:30 - 13:30; LUNCH BREAK
