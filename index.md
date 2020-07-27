@@ -143,7 +143,7 @@ Introduction_to_Single_Cell_RNAseq.pdf)
     + [scRNA-seq - preamble](scRNAseq/html/index2.nb.html)
     + [scRNA-seq - sequencing QC](scRNAseq/html/seqQual.nb.html)
     + [scRNA-seq - alignment and cellranger](scRNAseq/html/cellRanger.html)
-    + [scRNA-seq - preprocessing, inc cell calling](scRNAseq/html/preProc.html) [Rmd](scRNAseq/html/preProc.Rmd)
+    + [scRNA-seq - preprocessing, inc cell calling](scRNAseq/html/preProc.html) [Rmd](scRNAseq/Scripts/preProc.Rmd)
     
 **6pm SOCIAL: Zoom Talk: “Perspectives in AI for Cancer Bioinformatics by Rory Stark”. **
  
