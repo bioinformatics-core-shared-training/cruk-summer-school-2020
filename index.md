@@ -167,7 +167,7 @@ Introduction_to_Single_Cell_RNAseq.pdf)
 # Day 4 (July 27th)
 
 - 09:30 - 17:00; Single Cell RNAseq (cont.) (Stephane & Zeynep)
-    + [scRNA-seq - normalisation](scRNAseq/html/normalisation_GSM3872434_simple.html)
+    + [scRNA-seq - normalisation](scRNAseq/html/normalisation_GSM3872434_simple.html) [Rmd](scRNAseq/Scripts/normalisation_GSM3872434_simple.Rmd)
     + [scRNA-seq - dimension reduction for visualisation](scRNAseq/html/dimRedForViz.nb.html)
     + [scRNA-seq - detecting confounding factors](scRNAseq/html/confounding_caron.nb.html)
     + [scRNA-seq - feature selection](scRNAseq/html/featSelec.nb.html)
