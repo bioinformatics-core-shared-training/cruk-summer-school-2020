@@ -1,0 +1,231 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Feature selection'
+
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
+#date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+date: July 2020
+#bibliography: bibliography.bib
+#csl: biomed-central.csl
+output:
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    fig_caption: yes
+    self_contained: true
+    fig_width: 6
+    fig_height: 4
+---
+
+# Feature selection
+
+```{r, warning=FALSE}
+suppressMessages(library(ggplot2))
+suppressMessages(library(scater))
+suppressMessages(library(scran))
+```
+
+```{r}
+projDir <- "/mnt/scratcha/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+fontsize <- theme(axis.text=element_text(size=12), axis.title=element_text(size=16))
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+# First, set some variables:
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+set.seed(123) # for reproducibility
+knitr::opts_chunk$set(eval = TRUE) 
+```
+
+## Load data
+
+We will load the R file keeping the SCE object with the normalised counts for 500 cells per sample.
+
+```{r}
+setName <- "caron"
+setSuf <- "_5hCellPerSpl"
+
+# Read object in:
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_dimRed.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+if(!file.exists(tmpFn))
+{
+	knitr::knit_exit()
+}
+sce <- readRDS(tmpFn)
+sce
+
+head(rowData(sce))
+
+#any(duplicated(rowData(sce)$ensembl_gene_id))
+# some function(s) used below complain about 'strand' already being used in row data,
+# so rename that column now:
+colnames(rowData(sce))[colnames(rowData(sce)) == "strand"] <- "strandNum"
+assayNames(sce)
+```
+
+## Feature selection with scran
+
+scRNASeq measures the expression of thousands of genes in each cell. The biological question asked in a study will most often relate to a fraction of these genes only, linked for example to differences between cell types, drivers of differentiation, or response to perturbation.
+
+Most high-throughput molecular data include variation created by the assay itself, not biology, i.e. technical noise, for example caused by sampling during RNA capture and library preparation. In scRNASeq, this technical noise will result in most genes being detected at different levels. This noise may hinder the detection of the biological signal.
+
+Let's identify Highly Variables Genes (HVGs) with the aim to find those underlying the heterogeneity observed across cells.
+
+### Modelling and removing technical noise
+
+Some assays allow the inclusion of known molecules in a known amount covering a wide range, from low to high abundance: spike-ins. The technical noise is assessed based on the amount of spike-ins used, the corresponding read counts obtained and their variation across cells. The variance in expression can then be decomposed into the biolgical and technical components. 
+
+UMI-based assays do not (yet?) allow spike-ins. But one can still identify HVGs, that is genes with the highest biological component. Assuming that expression does not vary across cells for most genes, the total variance for these genes mainly reflects technical noise. The latter can thus be assessed by fitting a trend to the variance in expression. The fitted value will be the estimate of the technical component.
+
+Let's fit a trend to the variance, using modelGeneVar(). 
+
+```{r fit_trend_to_var}
+dec.sce <- modelGeneVar(sce)
+```
+
+Let’s plot variance against mean of expression (log scale) and the mean-dependent trend fitted to the variance: 
+
+```{r plot_var_trend}
+# Visualizing the fit:
+var.fit <- metadata(dec.sce)
+plot(var.fit$mean, var.fit$var, xlab="Mean of log-expression",
+    ylab="Variance of log-expression")
+curve(var.fit$trend(x), col="dodgerblue", add=TRUE, lwd=2)
+```
+
+In the absence of spike-in data, one can attempt to create a trend by making some distributional assumptions about the noise. For example, UMI counts typically exhibit near-Poisson variation if we only consider technical noise from library preparation and sequencing. This can be used to construct a mean-variance trend in the log-counts with the modelGeneVarByPoisson() function. Note the increased residuals of the high-abundance genes, which can be interpreted as the amount of biological variation that was assumed to be “uninteresting” when fitting the gene-based trend above.
+
+
+```{r}
+set.seed(0010101)
+dec.pois.sce <- modelGeneVarByPoisson(sce)
+dec.pois.sce <- dec.pois.sce[order(dec.pois.sce$bio, decreasing=TRUE),]
+head(dec.pois.sce)
+```
+
+Plot:
+
+```{r}
+plot(dec.pois.sce$mean, dec.pois.sce$total, pch=16, xlab="Mean of log-expression",
+    ylab="Variance of log-expression")
+curve(metadata(dec.pois.sce)$trend(x), col="dodgerblue", add=TRUE)
+```
+
+Interestingly, trends based purely on technical noise tend to yield large biological components for highly-expressed genes. This often includes so-called “house-keeping” genes coding for essential cellular components such as ribosomal proteins, which are considered uninteresting for characterizing cellular heterogeneity. These observations suggest that a more accurate noise model does not necessarily yield a better ranking of HVGs, though one should keep an open mind - house-keeping genes are regularly DE in a variety of conditions (Glare et al. 2002; Nazari, Parham, and Maleki 2015; Guimaraes and Zavolan 2016), and the fact that they have large biological components indicates that there is strong variation across cells that may not be completely irrelevant.
+
+### Choosing some HVGs:
+
+Identify the top 20 HVGs by sorting genes in decreasing order of biological component.
+
+```{r HVGs}
+# order genes by decreasing order of biological component
+o <- order(dec.sce$bio, decreasing=TRUE)
+# check top and bottom of sorted table
+head(dec.sce[o,])
+tail(dec.sce[o,])
+# choose the top 20 genes with the highest biological component
+chosen.genes.index <- o[1:20]
+```
+
+Show the top 20 HVGs on the plot displaying the variance against the mean expression: 
+
+```{r plot_var_trend_HVGtop20}
+plot(var.fit$mean, var.fit$var)
+curve(var.fit$trend(x), col="red", lwd=2, add=TRUE)
+points(var.fit$mean[chosen.genes.index], var.fit$var[chosen.genes.index], col="orange")
+```
+
+Rather than choosing a fixed number of top genes, one may define 'HVGs' as genes with a positive biological component, ie whose variance is higher than the fitted value for the corresponding mean expression.
+
+Select and show these 'HVGs' on the plot displaying the variance against the mean expression: 
+
+```{r plot_var_trend_HVGbioCompPos}
+hvgBool <- dec.sce$bio > 0
+table(hvgBool)
+hvg.index <- which(hvgBool)
+plot(var.fit$mean, var.fit$var)
+curve(var.fit$trend(x), col="red", lwd=2, add=TRUE)
+points(var.fit$mean[hvg.index], var.fit$var[hvg.index], col="orange")
+```
+
+Save objects to file
+
+```{r, eval=FALSE}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_featSel.Rds", projDir, outDirBit, setName, setSuf)
+saveRDS(list("dec.sce"=dec.sce,"hvg.index"=hvg.index), tmpFn)
+```
+
+HVGs may be driven by outlier cells. So let's plot the distribution of expression values for the genes with the largest biological components.
+
+First, get gene names to replace ensembl IDs on plot. 
+
+```{r HVG_extName}
+# the count matrix rows are named with ensembl gene IDs. Let's label gene with their name instead:
+# row indices of genes in rowData(sce)
+tmpInd <- which(rowData(sce)$ensembl_gene_id %in% rownames(dec.sce)[chosen.genes.index])
+# check:
+rowData(sce)[tmpInd,c("ensembl_gene_id","external_gene_name")]
+# store names:
+tmpName <- rowData(sce)[tmpInd,"external_gene_name"]
+# the gene name may not be known, so keep the ensembl gene ID in that case:
+tmpName[tmpName==""] <- rowData(sce)[tmpInd,"ensembl_gene_id"][tmpName==""]
+tmpName[is.na(tmpName)] <- rowData(sce)[tmpInd,"ensembl_gene_id"][is.na(tmpName)]
+rm(tmpInd)
+```
+
+Now show a violin plot for each gene, using plotExpression() and label genes with their name:
+
+```{r plot_count_HVGtop20}
+g <- plotExpression(sce, rownames(dec.sce)[chosen.genes.index], 
+    point_alpha=0.05, jitter="jitter") + fontsize
+g <- g + scale_x_discrete(breaks=rownames(dec.sce)[chosen.genes.index],
+        labels=tmpName)
+g
+```
+
+Another few genes:
+
+```{r}
+chosen.genes.index <- o[21:40]
+
+tmpInd <- which(rowData(sce)$ensembl_gene_id %in% rownames(dec.sce)[chosen.genes.index])
+# check:
+rowData(sce)[tmpInd,c("ensembl_gene_id","external_gene_name")]
+# store names:
+tmpName <- rowData(sce)[tmpInd,"external_gene_name"]
+# the gene name may not be known, so keep the ensembl gene ID in that case:
+tmpName[tmpName==""] <- rowData(sce)[tmpInd,"ensembl_gene_id"][tmpName==""]
+tmpName[is.na(tmpName)] <- rowData(sce)[tmpInd,"ensembl_gene_id"][is.na(tmpName)]
+rm(tmpInd)
+
+g <- plotExpression(sce, rownames(dec.sce)[chosen.genes.index], 
+    point_alpha=0.05, jitter="jitter") + fontsize
+g <- g + scale_x_discrete(breaks=rownames(dec.sce)[chosen.genes.index],
+        labels=tmpName)
+g
+```
+
+__Challenge__: Show violin plots for the 20 genes with the lowest biological component. How do they compare to the those for HVGs chosen above?
+
+```{r plot_count_violoin_HVGbot20, eval = TRUE}
+chosen.genes.index.tmp <- order(dec.sce$bio, decreasing=FALSE)[1:20]
+tmpInd <- (which(rowData(sce)$ensembl_gene_id %in% rownames(dec.sce)[chosen.genes.index.tmp]))
+# check:
+rowData(sce)[tmpInd,c("ensembl_gene_id","external_gene_name")]
+# store names:
+tmpName <- rowData(sce)[tmpInd,"external_gene_name"]
+# the gene name may not be known, so keep the ensembl gene ID in that case:
+tmpName[tmpName==""] <- rowData(sce)[tmpInd,"ensembl_gene_id"][tmpName==""]
+tmpName[is.na(tmpName)] <- rowData(sce)[tmpInd,"ensembl_gene_id"][is.na(tmpName)]
+rm(tmpInd)
+g <- plotExpression(sce, rownames(dec.sce)[chosen.genes.index.tmp], 
+			point_alpha=0.05, jitter="jitter") + fontsize
+g <- g + scale_x_discrete(breaks=rownames(dec.sce)[chosen.genes.index.tmp],
+        labels=tmpName)
+g
+rm(chosen.genes.index.tmp)
+```
