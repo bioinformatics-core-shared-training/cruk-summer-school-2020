@@ -1,0 +1,110 @@
+---
+title: "CRUK CI Summer School 2020"
+subtitle: 'Pseudotime Analysis'
+author: "Zeynep Kalender-Atak, Stephane Ballereau"
+output:
+  html_notebook:
+    code_folding: show
+    toc: yes
+    toc_float: yes
+    number_sections: true
+  html_document:
+    df_print: paged
+    toc: yes
+    number_sections: true
+    code_folding: show
+  html_book:
+    code_folding: show
+---
+
+```{r seqQual.knitr_options, echo=FALSE, results="hide", message=FALSE}
+require(knitr)
+#opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE, cache=TRUE)
+opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE, cache=FALSE)
+opts_chunk$set(fig.width=7, fig.height=7) 
+```
+
+
+```{r}
+library(SingleCellExperiment)
+library(scran)
+library(scater)
+library(batchelor)
+library(cowplot)
+library(pheatmap)
+library(tidyverse)
+library(SingleR)
+library(destiny)
+library(gam)
+library(viridis)
+library(msigdbr)
+library(clusterProfiler)
+library(cellAlign)
+```
+
+# __Pseudotime Alignment__
+
+CellAlign is a tool for quantitative comparison of expression dynamics within or between single-cell trajectories. The input to the CellAlign workflow is any trajectory vector that orders single cell expression with a pseudo-time spacing and the expression matrix for the cells used to define the trajectory. cellAlign has 3 essential steps:
+
+1. Interpolate the data to have N evenly spaced points along the scaled pseudotime vector using a sliding window of Gaussian weights
+
+2. Determine the genes of interest for alignment
+
+3. Align your trajectory among the selected genes either along the whole trajectory or along a partial segment.
+
+
+The first step is to interpolate the data along the trajectory to represent the data by N (default 200) equally spaced points along the pseudotime trajectory. We included this step because single-cell measurements are often sparse or heterogeneous along the trajectory, leaving gaps that cannot be aligned. Cell-Align interpolates the gene-expression values of equally spaced artificial points using the real single-cell expression data. The expression values of the interpolated points are calculated using all cells, with each single cell assigned a weight given by a Gaussian distribution centered at the interpolated point and a width assigned by a parameter called winSz. The default winSz is 0.1, as this is the range that preserves the dynamics of the trajectory without including excessive noise for standard single cell data sets.
+```{r}
+interGlobal_caronPRET1 <- cellAlign::interWeights(expDataBatch = t(caron.PRET1_counts), 
+                                                    trajCond = eigenvectors(dm_caron.PRET1)[, 1], 
+                                                    winSz = 0.1, numPts=200)
+
+interGlobal_hcaBM1 <- cellAlign::interWeights(expDataBatch = t(tcell_BM1_counts), 
+                                                    trajCond = eigenvectors(dm_tcell_BM1)[, 1], 
+                                                    winSz = 0.1, numPts=200)
+
+interGlobal_hcaBM2 <- cellAlign::interWeights(expDataBatch = t(tcell_counts_BM2), 
+                                                    trajCond = eigenvectors(dm_tcell_BM2)[, 1], 
+                                                    winSz = 0.1, numPts=200)
+```
+
+
+Scale the expression matrix 
+```{r}
+interGlobal_caronPRET1_scaled = scaleInterpolate(interGlobal_caronPRET1)
+interGlobal_hcaBM1_scaled = cellAlign::scaleInterpolate(interGlobal_hcaBM1)
+interGlobal_hcaBM2_scaled = cellAlign::scaleInterpolate(interGlobal_hcaBM2)
+```
+
+
+Identify the shared genes across datasets 
+```{r}
+sharedMarkers = Reduce(intersect, list(rownames(interGlobal_caronPRET1$interpolatedVals),rownames(interGlobal_hcaBM1$interpolatedVals),rownames(interGlobal_hcaBM2$interpolatedVals)))
+length(sharedMarkers)
+```
+
+
+Finally, there is the alignment step. CellAlign operates much like sequence alignment algorithms, quantifying overall similarity in expression throughout the trajectory (global alignment), or finding areas of highly conserved expression (local alignment). Cell-Align then finds a path through the matrix that minimizes the overall distance while adhering to the following constraints:
+* for global alignment the alignment must cover the entire extent of both trajectories, always starting in the upper left of the dissimilarity matrix and ending in the lower right.
+
+* for local alignment the alignment is restricted only to highly similar cells, yielding as output regions with conserved expression dynamics
+
+Intuitively, the optimal alignment runs along a "valley" within the dissimilarity matrix.
+
+```{r}
+A=calcDistMat(interGlobal_caronPRET1_scaled$scaledData[sharedMarkers,],interGlobal_hcaBM1_scaled$scaledData[sharedMarkers,], dist.method = 'Euclidean')
+alignment = globalAlign(A)
+plotAlign(alignment)
+
+B=calcDistMat(interGlobal_hcaBM1_scaled$scaledData[sharedMarkers,],interGlobal_hcaBM2_scaled$scaledData[sharedMarkers,], dist.method = 'Euclidean')
+alignment = globalAlign(B)
+plotAlign(alignment)
+```
+
+# Ackowledgements
+This notebook uses material from [cellAlign](https://github.com/shenorrLab/cellAlign) vignette. 
+
+```{r}
+sessionInfo()
+```
+
