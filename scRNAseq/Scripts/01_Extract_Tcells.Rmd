@@ -1,0 +1,205 @@
+---
+title: "CRUK CI Summer School 2020"
+subtitle: 'Pseudotime Analysis'
+
+author: "Zeynep Kalender-Atak, Stephane Ballereau"
+output:
+  html_notebook:
+    code_folding: show
+    toc: yes
+    toc_float: yes
+    number_sections: true
+  html_document:
+    df_print: paged
+    toc: yes
+    number_sections: true
+    code_folding: show
+  html_book:
+    code_folding: show
+---
+
+In this workbook, we are starting our analysis with normalized [HCA](https://preview.data.humancellatlas.org) data and perform integration, clustering and dimensionality reduction. Our aim is to extract T-cells from this dataset and proceed with pseudotime analysis in the next workbook. 
+
+These are the libraries we will need in this workbook 
+```{r}
+library(SingleCellExperiment)
+library(scran)
+library(scater)
+library(batchelor)
+library(cowplot)
+library(pheatmap)
+library(tidyverse)
+library(SingleR)
+library(destiny)
+library(gam)
+library(viridis)
+library(msigdbr)
+library(clusterProfiler)
+```
+
+# Extract T-cells from HCA Dataset
+
+```{r seqQual.knitr_options, echo=FALSE, results="hide", message=FALSE}
+require(knitr)
+#opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE, cache=TRUE)
+opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE, cache=FALSE)
+opts_chunk$set(fig.width=7, fig.height=7) 
+```
+
+We are going to work with HCA data. This data set has been pre-processed and normalized before. 
+```{r}
+sce<-readRDS(file="~/Course_Materials/scRNAseq/pseudotime/hca_sce.bone.RDS")
+```
+
+We use symbols in place of ENSEMBL IDs for easier interpretation later.
+```{r}
+#rowData(sce)$Chr <- mapIds(EnsDb.Hsapiens.v86, keys=rownames(sce), column="SEQNAME", keytype="GENEID")
+#rownames(sce) <- uniquifyFeatureNames(rowData(sce)$ensembl_gene_id, names = rowData(sce)$Symbol)
+```
+
+## Variance modeling
+
+We block on the donor of origin to mitigate batch effects during highly variable gene (HVG) selection. We select a larger number of HVGs to capture any batch-specific variation that might be present.
+```{r}
+#dec.hca <- modelGeneVar(sce, block=sce$Sample.Name)
+#top.hca <- getTopHVGs(dec.hca, n=5000)
+```
+
+## Data integration
+
+The `batchelor` package provides an implementation of the MNN approach via the fastMNN() function. We apply it to our HCA data to remove the donor specific effects across the highly variable genes in `top.hca`. To reduce computational work and technical noise, all cells in all samples are projected into the low-dimensional space defined by the top d principal components. Identification of MNNs and calculation of correction vectors are then performed in this low-dimensional space.
+The corrected matrix in the reducedDims() contains the low-dimensional corrected coordinates for all cells, which we will use in place of the PCs in our downstream analyses. We store it in 'MNN' slot in the main sce object. 
+
+```{r}
+#set.seed(1010001)
+#merged.hca <- fastMNN(sce, batch = sce$Sample.Name, subset.row = top.hca)
+#reducedDim(sce, 'MNN') <- reducedDim(merged.hca, 'corrected')
+```
+
+## Dimensionality Reduction
+
+We cluster on the low-dimensional corrected coordinates to obtain a partitioning of the cells that serves as a proxy for the population structure. If the batch effect is successfully corrected, clusters corresponding to shared cell types or states should contain cells from multiple samples. We see that all clusters contain contributions from each sample after correction.
+
+```{r}
+#set.seed(01010100)
+#sce <- runUMAP(sce, dimred="MNN")
+#sce <- runTSNE(sce, dimred="MNN")
+```
+
+```{r}
+plotPCA(sce, colour_by="Sample.Name") + ggtitle("PCA")
+plotUMAP(sce, colour_by="Sample.Name") + ggtitle("UMAP")
+plotTSNE(sce, colour_by="Sample.Name") + ggtitle("tSNE")
+```
+
+## Clustering
+
+Graph-based clustering generates an excessively large intermediate graph so we will instead use a two-step approach with k-means. We generate 1000 small clusters that are subsequently aggregated into more interpretable groups with a graph-based method.
+```{r}
+#set.seed(1000)
+#clust.hca <- clusterSNNGraph(sce, use.dimred="MNN", 
+#    use.kmeans=TRUE, kmeans.centers=1000)
+#colLabels(sce) <- factor(clust.hca)
+table(colLabels(sce))
+```
+
+
+```{r}
+plotPCA(sce, colour_by="label") + ggtitle("PCA")
+plotUMAP(sce, colour_by="label") + ggtitle("UMAP")
+plotTSNE(sce, colour_by="label") + ggtitle("tSNE")
+```
+
+
+## Cell type classification
+
+We perform automated cell type classification using a reference dataset to annotate each cluster based on its pseudo-bulk profile. This is for a quick assignment of cluster identity. We are going to use Human Primary Cell Atlas (HPCA) data for that. `HumanPrimaryCellAtlasData` function provides normalized expression values for 713 microarray samples from HPCA ([Mabbott et al., 2013](https://bmcgenomics.biomedcentral.com/articles/10.1186/1471-2164-14-632)). These 713 samples were processed and normalized as described in [Aran, Looney and Liu et al. (2019)](https://www.nature.com/articles/s41590-018-0276-y). Each sample has been assigned to one of 37 main cell types and 157 subtypes.
+
+```{r}
+se.aggregated <- sumCountsAcrossCells(sce, id=colLabels(sce))
+hpc <- HumanPrimaryCellAtlasData()
+anno.hca <- SingleR(se.aggregated, ref = hpc, labels = hpc$label.main, assay.type.test="sum")
+
+anno.hca
+```
+
+
+```{r}
+tab <- table(anno.hca$labels, colnames(se.aggregated))
+# Adding a pseudo-count of 10 to avoid strong color jumps with just 1 cell.
+pheatmap(log10(tab+10))
+```
+
+```{r}
+sce$cell_type<-recode(sce$label, "1" = "T_cells", 
+       "2" = "Monocyte", 
+       "3"="B_cell",
+       "4"="MEP", 
+       "5"="B_cell", 
+       "6"="CMP", 
+       "7"="T_cells",
+      "8"="Monocyte",
+      "9"="T_cells",
+      "10"="Pro-B_cell_CD34+",
+      "11"="NK_cell",
+      "12"="B_cell")
+```
+
+We can now use the predicted cell types to color PCA, UMAP and tSNE. 
+
+```{r}
+plotPCA(sce, colour_by="cell_type", text_by="cell_type") + ggtitle("PCA")
+plotUMAP(sce, colour_by="cell_type", text_by="cell_type") + ggtitle("UMAP")
+plotTSNE(sce, colour_by="cell_type", text_by="cell_type") + ggtitle("tSNE")
+```
+
+
+We can also check expression of some marker genes. 
+
+CD3D and TRAC are used as marker genes for T-cells [Szabo et al. 2019](https://www.nature.com/articles/s41467-019-12464-3). 
+
+```{r}
+plotExpression(sce, features=c("CD3D"), x="label", colour_by="cell_type")
+```
+
+```{r}
+plotExpression(sce, features=c("TRAC"), x="label", colour_by="cell_type")
+```
+
+
+## Extract T-cells
+We will now extract T-cells and store in a new SCE object to use in pseudotime analysis. 
+
+
+Pull barcodes for T-cells 
+```{r}
+tcell.bc <- colData(sce) %>%
+    data.frame() %>%
+    group_by(cell_type) %>%
+    dplyr::filter(cell_type == "T_cells") %>%
+    pull(Barcode)
+
+table(colData(sce)$Barcode %in% tcell.bc)
+```
+
+Create a new SingleCellExperiment object for T-cells 
+
+```{r}
+tmpInd <- which(colData(sce)$Barcode %in% tcell.bc)
+sce.tcell <- sce[,tmpInd]
+```
+
+```{r}
+saveRDS(sce.tcell,"~/Course_Materials/scRNAseq/pseudotime/sce.tcell.RDS")
+```
+
+# Ackowledgements
+This notebook uses material from [SVI course](https://biocellgen-public.svi.edu.au/mig_2019_scrnaseq-workshop/public/index.html), [OSCA Book](https://osca.bioconductor.org), [Broad Institute Workshop](https://broadinstitute.github.io/2020_scWorkshop/) and  [Hemberg Group Course](https://scrnaseq-course.cog.sanger.ac.uk/website/index.html). 
+```{r}
+sessionInfo()
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
