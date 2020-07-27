@@ -1,0 +1,388 @@
+---
+title: "ChIPseq Practical 4: Downstream analysis"
+author: "Shoko Hirosue, Joanna Krupka, Shamith Samarajiiwa"
+date: "28 July 2020"
+output: 
+  BiocStyle::html_document
+  #BiocStyle::pdf_document
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+---
+
+# Introduction
+In this practical, we will be going through various downstream analysis of ChiP-seq.
+This material was adapted from the practical material written by Shamith Samarajiwa in 2019.
+
+## Learning objectives
+During this tutorial you will learn how to:  
+
+Part 1
+
+* Preprocess the summit files so that it is ready to be used by downstream analysis  
+* Annotate peaks 
+* perform functional enrichment analysis 
+
+Part 2
+
+* make heatmaps 
+* perform motif enrichment analysis 
+
+During Part1, all the commands can be run by clicking the green arrow or using "Console" tab.
+During Part 2, we need to type in commands in "Terminal" tab of rstudio.
+
+## Extract regions around peak summits
+
+Summits are the actual binding sites, we would like to make a list of regions with summits in the middle. This is good especially for motif analysis, as you expect to see the motif at the binding site.
+
+Frist, load the summit file and have a look inside. We will use `read.table` to load bam file in R.
+
+
+R
+```{r}
+peakfile <-read.table("/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_summits.bed")
+head(peakfile)
+```
+
+
+The regions are only 1bp length. 
+
+We would like to extend these genomic regions by 200bp in both directions, and have a set of genomic regions 400bp in length with the binding site in the middle.
+
+
+R
+```{r}
+# get a 400bp window around summit (-200 and +200)
+Motif_Peaks <- data.frame((peakfile$V1), (peakfile$V2-200), (peakfile$V2+200))
+head(Motif_Peaks)
+```
+
+Now we would like to write this out into a bed file. We can use `write.table` function. 
+
+R
+```{r}
+?write.table
+```
+
+We have to modify the arguments of `write.table` so that it would match bed file format.
+
+R
+```{r}
+write.table(Motif_Peaks, "/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection_1stattempt.bed")
+```
+
+
+Let's have a look at top 10 rows of the file.
+
+bash
+```{bash}
+head -n 10 "/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection_1stattempt.bed"
+```
+
+
+
+> Exercise 1
+>
+> Optimize the arguments of `write.table` so that it would output a properly formatted bed file.
+
+R
+```{r eval=FALSE}
+# create bed file
+options(scipen=999) # This forces R not to use exponential notations (eg. e+10)
+
+write.table(Motif_Peaks, 
+            file= "/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection.bed", 
+            row.names=___,
+            col.names =___,
+            sep=___,
+            quote =___)
+
+```
+
+bash
+```{bash}
+head -n 10 "/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection.bed"
+```
+
+
+# Downstream Analysis Part 1
+## Annotation of genomic features to peaks using ChIPseeker
+We will use [ChIPseeker](https://bioconductor.org/packages/release/bioc/html/ChIPseeker.html) to annotate genomic features.
+
+R
+```{r}
+library(ChIPseeker)
+```
+
+First, let's load peak files we just created. ChIPseeker provides `readPeakFile` to load the peak and store in GRanges object. GRanges object is an object for genomic locations widely used by Bioconductor tools. If you want to find out more about this object, please read [`GenomicRanges` vignette](http://bioconductor.org/packages/release/bioc/html/GenomicRanges.html).
+
+R
+```{r}
+peak <- readPeakFile("/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Peaks_for_motif_detection.bed")
+peak
+```
+
+Peak Annotation is performed by `annotatePeak`. User can define TSS (transcription start site) region, by default TSS is defined from -3kb to +3kb. 
+Let's first have a look at the documentation of `annotatePeak`.
+
+R
+```{r}
+?annotatePeak
+```
+
+All the peak information contained in peakfile will be retained in the output of annotatePeak. The position and strand information of nearest genes are reported. The distance from peak to the TSS of its nearest gene is also reported. The genomic region of the peak is reported in annotation column. Since some annotation may overlap, ChIPseeker adopted the following priority in genomic annotation.
+
+* Promoter
+* 5’ UTR 
+* 3’ UTR 
+* Exon 
+* Intron 
+* Downstream
+* Intergenic
+
+N.B.
+1. Downstream is defined as the downstream of gene end.
+2. ChIPseeker also provides parameter genomicAnnotationPriority for user to prioritize this hierachy.
+
+R
+```{r}
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene # Annotation of transcripts (transcripts' genomic regions)
+
+
+peakAnno <- annotatePeak(peak, annoDb="org.Hs.eg.db", TxDb = txdb, tssRegion = c(-3000, 3000))
+```
+
+
+Now, let's check `peakAnno` object we just made.
+
+R
+```{r}
+head(as.data.frame(peakAnno))
+```
+You can see that each of the regions is assigned to a gene by the proximity and feature (annotation).
+
+Let's make a bar plot.
+
+R
+```{r}
+plotAnnoBar(peakAnno)
+```
+
+The distance from the peak (binding site) to the TSS of the nearest gene is calculated by annotatePeak and reported in the output. Function `plotDistToTSS` is used to calculate the percentage of binding sites upstream and downstream from the TSS of the nearest genes, and visualize the distribution.
+
+R
+```{r}
+plotDistToTSS(peakAnno,
+              title="Distribution of transcription factor-binding loci\nrelative to TSS")
+
+```
+
+
+## Functional enrichment analysis using ChIPseeker
+
+`annotatePeak` function of ChIPseeker assign the nearest gene's name to each of the genomic regions. Using the assigned gene, ChIPseeker can perform functional enrichment analysis.
+
+Enrichment analysis is widely used to make sense of a list of genes. There are several Bioconductor packages for investigating whether the number of selected genes associated with a particular biological term is larger than expected, including [DOSE](https://www.bioconductor.org/packages/release/bioc/html/DOSE.html) for Disease Ontology, [ReactomePA](http://bioconductor.org/packages/release/bioc/html/ReactomePA.html) for reactome pathway, [clusterProfiler](https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html) for Gene Ontology and KEGG enrichment analysis. We will perform reactome pathway analysis as an example.
+
+
+R
+```{r}
+library(ReactomePA)
+```
+
+If you remember each of the genes are assigned to the nearest gene. We will use these genes to perform function enrichment analysis. (Make sure the method suits your biological questions)
+
+R
+```{r}
+head(as.data.frame(peakAnno))
+```
+
+R
+```{r}
+pathway <- enrichPathway(as.data.frame(peakAnno)$geneId)
+pathway
+```
+Unfortunately, the dataset we are using is a small modified dataset, we cannot find any enrichment here.
+
+If the set of genes are biologically meaningful, we can make a nice plot out of it.
+
+R
+```{r}
+gene <- c("11171", "8243", "112464", "2194",
+			"9318", "79026", "1654", "65003",
+			"6240", "3476", "6238", "3836",
+			"4176", "1017", "249")
+yy = enrichPathway(gene, pvalueCutoff=0.05)
+head(summary(yy))
+dotplot(yy)
+```
+
+
+
+# Downstream Analysis Part 2
+
+## Normalization and Visualization using Deeptools
+
+In this section, we are going to make a heatmap which shows the distribution of peaks around the regions specified. These regions could be regions of the genome with specific annotation (eg. TSS) or the regions which are called as peaks. One of the popular packages used for this purpose is called [Deeptools](https://deeptools.readthedocs.io/en/develop/index.html). In this practical, we could like to make a heatmap of input and ChIP seq data using peak regions.
+
+Deeptools offers a function (`bamCoverage`) which can convert BAM files into BigWig file with various normalization methods. In this practical, we use BigWig files of input and ChIP seq created from `MACS2 callpeak` bedGraph output, as they are already normalized for library sizes.
+
+## Deeptools
+
+First, we need to prepare a intermediate file that can be used to plot heatmap. `computeMatrix` function takes BigWig file and bed file with the genomic regions of your interest as input, compute the values (score per genome region) needed for heatmaps and summary plots. 
+
+For example, we can run the following command.
+
+bash
+```{bash eval=FALSE}
+computeMatrix reference-point -S /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_treat_pileup.bw /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_control_lambda.bw -R /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Peaks_for_motif_detection.bed -a 2000 -b 2000 --skipZeros --sortRegions descend -o /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix.gz --referencePoint "center"
+```
+
+
+> Exercise 2
+>
+> What does each argument in the code above mean? (Hint: run `computeMatrix reference-point` in Terminal.)
+
+> Answer 2
+>
+> * -S: bigWig file(s) containing the scores to be plotted.   
+> * -R: bed file(s) containing the regions to plot.   
+> * -a: --afterRegionStartLength. Distance downstream of the reference-point selected   
+> * -b: --beforeRegionStartLength. Distance upstream of the reference-point selected.  
+> * --skipZeros: Whether regions with only scores of zero should be included or not.
+> * --sortRegions: Whether the output file should present the regions sorted. 
+> * -o: File name to save the gzipped matrix file needed to plot heatmap.
+> * --referencePoint: The reference point for the plotting.   
+>
+
+
+The function uses the arguments as follows:
+
+1. The "center" of the regions (`--referencePoint`) specified in the BED file are taken.
+2. Values indicated with --beforeRegionStartLength (-b) and --afterRegionStartLength (-a) (=2000bp) are added.
+3. The resulting regions are split up into 50 bp bins (can be changed via (--binSize))
+4. The mean score based on the scores given in the bigWig file is calculated (the kind of score can be changed via --averageTypeBins).
+
+
+Now, we can visualize the read coverages for genomic regions using the matrix we just made. We use a function called `plotHeatmap`.
+
+bash
+```{bash eval=FALSE}
+plotHeatmap --matrixFile /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix.gz --outFileSortedRegions /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmapsortedregions.bed --outFileName /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmap.png
+```
+
+
+> Exercise 3
+>
+> What does each argument in the code above mean? (Hint: run `plotHeatmap` in Terminal.)
+
+> Answer 3
+>
+> * --matrixFile: Matrix file from the computeMatrix tool.   
+> * --outFileSortedRegions: The name of bed file into which the regions are sorted (The order of genomic regions is the same as the one used in heatmap).   
+> * --outFileName: output file name.  
+
+
+`plotHeatmap` can sort the genomic regions using the coverage scores calculated in `computeMatrix` and plots heatmap. By default, the regions are sorted in the decsending order.
+
+Let's have a look at the sorted bed file.
+
+bash
+```{bash eval=FALSE}
+head -n 10 /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmapsortedregions.bed
+```
+
+You can see that the genomic regions are reordered. This order matches the order in heatmap.
+Let's have a look at the heatmap.png file. (Use the tab "Files" on the right side of Rstudio.)
+
+> Exercise 4
+>
+> 1. Make a heatmap with 1000bp regions (500bp upstream, 500bp downstream) with summits at their centre. Use "matrix_1.gz" as the name of the file, and output heatmap as "heatmap_1".
+> 2. Change the color of the heatmap (eg. to 'copper') and write it out as "heatmap_2". (Hint: Have a look at `--colorMap` section of `plotHeatmap`)
+> 3. Sort the genomic regions in the heatmap in ascending order and write it out as "heatmap_3". (Hint: Have a look at `--sortRegions` section of `plotHeatmap`)
+
+> Answer 4
+
+bash
+```{bash eval=FALSE}
+
+```
+
+
+## Motif Analysis using MEME Suite
+
+Let's use [MEME Suite](http://meme-suite.org/) to do the motif analysis. There are various different tools available.
+
+
+MEME-ChIP performs several motif analysis steps on a set of user provided DNA sequences in fasta format. It is especially useful for analyzing peaks from ChIP-seq experiments. MEME-ChIP can 
+
+1. discover novel DNA-binding motifs in the central regions (100 characters by default) of the input sequences (with MEME and DREME),
+2. determine which motifs are most centrally enriched (with CentriMo),
+3. analyze them for similarity to known binding motifs (with Tomtom), and
+4. automatically group significant motifs by similarity,
+5. perform a motif spacing analysis (with SpaMo), and,
+6. create a GFF file for viewing each motif's predicted sites in a genome browser.
+(quoted from http://meme-suite.org/doc/meme-chip.html?man_type=web)
+
+
+First, we have to convert our bed file into fasta file. We can use [bedtools](https://bedtools.readthedocs.io/en/latest/index.html) for this. (It is a very useful tool especially to edit bed files!) 
+
+We use a function called `bedtools getfasta`. First, as usual, let's have a look what arguments the function takes.
+
+bash
+```{bash eval=FALSE}
+bedtools getfasta -h
+```
+
+You need the bed file ("Peaks_for_motif_detection.bed") and the actual sequence of hg38 ("hg38_chr3.fa") as input to convert genomic regions specified in bed file into the actual sequences of those regions. We will take a look what the fasta file "hg38_chr3.fa" looks like. You can download this kind of data from [gencode](https://www.gencodegenes.org/) or [UCSC websites](https://hgdownload.soe.ucsc.edu/downloads.html). Ideally, you use the same fasta file as you used for the upstream analysis.
+
+bash
+```{bash eval=FALSE}
+# If strand information is known use -s option as well
+bedtools getfasta -fi "/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/hg38_chr3.fa" -bed "/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Peaks_for_motif_detection.bed" -fo "/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Tp73_peaks.fa"
+```
+
+
+
+Now, let's have a look at the first 10 lines of this fasta file.
+
+bash
+```{bash eval=FALSE}
+head -n 10 /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Tp73_peaks.fa
+```
+
+With this fasta file, we are ready to run meme-chip!
+
+bash
+```{bash eval=FALSE}
+meme-chip
+```
+
+
+First, it will detect de-novo motifs using `MEME` and `DREME`. These two use different algorhythms to detect motifs (MEME: Expectation Maximisation (EM) algorithm, DREME: pattern matching). MEME is good at finding relatively long motif, whereas DREME is better at finding short motifs.
+
+Ideally the sequences should be all the same length, between 100 and 500 base-pairs long and centrally enriched for motifs. (Ours is 400bp, centrally enriched.)
+
+The de-novo motifs discovered by `MEME` and `DREME` are compared against known motifs from PWM databases using `TOMTOM`. The motifs found are also checked by `CentriMo` for central enrichment (enrichment of the motif in the central 100bp regions compared to more distal regions of 400bp). 
+
+`SpaMo` uses each of the discovered motifs as the "primary" motif, and all the motifs in the database as potential "secondary" motifs and reports the secondary motifs whose occurrences are enriched at particular distances relative to the primary motif's occurrences in the input sequences. 
+
+bash
+```{bash eval=FALSE}
+# This takes a while to run (30-45 mins)
+
+meme-chip -oc /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/meme -db /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/JASPAR/JASPAR_CORE_2016_vertebrates.meme /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Tp73_peaks.fa
+```
+The function above takes a while to run, so let's have a look at the results first.
+
+# References
+* ChIPseeker: Yu G, Wang L, He Q (2015). “ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization.” Bioinformatics
+* GenomicRanges: Lawrence M, Huber W, Pagès H, Aboyoun P, Carlson M, Gentleman R, Morgan M, Carey V (2013). “Software for Computing and Annotating Genomic Ranges.” PLoS Computational Biology
+* Deeptools: Ramírez, Fidel, Devon P. Ryan, Björn Grüning, Vivek Bhardwaj, Fabian Kilpert, Andreas S. Richter, Steffen Heyne, Friederike Dündar, and Thomas Manke. deepTools2: A next Generation Web Server for Deep-Sequencing Data Analysis. Nucleic Acids Research (2016)
+* MEME-ChIP: Philip Machanick and Timothy L. Bailey, "MEME-ChIP: motif analysis of large DNA datasets", Bioinformatics, 2011
+* DOSE: Yu G, Wang L, Yan G, He Q (2015). “DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis.” Bioinformatics
+* ReactomePA: Yu G, He Q (2016). “ReactomePA: an R/Bioconductor package for reactome pathway analysis and visualization.” Molecular BioSystems
+* clusterprofiler: Yu G, Wang L, Han Y, He Q (2012). “clusterProfiler: an R package for comparing biological themes among gene clusters.” OMICS: A Journal of Integrative Biology
+

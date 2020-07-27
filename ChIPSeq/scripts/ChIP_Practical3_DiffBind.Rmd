@@ -1,0 +1,372 @@
+---
+title: "ChIPseq Practical 3: Differential binding analysis using DiffBind"
+author: "Joanna A. Krupka, Shoko Hirosue, Shamith Samarajiwa"
+date: "28 July 2020"
+output: 
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "/home/ubuntu/Course_Materials/ChIPSeq/practicals/DiffBind")
+```
+
+# Before we start
+
+**Course etiquette**  
+Please read the [course etiquette](https://docs.google.com/presentation/d/e/2PACX-1vQv9nTlsdRC9iZJU138tLL1jrwNoryp8P-FnXxb_ugOOWjbav4QHTLYLLZj2KK4kTO0_3x3VlzSdrUu/pub?start=false&loop=false&delayms=3000&slide=id.p1), if you haven't read that yet.  
+
+**Shared document**   
+We are using shared GoogleDocs documents for each of the main topics covered during the summer school. The document for this section can be found [here](https://docs.google.com/document/d/1pDTRtiG3LwTHxaIqWLy1QnddFu09Mv9OiBDUcPsJ6Do/edit#).  
+
+**Prerequisites**   
+If you want to follow this tutorial using your own machine, you need to install the following R packages by running this code:  
+
+```{r, eval=F}
+install.packages("tidyverse")
+
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("DiffBind")
+```
+
+The dataset we will use for this tutorial is not a part of the *DiffBind* package. You can download this sample datasets from [here](https://www.dropbox.com/s/yqkelyy1jhk05n9/DiffBind_vignette_data.tar.gz?dl=1). 
+
+# Introduction
+
+The primary aim of the DiffBind package is to identify differentially bound regions between two sample groups. It includes functions to support the processing of peak sets, including overlapping and merging peak sets, counting sequencing reads overlapping intervals in peak sets, and identifying statistically significantly differentially bound sites.
+
+Before we start let's load required packages: 
+
+```{r, eval=T, message=F}
+library(DiffBind)
+library(tidyverse)
+library(rtracklayer)
+```
+
+## Learning objectives  
+
+During this tutorial you will learn how to:  
+
+* perform basic exploratory data analysis of ChIP-Seq data  
+* perform differential binding analysis using `DiffBind`  
+
+## Input data  
+
+DiffBind works primarily with *peaksets*, which are sets of genomic intervals representing candidate protein binding sites. Each interval consists of:  
+
+*  chromosome,   
+*  a start and end position,  
+*  a score of some type indicating confidence in or strength of the peak.  
+
+Additionally, files containing mapped sequencing reads (generally .bam files) can be associated with each peakset.  
+
+In order to run the command smoothly, let's first set the working directory by running the following command in the console:
+
+```{r, eval = T}
+setwd("/home/ubuntu/Course_Materials/ChIPSeq/practicals/DiffBind")
+```
+
+You should now see 2 folders: `peaks` and `reads` and a `tamoxifen.csv`, that contains all metadata for the experiment. 
+
+```{bash, eval = T}
+ls .
+```
+
+# Step 1: Reading a peakset  
+
+Peaksets are derived either from ChIP-Seq peak callers, such as MACS or using some other criterion (e.g. genomic windows, or all the promoter regions in a genome).  
+
+The easiest way is to generate a `.csv` file or `.xls`/`.xlsx` file with one line for each peakset.  
+
+**More than 1 peakset per sample**  
+E.g. if multiple peak callers are used for comparison purposes each sample would have more than one line in the sample sheet. A merging function will generate a consensus peakset for the experiment.  
+
+Let's read an example sample sheet into a `data.frame`. 
+
+```{r, eval=T}
+# Read a csv file
+samples <- read.csv("tamoxifen.csv")
+
+# Look at the loaded metadata
+names(samples)
+samples
+```
+
+A sample sheet should have a stucture that is compatible with *DiffBind* loading function. You can explore all the requirements by checking the documentation for `dba` function:
+
+```{r, eval=T}
+?DiffBind::dba
+```
+
+The peaksets are read in using the following *DiffBind* function, that will construct a new *DBA* object from the sample sheet. 
+
+```{r, eval=T}
+tamoxifen <- dba(sampleSheet="tamoxifen.csv")
+```
+
+A metadata of the *DBA* can be viewed simply by: 
+
+```{r, eval=T}
+tamoxifen
+```
+
+First line printed into a console shows the total number of unique peaks after merging overlapping ones (3795), and the dimensions of the default binding matrix of 11 samples by the 2845 sites that overlap in at least two of the samples. You may change the minimal number of overlaping samples by modyfying a parameter `minOverlap` in `dba` function while loading the peaksets.  
+
+# Step 2: Occupancy analysis  
+
+Peaksets provide insight into the potential *occupancy* of the ChIPed protein at specific genomic regions. After the peaksets have been loaded you may access individual peaks in each sample by subsetting the main `dba` object. For example, the following code will show you genomic location of the first 6 peaks of the first sample:
+
+```{r, eval=T}
+head(tamoxifen$peaks[[1]])
+```
+
+It is also useful to perform some exploratory visualisation to investigate how how these occupancy maps agree with each other, eg. between experimental conditions, biological models or peak callers. 
+
+```{r, eval = T}
+dba.plotHeatmap(tamoxifen)
+```
+
+We generated a correlation heatmap with initial sample clustering. The plot shows that the replicates for each cell line cluster together, however the cell lines do not cluster accodring to their sensitivity to tamoxifen treatment. It also shows that the two most highly correlated cell lines are the two MCF7-based ones, even though they respond differently to tamoxifen treatment.  
+
+Beyond quality control, the product of an occupancy analysis may be a consensus peakset, representing an overall set of candidate binding sites to be used in further analysis.
+
+# Step 3: Counting reads  
+
+The next step is to take the alignment files (BAM) and compute count information for each of the peaks/regions in the consensus set. For each of the consensus regions *DiffBind* takes the number of uniquelu aligned reads to compute a normalized read count for each sample at every potential binding site. The peaks in the consensus peakset may be re-centered and trimmed based on calculating their summits (point of greatest read overlap) in order to provide more standardized peak intervals.
+
+These reads are obtained using the `dba.count function`. As this example is based on a transcription factor that binds to the DNA, resulting in "punctate", narrow peaks, it is advisable to use the "summits" option to re-center each peak around the point of greatest enrichment. This keeps the peaks at a consistent width (in this case, with `summits=250`, the peaks will be `500bp`, extending `250bp` up and downstream of the summit). The final result of counting is a binding affinity matrix containing a (normalized) read count for each sample at every potential binding site.
+
+```{r, eval=T}
+tamoxifen.counted <- dba.count(tamoxifen, summits=250)
+```
+
+Take a look at the *DBA* object again. You should now see a column that contains the FRiP values for each sample.  This is the proportion of reads for that sample that overlap a peak in the consensus peakset, and can be used to indicate which samples show more enrichment overall.
+
+```{r, eval = T}
+tamoxifen.counted
+```
+
+With this matrix, the samples can be re-clustered using affinity, rather than occupancy data:
+
+```{r, eval = T}
+dba.plotHeatmap(tamoxifen.counted)
+```
+
+To see how well the samples cluster with one another, we can draw a PCA plot using all 2845 consensus sites.
+
+```{r, eval = T}
+dba.plotPCA(tamoxifen.counted,  attributes=DBA_TISSUE, label=DBA_ID)
+```
+
+You should see that samples from the same cell line cluster together. How about their sensitivity to tamoxifen? To color samples by cell lines we used a parameter `attributes=DBA_TISSUE`, which utilizes a constant variable indicating which column in the metadata file stands for the source tissue.  
+
+```{r, eval = T}
+DBA_TISSUE
+samples[,DBA_TISSUE]
+```
+
+> **Challenge 1**  
+> 1. Look at the documentation of the constant variables used in DiffBind package (Hint: `?DBA_TISSUE`)
+> 2. Which column contains the informations about cell lines sensitivity to tamoxifen?   
+> 3. Plot PCA coloring samples by their sensitivity to tamoxifen.   
+
+# Step 4: Differential binding affinity analysis  
+
+Next we have to let *DiffBind* know how we want to group our samples. In our case we will group based on condition. This is done using the function, as follows:
+
+```{r, eval = T}
+tamoxifen.counted <- dba.contrast(tamoxifen.counted, categories=DBA_CONDITION)
+```
+
+You can see almost the same summary table as before except that now the contrast is added at the end.
+
+```{r, eval = T}
+tamoxifen.counted
+```
+
+The main differential analysis function is invoked as follows:
+
+```{r, eval = T}
+# DESeq2
+tamoxifen.analysed <- dba.analyze(tamoxifen.counted)
+# edgeR
+tamoxifen.analysed <- dba.analyze(tamoxifen.counted, method=DBA_EDGER)
+# All methods simulanously 
+tamoxifen.analysed <- dba.analyze(tamoxifen.counted, method=DBA_ALL_METHODS)
+```
+
+The method uses existing methods created to perform differential expression analysis. The default method is `DESeq2` but you can try `edgeR` as well. At the end of the summary displayed you can see the amount of differentially bound sites found by each method. 
+
+```{r, eval = T}
+dba.show(tamoxifen.analysed, bContrasts=T)
+```
+
+This means that out of the 2845 regions `DESeq2` identified 631 and edgeR 326 as significantly differentially bound using the default threshold of `FDR <= 0.05`. 
+
+We can see that edgeR identifies alot fewer peaks, but it would be good to see if those peaks are a subset of the DESeq2 results. For a quick look at the overlapping peaks identified by the two different tools (DESeq2 and edgeR) we can plot a Venn diagram: 
+
+```{r, eval = T}
+dba.plotVenn(tamoxifen.analysed,contrast=1,method=DBA_ALL_METHODS)
+```
+
+> **Challenge 2**  
+> The default threshold is padj < 0.05. 
+> 1. How many regions are differentially bound between resistant and sensitive cell lines with a more stringent threshold of 0.01? Use both methods: DESeq2 and edgeR. (Hint: use `th = 0.01`).  
+> 2. Plot a Venn Diagram of overlapping peaks identified by the two different tools.   
+
+We can now plot the same type of heatmap as at the beginning of our analysis using only the differentially bound sites. This will strengthen a bit the differeneces between the conditions as expected.
+
+```{r, eval = T}
+dba.plotHeatmap(tamoxifen.analysed, contrast=1)
+```
+
+We can also display the binding affinity heatmap to see the binding patterns across the identified regions. You can control which method’s result you wish to see by setting `method=DBA_EDGER` or `method=DBA_DESEQ2` (default). We will use a parameter `ColAttributes = DBA_CONDITION` to display only exprerimental conditions as column annotations. 
+
+```{r, eval = T}
+dba.plotHeatmap(tamoxifen.analysed, ColAttributes = DBA_CONDITION, contrast=1, correlations=FALSE)
+```
+
+# Step 5: Plotting and reporting  
+
+To further analyse the results we can use built in functions to generate `MA plots`, `volcano plots`, `PCA plots` and `boxplots`. All these functions can be called using either one of the differential binding methods (eg. DESeq2/edgeR).
+
+**MA plots** are useful to visualise which data points are differentially bound. Each of these points represents a binding site and red points indicate differentailly bound ones. These points have a log fold change of at least 2.  
+
+```{r, eval = T}
+dba.plotMA(tamoxifen.analysed)
+```
+
+Similarly to MA plots, **Volcano plots** can show the significantly differentailly bound sites and show their fold enrichment (or p-values).
+
+```{r, eval = T}
+dba.plotVolcano(tamoxifen.analysed)
+```
+
+**PCA** can give us different representation of how the samples are associated. We see that samples of the different conditions cluster separately. This command calculates principal components based on the differentially bound sites only.  
+
+```{r, eval = T}
+dba.plotPCA(tamoxifen.analysed, contrast = 1)
+```
+
+Boxplots can give us an idea about the read distribution differences between the classes - in our case the two conditions. The first two boxes show distribution of reads over all differentially bound sites; the middle two show differences on those sites where the affinity increases in Responsive and the two boxes on the right show differences where the affinity increases in Resistant samples.  
+
+```{r, eval = T}
+dba.plotBox(tamoxifen.analysed)
+```
+
+And finally we can report the differentially bound peak regions, identified by either method (DESeq2/edgeR). These results files contain the genomic coordinates for all consensus sites and statistics for differential enrichment including fold-change, p-value and FDR.
+
+```{r, eval = T}
+report <- dba.report(tamoxifen.analysed)
+report
+```
+
+The value columns are described below:  
+
+* **Chr:** Chromosome of binding site  
+* **Start:** Starting base position of binding site  
+* **End:** End base position of binding site  
+* **Conc:** mean read concentration over all the samples (the default calculation uses log2 normalized ChIP read counts with control read counts subtracted)   
+* **Conc_group1:** Group 1 Concentration  
+* **Conc_group2:** Group 2 Concentration  
+* **Fold:** Fold difference – mean fold difference of binding affinity of group 1 over group 2 (Conc1 - Conc2)  
+* **p-valule** and ***FDR** statistic indicating significance of difference  
+
+Before writing to file we need to convert it to a data frame so that genomic coordinates get written as columns and not GRanges.  
+
+```{r, eval = T}
+report.df <- as.data.frame(report)  
+write.table(report.df, "tamoxifen_report.csv", sep="\t", quote=F, row.names=F)
+```
+
+# Advanced occupancy analysis and overlaps  
+
+We will look at the occupancy resistance data in more detail showing what a pure occupancy-based analysis would look like, and comparing it to the results obtained using the affinity data.  
+
+One reason to do an occupancy-based analysis is to determine what candidate sites should be used in a subsequent affinity-based analysis. In the example so far, we took all sites that were identified in peaks in at least two of the eleven peaksets, reducing the number of sites from 3795 overall to the 2845 sites used in the differential analysis. We could have used a more stringent criterion, such as only taking sites identified in five or six of the peaksets, or a less stringent one, such as including all 3795 sites.  
+
+A global overview of overlap numbers at different threshold can be obtained using the RATE mode of the `dba.overlap` function as follows:
+
+```{r, eval = T}
+olap.rate <- dba.overlap(tamoxifen, mode=DBA_OLAP_RATE)
+olap.rate
+```
+
+The returned data in olap.rate is a vector containing the number of peaks that appear in at least one, two, three, and so on up to all eleven peaksets.
+
+These values can be plotted to show the overlap rate drop-off curve:
+
+```{r, eval = T}
+plot(olap.rate,type='b',ylab='# peaks', xlab='Overlap at least this many peaksets')
+```
+
+The presence of a peak in multiple peaksets is an indication that it is a "real" binding site, in the sense of being identifiable in a repeatable manner (by different biological replicates or/and different peak callig algorithms).
+
+Let's look at tamoxifen responsive MCF7 cell line represented by 3 replicates. The overlap rate for just the positive MCF7 samples can be isolated using a sample mask. A set of sample masks are automatically associated with a `DBA` object in the `$mask` field:  
+
+```{r, eval = T}
+names(tamoxifen$masks)
+```  
+
+Arbitrary masks can be generated using the `dba.mask` function. In this case, a mask that isolates the MCF7 samples can be generated by combining to pre-defined masks (MCF7 and Responsive) and passed into the function:  
+
+```{r, eval = T}
+dba.overlap(tamoxifen, tamoxifen$masks$MCF7 & tamoxifen$masks$Responsive, mode=DBA_OLAP_RATE)
+```
+
+There are 885 peaks (out of 1780) identified in all three replicates. We can visualise that as a Venn Diagram:  
+
+```{r, eval = T}
+dba.plotVenn(tamoxifen, tamoxifen$masks$MCF7 & tamoxifen$masks$Responsive)
+```
+
+> **Challenge 3**   
+> 1. Check overlap between the two replicates of tamoxifen responsive `T47D` cell line.  
+> 2. Visualise the overlap as Venn Diagram.  
+
+A separate consensus peakset for each of the replicated sample types can be added to the DBA object using dba.peakset:
+
+```{r, eval = T}
+tamoxifen_consensus <- dba.peakset(tamoxifen, consensus=c(DBA_TISSUE,DBA_CONDITION), minOverlap=0.66)
+```
+
+This adds a new consensus peakset for each set of samples that share the same Tissue and Condition values. From this, a new `DBA` object can be generated consisting of only the five consensus peaksets (the $Consensus mask filters peaksets previously formed using) :  
+
+```{r, eval = T}
+tamoxifen_consensus <- dba(tamoxifen_consensus, mask=tamoxifen_consensus$masks$Consensus, minOverlap=1)
+tamoxifen_consensus
+```
+
+An overall consensus peakset, that includes peaks identified in at least two replicates of at least one sample group, can be identified:  
+
+```{r, eval = T}
+consensus_peaks <- dba.peakset(tamoxifen_consensus, bRetrieve=TRUE)
+```
+
+This consensus peakset could then be used as the basis for the binding matrix used in `dba.count`.  
+
+> **Challenge 4**  
+> 1. Perform differential binding analysis using `tamoxifen` as input (Hint: use `peaks=consensus_peaks`).  
+> 2. How many differential binding sites was identified using `DESeq2` with the significance threshold `FDR < 0.01`?   
+> 3. Requiring that consensus peaks overlap in at least one third of the samples in each group, check the overlap between tamoxifen sensitive and resistant samples. Hint (use `minOverlap=0.33` and `consensus=DBA_CONDITION`)  
+> 4. Plot the results as Venn Diagram.  
+
+
+# Acknowledgements  
+
+**Dora Bihary**  
+VIB Center for Cancer Biology, University of Leuven, BE  
+MRC Cancer Unit, University of Cambridge, UK  
+
+[**Harvard Chan Bioinformatics Core**](https://bioinformatics.sph.harvard.edu)
+
+[**DiffBind**](https://bioconductor.org/packages/release/bioc/html/DiffBind.html) **team**  
+

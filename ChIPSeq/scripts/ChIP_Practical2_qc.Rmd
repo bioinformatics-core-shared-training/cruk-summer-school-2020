@@ -1,0 +1,55 @@
+---
+title: "ChIPseq Practical 2: Evaluating ChIP seq data"
+author: "Shoko Hirosue, Joanna Krupka, Dora Bihary, Shamith Samarajiiwa"
+date: "28 July 2020"
+output: 
+  BiocStyle::html_document
+  #BiocStyle::pdf_document
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+---
+
+# Introduction
+In this practical session, we will familiarize ourselves to [IGV (Integrative Genomics Viewer)](https://software.broadinstitute.org/software/igv/home) to assess the ChIP seq quality. IGV is used to visualize next-generation sequencing data and annotations. Open the virtual desktop and type `igv` in the terminal. A window of IGV should open.
+
+This material was adapted from the practical material written by Dora Bihary in 2019.
+
+## Loading IGV and basic navigation on the genome browser
+
+1. Open IGV and select the genome build we were using for the alignment in the top left corner (“Human (hg38)”). If it's not listed, select Genomes > Load Genome from Server, select hg38 and load the genome.
+
+2. Select a single chromosome (eg. chr3).
+
+3. Navigate to chr3:39,000,000-43,000,000.
+
+4. Double click on one of the genes to recenter the window on that gene.
+
+5. Navigate to your favorite gene (or ZMAT3).
+
+6. Zoom out to see the surrounding genes.
+
+7. Right click the left side panel next to your genome track and select “Expanded” to see all the transcripts.
+
+
+## Loading your data into IGV
+
+1. Now click File > Load from File… and open the bam files and peak files. Let's open "tp53_r1.fastq_trimmed.fastq_sorted.bam" and its input file "input.fastq_trimmed.fastq_sorted.bam", as well as the narrowPeak file "tp53_r1.fastq_trimmed.fastq_sorted_peaks.narrowPeak" and summit bed file "tp53_r1.fastq_trimmed.fastq_sorted_summite.bed" in the data directory (/home/ubuntu/Course_Materials/ChIPSeq/practicals/data).
+
+2. Zoom into one of the peak regions.
+
+3. Select bam files you have loaded, right click them and select "Group Autoscale".
+
+4. Bookmark this region:
+Go to Regions > Region Navigator. Click Add, and give your region a name (eg. MyFirstRegion) in the “Description” field. Click “View”.
+This way if you navigate somewhere else on the genome you can always easily access this region from Regions > Region Navigator.
+
+5. Remove all the files (just so it's easier to see.) Load BigWig files ("tp53_r1.fastq_trimmed.fastq_sorted_standard_treat_pileup.bw" and "tp53_r1.fastq_trimmed.fastq_sorted_standard_control_lambda.bw")
+
+6. Group autoscale the two tracks so they are comparable.
+
+7. Set different colours for each of the tracks (Right click at the file name, choose Change Track Color (Positive values)…).
+
+8. Export an image from File > Save Image and have a look at the saved file.
+
