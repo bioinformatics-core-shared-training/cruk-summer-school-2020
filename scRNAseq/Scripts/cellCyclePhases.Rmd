@@ -1,0 +1,261 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Cell cycle phases'
+
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+    number_sections: true
+  html_document:
+    df_print: paged
+    toc: yes
+    number_sections: true
+    code_folding: hide
+  html_book:
+    code_folding: hide
+params:
+  outDirBit: "AnaWiSce/Attempt1"
+---
+
+```{r}
+projDir <- "/mnt/scratcha/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+nbPcToComp <- 50
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+# First, set some variables:
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+set.seed(123) # for reproducibility
+knitr::opts_chunk$set(eval = TRUE) 
+```
+
+```{r}
+suppressMessages(library(ggplot2))
+suppressMessages(library(scater))
+suppressMessages(library(scran))
+suppressMessages(library(dplyr))
+fontsize <- theme(axis.text=element_text(size=12), axis.title=element_text(size=16))
+```
+
+# Cell cycle assignment
+
+Source: [Cell cycle assignment](https://osca.bioconductor.org/cell-cycle-assignment.html) of the OSCA book.
+
+## Load data
+
+We will load the R file keeping the SCE object with the normalised counts for 500 cells per sample.
+
+```{r}
+setName <- "caron"
+setSuf <- "_5hCellPerSpl"
+
+# Read object in:
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_clustered.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+if(!file.exists(tmpFn))
+{
+	knitr::knit_exit()
+}
+sce <- readRDS(tmpFn)
+sce
+
+sce$clusterStg <- factor(paste0("c", sce$cluster),
+			 levels = paste0("c", levels( sce$cluster)) )
+```
+
+## Motivation
+
+On occasion, it can be desirable to determine cell cycle activity from scRNA-seq data. In and of itself, the distribution of cells across phases of the cell cycle is not usually informative, but we can use this to determine if there are differences in proliferation between subpopulations or across treatment conditions. Many of the key events in the cell cycle (e.g., passage through checkpoints) are post-translational and thus not directly visible in transcriptomic data; nonetheless, there are enough changes in expression that can be exploited to determine cell cycle phase. We demonstrate using the 416B dataset, which is known to contain actively cycling cells after oncogene induction.
+
+
+## Using the cyclins
+
+The cyclins control progression through the cell cycle and have well-characterized patterns of expression across cell cycle phases. Cyclin D is expressed throughout but peaks at G1; cyclin E is expressed highest in the G1/S transition; cyclin A is expressed across S and G2; and cyclin B is expressed highest in late G2 and mitosis. Inspection of the relative expression of cyclins across the population can often be sufficient to determine the relative cell cycle activity in each cluster (Figure 16.1). For example, cluster 1 is likely to be in G1 while the other clusters are scattered across the later phases.
+
+```{r}
+#cyclin.genes <- grep("^CCN[ABDE][0-9]$", rowData(sce)$SYMBOL)
+cyclin.genes <- grep("^CCN[ABDE]+", rowData(sce)$Symbol)
+cyclin.genes <- rownames(sce)[cyclin.genes]
+rowData(sce)[cyclin.genes,]
+
+# only use the 10 most variable cyclins:
+tmpVar <- DelayedMatrixStats::rowVars( DelayedArray(assay(sce[cyclin.genes,], "logcounts")))
+names(tmpVar) <- cyclin.genes
+cyclin.genes.sub <- names(tmpVar[order(tmpVar, decreasing=T)])[1:10]
+rowData(sce)[cyclin.genes.sub,c("ensembl_gene_id", "Symbol")]
+```
+
+```{r}
+library(scater)
+plotHeatmap(sce, order_columns_by="clusterStg", 
+    cluster_rows=TRUE, features=sort(cyclin.genes.sub))
+```
+
+For example, we can use standard DE methods (Chapter 11) to look for upregulation of each cyclin, which would imply that a subpopulation contains more cells in the corresponding cell cycle phase. The same logic applies to comparisons between treatment conditions, as described in Chapter 14.
+
+```{r}
+library(scran)
+markers <- findMarkers(sce, groups=sce$clusterStg, subset.row=cyclin.genes, 
+    test.type="wilcox", direction="up")
+
+# We can infer that cluster 4 has more cells in G2/M than the other clusters,
+# based on higher expression of the cyclin B's.
+markers[[4]] %>% data.frame() %>%
+	tibble::rownames_to_column("ensembl_gene_id") %>%
+	left_join(data.frame(rowData(sce))[, c("ensembl_gene_id", "Symbol")], by="ensembl_gene_id") %>%
+	select(Symbol, Top, p.value, FDR, summary.AUC)
+```
+
+Direct examination of cyclin expression is easily to understand, interpret and experimentally validate. However, it is best suited for statements about relative cell cycle activity; for example, we would find it difficult to assign cell cycle phase in Figure 16.1 without the presence of clusters spanning all phases to provide benchmarks for “high” and “low” expression of each cyclin. We also assume that cyclin expression is not affected by biological processes other than the cell cycle, which may be a strong assumption in some cases, e.g., malignant cells. This strategy is strongly dependent on having good sequencing coverage of the cyclins, which is less of an issue for the whole-of-transcriptome methods described below that use information from more genes.
+
+## Using the cyclone() classifier
+
+The prediction method described by Scialdone et al. (2015) is another approach for classifying cells into cell cycle phases. Using a reference dataset, we first compute the sign of the difference in expression between each pair of genes. Pairs with changes in the sign across cell cycle phases are chosen as markers. Cells in a test dataset can then be classified into the appropriate phase, based on whether the observed sign for each marker pair is consistent with one phase or another. This approach is implemented in the cyclone() function from the scran package, which also contains pre-trained set of marker pairs for mouse and human data.
+
+```{r, eval=FALSE}
+set.seed(100)
+library(scran)
+hs.pairs <- readRDS(system.file("exdata", "human_cycle_markers.rds", 
+    package="scran"))
+
+# Using Ensembl IDs to match up with the annotation in 'mm.pairs'.
+assignments <- cyclone(sce, hs.pairs, gene.names=rowData(sce)$ensembl_gene_id) # SLOW
+```
+
+Write assignments to file.
+
+```{r, eval=FALSE}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_cyclone.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+saveRDS(assignments, file=tmpFn)
+```
+
+```{r, eval=TRUE}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_cyclone.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+assignments <- readRDS(file=tmpFn)
+```
+
+Copy cell cycle assignments to SCE object:
+
+```{r}
+colData(sce)$phases <- assignments$phases
+```
+
+For each cell, a higher score for a phase corresponds to a higher probability that the cell is in that phase. We focus on the G1 and G2/M scores as these are the most informative for classification.
+
+The plot below show the cell cycle phase scores obtained by applying the pair-based classifier on the dataset. Each point represents a cell, plotted according to its scores for G1 and G2/M phases. 
+
+```{r}
+plot(assignments$score$G1, assignments$score$G2M,
+    xlab="G1 score", ylab="G2/M score", pch=16)
+```
+
+Cells are classified as being in G1 phase if the G1 score is above 0.5 and greater than the G2/M score; in G2/M phase if the G2/M score is above 0.5 and greater than the G1 score; and in S phase if neither score is above 0.5. 
+
+```{r}
+colLabels(sce) <- colData(sce)$source_name
+table(assignments$phases, colLabels(sce))
+# prop per phase
+round(prop.table(table(assignments$phases, colLabels(sce)),1),2)
+# prop per type
+round(prop.table(table(assignments$phases, colLabels(sce)),2),2)
+```
+
+```{r}
+tsne1 <- plotTSNE(sce, colour_by="phases") + fontsize
+tsne1 + facet_wrap(. ~ sce$source_name)
+tsne1 + facet_wrap(. ~ sce$phases)
+```
+
+```{r}
+umap1 <- plotUMAP(sce, colour_by="phases") + fontsize
+umap1 + facet_wrap(. ~ sce$source_name)
+umap1 + facet_wrap(. ~ sce$phases)
+```
+
+## Regressing out cell cycle phase
+
+For some time, it was popular to regress out the cell cycle phase prior to downstream analyses. The aim was to remove uninteresting variation due to cell cycle, thus improving resolution of other biological processes of interest. We could implement this by performing cell cycle phase assignment as described above, treating each phase as a separate batch and applying any of the batch correction strategies. The most common approach is to use a linear model to simply regress out the phase effect, e.g., via regressBatches().
+
+```{r}
+library(batchelor)
+sce.nocycle <- regressBatches(sce, batch=sce$phases)
+
+# PCA
+#plotPCA(sce, colour_by = "Sample.Name")
+sce.nocycle <- runPCA(
+  sce.nocycle,
+  exprs_values = "corrected"
+)
+p <- plotPCA(
+    sce.nocycle,
+    colour_by = "batch"
+)
+p
+
+# TSNE
+sce.nocycle <- runTSNE(sce.nocycle, exprs_values = "corrected")
+p <- plotTSNE(
+    sce.nocycle,
+    colour_by = "batch"
+)
+p
+```
+
+That said, we do not consider adjusting for cell cycle to be a necessary step in routine scRNA-seq analyses. In most applications, the cell cycle is a minor factor of variation, secondary to differences between cell types. Any attempt at removal would also need to assume that the cell cycle effect is orthogonal to other biological processes. For example, regression would potentially remove interesting signal if cell cycle activity varied across clusters or conditions, with a prime example being the increased proliferation of activated T cells (Richard et al. 2018). We suggest only performing cell cycle adjustment on an as-needed basis in populations with clear cell cycle effects.
+
+__Challenge__ Remove the cell cycle genes listed in the 'cell cycle' GO term, perform PCA and plot t-SNE.
+
+```{r}
+library(org.Hs.eg.db)
+cc.genes <- select(org.Hs.eg.db, keys="GO:0007049", keytype="GOALL", column="ENSEMBL")
+length(cc.genes)
+sce.uncycle <- sce[!rowData(sce)$ensembl_gene_id %in% cc.genes$ENSEMBL,]
+
+# PCA
+sce.uncycle <- runPCA(
+  sce.uncycle,
+  exprs_values = "logcounts"
+)
+p <- plotPCA(
+    sce.uncycle,
+    colour_by = "phases",
+    size_by = "sum",
+    shape_by = "source_name"
+) 
+p
+
+# TSNE
+sce.uncycle <- runTSNE(sce.uncycle, exprs_values = "logcounts")
+p <- plotTSNE(
+    sce.uncycle,
+    colour_by = "phases",
+    size_by = "sum",
+    shape_by = "source_name"
+)
+p
+
+# UMAP
+sce.uncycle <- runUMAP(sce.uncycle, exprs_values = "logcounts")
+p <- plotUMAP(
+    sce.uncycle,
+    colour_by = "phases",
+    size_by = "sum",
+    shape_by = "source_name"
+)
+p
+```
+
+Write SCE object to file.
+
+```{r, eval=FALSE}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_cellCycle.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+saveRDS(sce, file=tmpFn)
+```

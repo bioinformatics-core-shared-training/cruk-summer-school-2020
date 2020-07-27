@@ -1,0 +1,605 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Multi-sample comparisons'
+
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+    number_sections: true
+  html_document:
+    df_print: paged
+    toc: yes
+    number_sections: true
+    code_folding: hide
+  html_book:
+    code_folding: hide
+params:
+  outDirBit: "AnaWiSce/Attempt1"
+---
+
+
+```{r}
+projDir <- "/mnt/scratcha/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+nbPcToComp <- 50
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+# First, set some variables:
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+set.seed(123) # for reproducibility
+knitr::opts_chunk$set(eval = TRUE) 
+```
+
+```{r, include=FALSE, warning=FALSE}
+suppressMessages(library(ggplot2))
+suppressMessages(library(scater))
+suppressMessages(library(scran))
+suppressMessages(library(dplyr))
+suppressMessages(library(DT))
+fontsize <- theme(axis.text=element_text(size=12), axis.title=element_text(size=16))
+sglPlotSize <- 7
+```
+
+# Differential expression and abundance between conditions
+
+Source: [Multi-sample comparisons](https://osca.bioconductor.org/multi-sample-comparisons.html) of the OSCA book.
+
+## Motivation
+
+A powerful use of scRNA-seq technology lies in the design of replicated multi-condition experiments to detect changes in composition or expression between conditions. For example, a researcher could use this strategy to detect changes in cell type abundance after drug treatment (Richard et al. 2018) or genetic modifications (Scialdone et al. 2016). This provides more biological insight than conventional scRNA-seq experiments involving only one biological condition, especially if we can relate population changes to specific experimental perturbations.
+
+Differential analyses of multi-condition scRNA-seq experiments can be broadly split into two categories - differential expression (DE) and differential abundance (DA) analyses. The former tests for changes in expression between conditions for cells of the same type that are present in both conditions, while the latter tests for changes in the composition of cell types (or states, etc.) between conditions.
+
+## Setting up the data
+
+We will use the data set comprising the 11 samples (1000 cells per sample) analysed with fastMNN and the nested list of samples.
+
+The differential analyses in this chapter will be predicated on many of the pre-processing steps covered previously. For brevity, we will not explicitly repeat them here, only noting that we have already merged cells from all samples into the same coordinate system and clustered the merged dataset to obtain a common partitioning across all samples.
+
+Load the SCE object:
+
+```{r}
+setName <- "caron"
+# Read object in:
+##setSuf <- "_1kCellPerSpl"
+##tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_clustered.Rds", projDir, outDirBit, setName, setSuf)
+
+setSuf <- "_1kCps"
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_Fmwbl.Rds", projDir, outDirBit, setName, setSuf)
+
+print(tmpFn)
+
+if(!file.exists(tmpFn))
+{
+	knitr::knit_exit()
+}
+sce <- readRDS(tmpFn)
+sce
+```
+
+A brief inspection of the results shows clusters contain varying contributions from batches:
+
+```{r}
+library(scater)
+colLabels(sce) <- sce$clusters.mnn
+table(colLabels(sce), sce$type)
+
+table(colLabels(sce), sce$Sample.Name2)
+```
+
+On the t-SNE plots below, cells colored by type or sample ('batch of origin'). Cluster numbers are superimposed based on the median coordinate of cells assigned to that cluster. 
+
+```{r}
+plotTSNE(sce, colour_by="type", text_by="label")
+plotTSNE(sce, colour_by="Sample.Name2")
+```
+
+
+```{r}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_Fmwbl2.Rds", projDir, outDirBit, setName, setSuf)
+tmpList <- readRDS(tmpFn)
+
+
+chosen.hvgs <- tmpList$chosen.hvgs
+rescaled.mbn <- tmpList$rescaled.mbn
+uncorrected <- tmpList$uncorrected
+colToKeep <- c("Run", "Sample.Name", "source_name", "block", "setName", "Sample.Name2") 
+colData(uncorrected) <- colData(uncorrected)[,colToKeep]
+colData(uncorrected)[1:3,]
+
+#--- merging ---#
+library(batchelor)
+set.seed(01001001)
+merged <- correctExperiments(uncorrected, 
+    batch=uncorrected$Sample.Name2, 
+    subset.row=chosen.hvgs,
+    PARAM=FastMnnParam(
+        merge.order=list( list(1,2,3,4), list(9,10,11), list(5,6), list(7,8) )
+    )
+)
+
+merged
+
+#--- clustering ---#
+g <- buildSNNGraph(merged, use.dimred="corrected")
+clusters <- igraph::cluster_louvain(g)
+merged$clusters.mnn <- factor(paste0("c", clusters$membership))
+#colLabels(merged) <- merged$clusters.mnn
+
+#--- dimensionality-reduction ---#
+merged <- runTSNE(merged, dimred="corrected", external_neighbors=TRUE)
+merged <- runUMAP(merged, dimred="corrected", external_neighbors=TRUE)
+
+library(scater)
+table(merged$clusters.mnn, merged$block)
+table(merged$clusters.mnn, merged$Sample.Name2)
+
+plotTSNE(merged, colour_by="block", text_by="clusters.mnn")
+plotTSNE(merged, colour_by="Sample.Name2")
+```
+
+## Differential expression between conditions
+
+### Creating pseudo-bulk samples
+
+The most obvious differential analysis is to look for changes in expression between conditions. We perform the DE analysis separately for each label. The actual DE testing is performed on “pseudo-bulk” expression profiles (Tung et al. 2017), generated by summing counts together for all cells with the same combination of label and sample. This leverages the resolution offered by single-cell technologies to define the labels, and combines it with the statistical rigor of existing methods for DE analyses involving a small number of samples.
+
+
+```{r}
+# Using 'label' and 'sample' as our two factors; each column of the output
+# corresponds to one unique combination of these two factors.
+summed <- aggregateAcrossCells(merged, 
+    				id = DataFrame(
+    					label=merged$clusters.mnn,
+    					sample=merged$Sample.Name2
+					)
+)
+summed
+colData(summed) %>% head(3)
+```
+
+At this point, it is worth reflecting on the motivations behind the use of pseudo-bulking:
+
+Larger counts are more amenable to standard DE analysis pipelines designed for bulk RNA-seq data. Normalization is more straightforward and certain statistical approximations are more accurate e.g., the saddlepoint approximation for quasi-likelihood methods or normality for linear models.
+Collapsing cells into samples reflects the fact that our biological replication occurs at the sample level (Lun and Marioni 2017). Each sample is represented no more than once for each condition, avoiding problems from unmodelled correlations between samples. Supplying the per-cell counts directly to a DE analysis pipeline would imply that each cell is an independent biological replicate, which is not true from an experimental perspective. (A mixed effects model can handle this variance structure but involves extra statistical and computational complexity for little benefit, see Crowell et al. (2019).)
+Variance between cells within each sample is masked, provided it does not affect variance across (replicate) samples. This avoids penalizing DEGs that are not uniformly up- or down-regulated for all cells in all samples of one condition. Masking is generally desirable as DEGs - unlike marker genes - do not need to have low within-sample variance to be interesting, e.g., if the treatment effect is consistent across replicate populations but heterogeneous on a per-cell basis. (Of course, high per-cell variability will still result in weaker DE if it affects the variability across populations, while homogeneous per-cell responses will result in stronger DE due to a larger population-level log-fold change. These effects are also largely desirable.)
+
+`r #knitr::knit_exit()`
+
+### Performing the DE analysis
+
+#### Introduction
+
+The DE analysis will be performed using quasi-likelihood (QL) methods from the edgeR package (Robinson, McCarthy, and Smyth 2010; Chen, Lun, and Smyth 2016). This uses a negative binomial generalized linear model (NB GLM) to handle overdispersed count data in experiments with limited replication. In our case, we have biological variation with three paired replicates per condition, so edgeR (or its contemporaries) is a natural choice for the analysis.
+
+We do not use all labels for GLM fitting as the strong DE between labels makes it difficult to compute a sensible average abundance to model the mean-dispersion trend. Moreover, label-specific batch effects would not be easily handled with a single additive term in the design matrix for the batch. Instead, we arbitrarily pick one of the labels to use for this demonstration.
+
+```{r}
+labelToGet <- "c1"
+current <- summed[,summed$label==labelToGet]
+
+# Creating up a DGEList object for use in edgeR:
+suppressMessages(library(edgeR))
+y <- DGEList(counts(current), samples=colData(current))
+y
+```
+
+#### Pre-processing
+
+A typical step in bulk RNA-seq data analyses is to remove samples with very low library sizes due to failed library preparation or sequencing. The very low counts in these samples can be troublesome in downstream steps such as normalization (Chapter 7) or for some statistical approximations used in the DE analysis. In our situation, this is equivalent to removing label-sample combinations that have very few or lowly-sequenced cells. The exact definition of “very low” will vary, but in this case, we remove combinations containing fewer than 20 cells (Crowell et al. 2019). Alternatively, we could apply the outlier-based strategy described in Chapter 6, but this makes the strong assumption that all label-sample combinations have similar numbers of cells that are sequenced to similar depth.
+
+```{r}
+discarded <- current$ncells < 20
+y <- y[,!discarded]
+summary(discarded)
+```
+
+Another typical step in bulk RNA-seq analyses is to remove genes that are lowly expressed. This reduces computational work, improves the accuracy of mean-variance trend modelling and decreases the severity of the multiple testing correction. Genes are discarded if they are not expressed above a log-CPM threshold in a minimum number of samples (determined from the size of the smallest treatment group in the experimental design).
+
+```{r}
+keep <- filterByExpr(y, group=current$source_name)
+y <- y[keep,]
+summary(keep)
+```
+
+Finally, we correct for composition biases by computing normalization factors with the trimmed mean of M-values method (Robinson and Oshlack 2010). We do not need the bespoke single-cell methods described in Chapter 7, as the counts for our pseudo-bulk samples are large enough to apply bulk normalization methods. (Readers should be aware that edgeR normalization factors are closely related but not the same as the size factors described elsewhere in this book.)
+
+```{r}
+y <- calcNormFactors(y)
+y$samples
+```
+
+#### Statistical modelling
+
+Our aim is to test whether the log-fold change between sample groups is significantly different from zero.
+
+```{r}
+design <- model.matrix(~factor(source_name), y$samples)
+design
+```
+
+We estimate the negative binomial (NB) dispersions with estimateDisp(). The role of the NB dispersion is to model the mean-variance trend, which is not easily accommodated by QL dispersions alone due to the quadratic nature of the NB mean-variance trend.
+
+```{r}
+y <- estimateDisp(y, design)
+summary(y$trended.dispersion)
+```
+
+Biological coefficient of variation (BCV) for each gene as a function of the average abundance. The BCV is computed as the square root of the NB dispersion after empirical Bayes shrinkage towards the trend. Trended and common BCV estimates are shown in blue and red, respectively. 
+
+```{r}
+plotBCV(y)
+```
+
+We also estimate the quasi-likelihood dispersions with glmQLFit() (Chen, Lun, and Smyth 2016). This fits a GLM to the counts for each gene and estimates the QL dispersion from the GLM deviance. We set robust=TRUE to avoid distortions from highly variable clusters (Phipson et al. 2016). The QL dispersion models the uncertainty and variability of the per-gene variance - which is not well handled by the NB dispersions, so the two dispersion types complement each other in the final analysis.
+
+```{r}
+fit <- glmQLFit(y, design, robust=TRUE)
+summary(fit$var.prior)
+```
+
+```{r}
+summary(fit$df.prior)
+```
+
+QL dispersion estimates for each gene as a function of abundance. Raw estimates (black) are shrunk towards the trend (blue) to yield squeezed estimates (red).
+
+```{r}
+plotQLDisp(fit)
+```
+
+We test for differences in expression due to sample group using glmQLFTest(). DEGs are defined as those with non-zero log-fold changes at a false discovery rate of 5%. If very few genes are significantly DE that sample group has little effect on the transcriptome.
+
+```{r}
+res <- glmQLFTest(fit, coef=ncol(design))
+summary(decideTests(res))
+```
+
+```{r}
+topTab <- topTags(res)$table
+tmpAnnot <- rowData(current)[,c("ensembl_gene_id","Symbol")] %>% data.frame
+topTab %>% tibble::rownames_to_column("ensembl_gene_id") %>%
+	left_join(tmpAnnot, by="ensembl_gene_id")
+```
+
+#### Differential expression for each cluster
+
+The steps illustrated above with cluster 0 are now repeated for each cluster:
+
+* Subset pseudo-bulk counts for that cluster
+* Create edgeR object with these pseudo-bulk counts
+* Pre-process
+    * Remove samples with very small library size
+    * Remove genes with low UMI counts
+    * Correct for compositional bias
+* Perform differential expression analysis  
+    * Estimate negative binomial dispersion
+    * Estimate quasi-likelihood dispersion
+    * Test for differential expression 
+
+```{r}
+de.results <- list()
+for (labelToGet in levels(summed$label)) {
+
+	current <- summed[,summed$label==labelToGet]
+
+    y <- DGEList(counts(current), samples=colData(current))
+
+    discarded <- isOutlier(colSums(counts(current)), log=TRUE, type="lower")
+    y <- y[,!discarded]
+    y <- y[filterByExpr(y, group=current$source_name),]
+    y <- calcNormFactors(y)
+
+    design <- try(
+        model.matrix(~factor(source_name), y$samples),
+        silent=TRUE
+    )
+    if (is(design, "try-error") || 
+        qr(design)$rank==nrow(design) ||
+        qr(design)$rank < ncol(design)) 
+    {
+        # Skipping labels without contrasts or without 
+        # enough residual d.f. to estimate the dispersion.
+        next
+    }
+
+    y <- estimateDisp(y, design)
+    fit <- glmQLFit(y, design)
+    res <- glmQLFTest(fit, coef=ncol(design))
+    de.results[[labelToGet]] <- res
+}
+```
+
+##### Number of DEGs by cluster and direction
+
+We examine the numbers of DEGs at a FDR of 5% for each label (i.e. cluster). In general, there seems to be very little differential expression between the on and off conditions.
+
+```{r}
+summaries <- lapply(de.results, FUN=function(x) summary(decideTests(x))[,1])
+sum.tab <- do.call(rbind, summaries)
+#sum.tab
+sum.tab[order(rownames(sum.tab)),] %>%
+	as.data.frame() %>%
+	tibble::rownames_to_column("Cluster") %>%
+	datatable(rownames = FALSE, options = list(pageLength = 20, scrollX = TRUE))
+```
+
+##### List of DEGs
+
+We now list DEGs and the number of clusters they were detected in:
+
+```{r}
+degs <- lapply(de.results, FUN=function(x) rownames(topTags(x, p.value=0.05)))
+common.degs <- sort(table(unlist(degs)), decreasing=TRUE)
+#head(common.degs, 20)
+common.degs %>%
+	as.data.frame %>% 
+	dplyr::rename(Gene = Var1, NbClu = Freq) %>%
+	datatable(rownames = FALSE, options = list(pageLength = 20, scrollX = TRUE))
+```
+
+##### Number of clusters skipped
+
+"We also list the labels that were skipped due to the absence of replicates or contrasts. If it is necessary to extract statistics in the absence of replicates, several strategies can be applied such as reducing the complexity of the model or using a predefined value for the NB dispersion. We refer readers to the edgeR user’s guide for more details."
+
+```{r}
+skippedClusters <- setdiff(unique(summed$label), names(summaries))
+```
+
+The number of clusters skipped is `r length(skippedClusters)`.
+
+```{r}
+if(length(skippedClusters)>0)
+{
+  skippedClusters
+}
+```
+
+```{r}
+grmToShowList <- vector("list", length = nlevels(merged$clusters.mnn))
+names(grmToShowList) <- levels(merged$clusters.mnn)
+genesToExclude <- c()
+nbGeneToShow <- 20
+
+#degs <- lapply(de.results, FUN=function(x) (topTags(x, p.value=0.05)))
+degs <- lapply(de.results, FUN=function(x) (as.data.frame(topTags(x, n=nbGeneToShow))))
+
+for( namex in levels(merged$clusters.mnn) )
+{
+	nbGeneToUse <- min(c(nrow(degs[[namex]]), nbGeneToShow))
+
+	# format
+
+	# format p value:
+	tmpCol <- grep("PValue|FDR", colnames(degs[[namex]]), value=TRUE)
+	degs[[namex]][,tmpCol] <- apply(degs[[namex]][,tmpCol],
+					     2,
+					     function(x){format(x, scientific = TRUE, digits = 1)})
+	# format logFC:
+	tmpCol <- c("logFC", "logCPM", "F")
+	degs[[namex]][,tmpCol] <- apply(degs[[namex]][,tmpCol], 2,  function(x){round(x, 2)})
+	rm(tmpCol)
+
+	# subset data
+	grmToShow <- degs[[namex]] %>%
+		as.data.frame() %>%
+		tibble::rownames_to_column("gene") %>%	
+		arrange(FDR, desc(abs(logFC))) %>%
+		filter(! gene %in% genesToExclude) %>%
+		group_modify(~ head(.x, nbGeneToUse)) 
+	# keep data
+	grmToShow$cluster <- namex
+	grmToShowList[[namex]] <- grmToShow
+	# tidy
+	rm(nbGeneToUse)
+}
+grmToShowDf <- do.call("rbind", grmToShowList)
+tmpCol <- c("cluster", "gene")
+grmToShowDf %>%
+	select(tmpCol, setdiff(colnames(grmToShowDf), tmpCol)) %>%
+	filter(gene %in% names(common.degs) & as.numeric(FDR) < 0.05) %>%
+	datatable(rownames = FALSE, filter="top", options=list(scrollX = TRUE, pageLength = 15))
+
+tmpBool <- as.numeric(grmToShowDf$FDR) < 0.05 
+markers.to.plot <- unique(grmToShowDf[tmpBool, "gene"])
+markers.to.plot <- markers.to.plot[1:5]
+```
+
+### Putting it all together
+
+Now that we have laid out the theory underlying the DE analysis, we repeat this process for each of the labels. This is conveniently done using the pseudoBulkDGE() function from scran, which will loop over all labels and apply the exact analysis described above to each label. To prepare for this, we filter out all sample-label combinations with insufficient cells.
+
+```{r}
+summed.filt <- summed[,summed$ncells >= 20]
+```
+
+We construct a common design matrix that will be used in the analysis for each label. Recall that this matrix should have one row per unique sample (and named as such), reflecting the fact that we are modelling counts on the sample level instead of the cell level.
+
+```{r}
+# Pulling out a sample-level 'targets' data.frame:
+targets <- colData(merged)[!duplicated(merged$Sample.Name2),]
+
+# Constructing the design matrix:
+design <- model.matrix(~factor(source_name), data=targets)
+rownames(design) <- targets$Sample.Name2
+```
+
+We then apply the pseudoBulkDGE() function to obtain a list of DE genes for each label. This function puts some additional effort into automatically dealing with labels that are not represented in all sample groups, for which a DE analysis between conditions is meaningless; or are not represented in a sufficient number of replicate samples to enable modelling of biological variability.
+
+```{r}
+library(scran)
+de.results <- pseudoBulkDGE(summed.filt, 
+    sample=summed.filt$Sample.Name2,
+    label=summed.filt$label,
+    design=design,
+    coef=ncol(design),
+
+    # 'condition' sets the group size for filterByExpr(),
+    # to perfectly mimic our previous manual analysis.
+    condition=targets$source_name 
+)
+```
+
+We examine the numbers of DEGs at a FDR of 5% for each label using the decideTestsPerLabel() function. Note that genes listed as NA were either filtered out as low-abundance genes for a given label’s analysis, or the comparison of interest was not possible for a particular label, e.g., due to lack of residual degrees of freedom or an absence of samples from both conditions.
+
+```{r}
+is.de <- decideTestsPerLabel(de.results, threshold=0.05)
+summarizeTestsPerLabel(is.de)
+```
+
+For each gene, we compute the percentage of cell types in which that gene is upregulated or downregulated. (Here, we consider a gene to be non-DE if it is not retained after filtering.).
+
+```{r}
+# Upregulated across most cell types.
+up.de <- is.de > 0 & !is.na(is.de)
+head(sort(rowMeans(up.de), decreasing=TRUE), 10)
+```
+
+```{r}
+# Downregulated across cell types.
+down.de <- is.de < 0 & !is.na(is.de)
+head(sort(rowMeans(down.de), decreasing=TRUE), 10)
+```
+
+We further identify label-specific DE genes that are significant in our label of interest yet not DE in any other label. As hypothesis tests are not typically geared towards identifying genes that are not DE, we use an ad hoc approach where we consider a gene to be consistent with the null hypothesis for a label if it fails to be detected even at a generous FDR threshold of 50%.
+
+```{r}
+remotely.de <- decideTestsPerLabel(de.results, threshold=0.5)
+not.de <- remotely.de==0 | is.na(remotely.de)
+
+other.labels <- setdiff(colnames(not.de), "c2")
+unique.degs <- is.de[,"c2"]!=0 & rowMeans(not.de[,other.labels])==1
+unique.degs <- names(which(unique.degs))
+
+other.labels <- setdiff(colnames(not.de), "c4")
+unique.degs <- is.de[,"c4"]!=0 & rowMeans(not.de[,other.labels])==1
+unique.degs <- names(which(unique.degs))
+```
+
+```{r}
+# Choosing the top-ranked gene for inspection:
+de.c4 <- de.results$c4
+de.c4 <- de.c4[order(de.c4$PValue),]
+de.c4 <- de.c4[rownames(de.c4) %in% unique.degs,]
+
+sizeFactors(summed.filt) <- NULL
+plotExpression(logNormCounts(summed.filt), 
+    features=rownames(de.c4)[1],
+    x="source_name", colour_by="source_name", 
+    other_fields="label") + 
+    facet_wrap(~label)
+```
+
+We also list the labels that were skipped due to the absence of replicates or contrasts. If it is necessary to extract statistics in the absence of replicates, several strategies can be applied such as reducing the complexity of the model or using a predefined value for the NB dispersion. We refer readers to the edgeR user’s guide for more details.
+
+```{r}
+print(metadata(de.results)$failed)
+```
+
+## Differential abundance between conditions
+
+### Overview
+
+n a DA analysis, we test for significant changes in per-label cell abundance across conditions. This will reveal which cell types are depleted or enriched upon treatment, which is arguably just as interesting as changes in expression within each cell type. The DA analysis has a long history in flow cytometry (Finak et al. 2014; Lun, Richard, and Marioni 2017) where it is routinely used to examine the effects of different conditions on the composition of complex cell populations. By performing it here, we effectively treat scRNA-seq as a “super-FACS” technology for defining relevant subpopulations using the entire transcriptome.
+
+We prepare for the DA analysis by quantifying the number of cells assigned to each label (or cluster).
+
+```{r}
+abundances <- table(merged$clusters.mnn, merged$Sample.Name2) 
+abundances <- unclass(abundances) 
+head(abundances)
+```
+
+Performing the DA analysis
+
+Our DA analysis will again be performed with the edgeR package. This allows us to take advantage of the NB GLM methods to model overdispersed count data in the presence of limited replication - except that the counts are not of reads per gene, but of cells per label (Lun, Richard, and Marioni 2017). The aim is to share information across labels to improve our estimates of the biological variability in cell abundance between replicates.
+
+```{r}
+# Attaching some column metadata.
+extra.info <- colData(merged)[match(colnames(abundances), merged$Sample.Name2),]
+y.ab <- DGEList(abundances, samples=extra.info)
+y.ab
+```
+
+We filter out low-abundance labels as previously described. This avoids cluttering the result table with very rare subpopulations that contain only a handful of cells. For a DA analysis of cluster abundances, filtering is generally not required as most clusters will not be of low-abundance (otherwise there would not have been enough evidence to define the cluster in the first place).
+
+```{r}
+keep <- filterByExpr(y.ab, group=y.ab$samples$source_name)
+y.ab <- y.ab[keep,]
+summary(keep)
+```
+
+Unlike DE analyses, we do not perform an additional normalization step with calcNormFactors(). This means that we are only normalizing based on the “library size”, i.e., the total number of cells in each sample. Any changes we detect between conditions will subsequently represent differences in the proportion of cells in each cluster. The motivation behind this decision is discussed in more detail in Section 14.4.3.
+
+Here, the log-fold change in our model refers to the change in cell abundance between sample groups, rather than the change in gene expression.
+
+```{r}
+design <- model.matrix(~factor(source_name), y.ab$samples)
+```
+
+We use the estimateDisp() function to estimate the NB dipersion for each cluster. We turn off the trend as we do not have enough points for its stable estimation.
+
+```{r}
+y.ab <- estimateDisp(y.ab, design, trend="none")
+summary(y.ab$common.dispersion)
+```
+
+```{r}
+plotBCV(y.ab, cex=1)
+```
+
+We repeat this process with the QL dispersion, again disabling the trend.
+
+```{r}
+fit.ab <- glmQLFit(y.ab, design, robust=TRUE, abundance.trend=FALSE)
+summary(fit.ab$var.prior)
+```
+
+```{r}
+summary(fit.ab$df.prior)
+```
+
+```{r}
+plotQLDisp(fit.ab, cex=1)
+```
+
+We test for differences in abundance between sample groups using glmQLFTest().
+
+```{r}
+res <- glmQLFTest(fit.ab, coef=ncol(design))
+summary(decideTests(res))
+```
+
+```{r}
+topTags(res)
+```
+
+### Handling composition effects
+
+#### Background
+
+As mentioned above, we do not use calcNormFactors() in our default DA analysis. This normalization step assumes that most of the input features are not different between conditions. While this assumption is reasonable for most types of gene expression data, it is generally too strong for cell type abundance - most experiments consist of only a few cell types that may all change in abundance upon perturbation. Thus, our default approach is to only normalize based on the total number of cells in each sample, which means that we are effectively testing for differential proportions between conditions.
+
+Unfortunately, the use of the total number of cells leaves us susceptible to composition effects. For example, a large increase in abundance for one cell subpopulation will introduce decreases in proportion for all other subpopulations - which is technically correct, but may be misleading if one concludes that those other subpopulations are decreasing in abundance of their own volition. If composition biases are proving problematic for interpretation of DA results, we have several avenues for removing them or mitigating their impact by leveraging a priori biological knowledge.
+14.4.3.2 Assuming most labels do not change
+
+If it is possible to assume that most labels (i.e., cell types) do not change in abundance, we can use calcNormFactors() to compute normalization factors.
+
+```{r}
+y.ab2 <- calcNormFactors(y.ab)
+y.ab2$samples$norm.factors
+```
+
+We then proceed with the remainder of the edgeR analysis, shown below in condensed format. A shift of positive log-fold changes towards zero is consistent with the removal of composition biases.
+
+```{r}
+y.ab2 <- estimateDisp(y.ab2, design, trend="none")
+fit.ab2 <- glmQLFit(y.ab2, design, robust=TRUE, abundance.trend=FALSE)
+res2 <- glmQLFTest(fit.ab2, coef=ncol(design))
+topTags(res2, n=10)
+```

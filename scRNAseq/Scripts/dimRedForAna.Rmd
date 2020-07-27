@@ -1,0 +1,204 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Dimensionality reduction for analysis'
+
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
+#date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+date: July 2020
+#bibliography: bibliography.bib
+#csl: biomed-central.csl
+output:
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    fig_caption: yes
+    self_contained: true
+    fig_width: 6
+    fig_height: 4
+---
+
+# Dimensionality reduction for analysis
+
+```{r}
+projDir <- "/mnt/scratcha/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+nbPcToComp <- 50
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+# First, set some variables:
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+set.seed(123) # for reproducibility
+knitr::opts_chunk$set(eval = TRUE) 
+```
+
+```{r, warning=FALSE}
+suppressMessages(library(ggplot2))
+suppressMessages(library(scater))
+suppressMessages(library(scran))
+suppressMessages(library(dplyr))
+fontsize <- theme(axis.text=element_text(size=12), axis.title=element_text(size=16))
+```
+
+## Load data
+
+We will load the R file keeping the SCE object with the normalised counts for 500 cells per sample.
+
+```{r}
+setName <- "caron"
+setSuf <- "_5hCellPerSpl"
+
+# Read object in:
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_dimRed.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+if(!file.exists(tmpFn))
+{
+	knitr::knit_exit()
+}
+sce <- readRDS(tmpFn)
+sce
+
+#any(duplicated(rowData(sce)$ensembl_gene_id))
+# some function(s) used below complain about 'strand' already being used in row data,
+# so rename that column now:
+colnames(rowData(sce))[colnames(rowData(sce)) == "strand"] <- "strandNum"
+
+# also get feature selection outcome
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_featSel.Rds", projDir, outDirBit, setName, setSuf)
+tmpList <- readRDS(tmpFn)
+dec.sce <- tmpList$dec.sce
+hvg.index <- tmpList$hvg.index
+```
+
+## Denoising expression values using PCA
+
+Aim: use the trend fitted above to identify PCs linked to biology.
+
+Assumption: biology drives most of the variance hence should be captured by the first PCs, while technical noise affects each gene independently, hence is captured by later PCs.
+
+Logic: Compute the sum of the technical component across genes used in the PCA, use it as the amount of variance not related to biology and that we should therefore remove. Later PCs are excluded until the amount of variance they account for matches that corresponding to the technical component. 
+
+```{r comp_denoisePCA, include=TRUE}
+var.fit <- metadata(dec.sce)
+
+# remove uninteresting PCs:
+#options(BiocSingularParam.default=IrlbaParam())
+sce <- denoisePCA(sce, technical=var.fit$trend, assay.type="logcounts")
+# check assay names, should see 'PCA':
+##assayNames(sce)
+# check dimension of the PC table:
+##dim(reducedDim(sce, "PCA")) 
+
+sce.pca <- reducedDim(sce, "PCA") # get copy of PCA matrix
+tmpCol <- rep("grey", nbPcToComp) # set colours to show selected PCs in green
+tmpCol[1:dim(sce.pca)[2]] <- "green"
+barplot(attributes(sce.pca)$percentVar[1:nbPcToComp],
+        main=sprintf("Scree plot for the %s first PCs", nbPcToComp),
+        names.arg=1:nbPcToComp,
+        col=tmpCol,
+        cex.names = 0.8)
+
+# cumulative proportion of variance explained by selected PCs
+cumsum(attributes(sce.pca)$percentVar)[1:dim(sce.pca)[2]]
+
+# plot on PC1 and PC2 plane:
+plotPCA(sce, colour_by = "Sample.Name")
+#require(knitr); knit_exit()
+rm(tmpCol)
+```
+
+Show cells on plane for PC1 and PC2:
+
+```{r plot_denoisePCA}
+plotReducedDim(sce, dimred = "PCA", ncomponents = 3, 
+		colour_by = "Sample.Name") + fontsize
+```
+
+## Visualise expression patterns of some HVGs
+
+```{r}
+o <- order(dec.sce$bio, decreasing=TRUE)
+chosen.genes.index <- o[1:20]
+dec.sce %>%
+	data.frame() %>%
+	tibble::rownames_to_column("ensembl_gene_id") %>%
+	right_join(data.frame(rowData(sce)[chosen.genes.index,]), by="ensembl_gene_id") %>%
+	select(ensembl_gene_id, Symbol, bio, FDR) %>%
+	arrange(-bio)
+```
+
+On PCA plot:
+
+```{r plot_count_pca_HVGtop2}
+# make and store PCA plot for top HVG 1:
+pca1 <- plotReducedDim(sce, dimred="PCA", colour_by=rowData(sce)[chosen.genes.index[1],"ensembl_gene_id"]) + fontsize  # + coord_fixed()
+# make and store PCA plot for top HVG 2:
+pca2 <- plotReducedDim(sce, dimred="PCA", colour_by=rowData(sce)[chosen.genes.index[2],"ensembl_gene_id"]) + fontsize # + coord_fixed()
+
+pca1
+pca2
+```
+
+```{r plot_count_pca_HVGtop2_facet, fig.width=12, fig.height=6}
+# display plots next to each other:
+# multiplot(pca1, pca2, cols=2)
+
+pca1 + facet_wrap(. ~ sce$source_name) + coord_fixed()
+pca2 + facet_wrap(. ~ sce$source_name) + coord_fixed()
+```
+
+On t-SNE plot:
+
+```{r plot_count_tsne_HVGtop2}
+# plot TSNE, accessing counts for the gene of interest with the ID used to name rows in the count matrix:
+# make and store TSNE plot for top HVG 1:
+tsne1 <- plotTSNE(sce, colour_by=rowData(sce)[chosen.genes.index[1],"ensembl_gene_id"]) + fontsize
+# make and store TSNE plot for top HVG 2:
+tsne2 <- plotTSNE(sce, colour_by=rowData(sce)[chosen.genes.index[2],"ensembl_gene_id"]) + fontsize
+
+tsne1
+tsne2
+```
+
+```{r plot_count_tsne_HVGtop2_facet, fig.width=12, fig.height=6}
+# display plots next to each other:
+#multiplot(tsne1, tsne2, cols=2)
+
+tsne1 + facet_wrap(. ~ sce$source_name)
+tsne2 + facet_wrap(. ~ sce$source_name)
+
+# display plots next to each other, splitting each by sample:
+#multiplot(tsne1 + facet_grid(. ~ sce$Sample2), tsne2 + facet_grid(. ~ sce$Sample2), cols=2)
+```
+
+Write R object to file
+
+```{r}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_denoised.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+saveRDS(sce, file=tmpFn)
+```
+
+<!-- http://bioinformatics.age.mpg.de/presentations-tutorials/presentations/modules/single-cell//bioconductor_tutorial.html -->
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$ensembl_gene_id, rowData(sce)$Symbol)
+pc1 <- reducedDim(sce, "PCA")[,1]
+design <- model.matrix(~pc1)
+library(limma)
+fit <- lmFit(logcounts(sce), design)
+fit <- eBayes(fit, trend=TRUE, robust=TRUE)
+topTab <- topTable(fit)
+```
+
+```{r}
+library(pheatmap)
+de.genes <- rownames(topTable(fit, coef=2, n=50))
+heat.vals <- logcounts(sce)[de.genes,]
+heat.vals <- heat.vals - rowMeans(heat.vals)
+heat.vals[heat.vals > 2] <- 2
+heat.vals[heat.vals < -2] <- -2
+pheatmap(heat.vals[,order(pc1)], cluster_cols=FALSE)
+```

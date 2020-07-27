@@ -1,0 +1,42 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Identifyng confounding factors'
+
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+    number_sections: true
+  html_document:
+    df_print: paged
+    toc: yes
+    number_sections: true
+    code_folding: hide
+  html_book:
+    code_folding: hide
+params:
+  outDirBit: "AnaWiSce/Attempt1"
+---
+
+```{r variables_norm}
+#qcPlotDirBit <- "NormPlots"
+#setNameUpp <- "Caron"
+projDir <- "/mnt/scratchb/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+```
+
+```{r}
+library(knitr)
+```
+
+```{r, include=FALSE}
+#src <- lapply(c("Caron", "Hca"), function(setNameUpp) knit_expand(file = "test.Rmd"))
+src <- lapply(c("Caron"), function(setNameUpp) knit_expand(file = "confounding.Rmd"))
+```
+
+`r knit(text = unlist(src))`
+
+
+

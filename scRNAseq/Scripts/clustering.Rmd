@@ -1,0 +1,361 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Clustering'
+
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
+#date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+date: July 2020
+#bibliography: bibliography.bib
+#csl: biomed-central.csl
+output:
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    fig_caption: yes
+    self_contained: true
+    fig_width: 6
+    fig_height: 4
+---
+
+```{r}
+projDir <- "/mnt/scratcha/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+nbPcToComp <- 50
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+# First, set some variables:
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+set.seed(123) # for reproducibility
+knitr::opts_chunk$set(eval = TRUE) 
+```
+
+```{r, warning=FALSE}
+suppressMessages(library(ggplot2))
+suppressMessages(library(scater))
+suppressMessages(library(scran))
+suppressMessages(library(dplyr))
+suppressMessages(library(dynamicTreeCut))
+suppressMessages(library(cluster)) # for silhouette
+
+fontsize <- theme(axis.text=element_text(size=12), axis.title=element_text(size=16))
+```
+
+# Clustering
+
+<img src="../../Images/Andrews2017_Fig1.png" style="margin:auto; display:block" />
+
+Source: [clustering methods](https://hemberg-lab.github.io/scRNA.seq.course/biological-analysis.html##clustering-methods) in the Hemberg group material and [its 'biocellgen variant'](https://biocellgen-public.svi.edu.au/mig_2019_scrnaseq-workshop/public/clustering-and-cell-annotation.html#clustering-methods.), with some of its text copied with few edits only. Also see the [OSCA chapter on clustering](https://osca.bioconductor.org/clustering.html#k-means-clustering).
+
+Once we have normalized the data and removed confounders we can carry out analyses that are relevant to the biological questions at hand. The exact nature of the analysis depends on the dataset. One of the most promising applications of scRNA-seq is de novo discovery and annotation of cell-types based on transcription profiles. This requires the identification of groups of cells based on the similarities of the transcriptomes without any prior knowledge of the labels, or unsupervised clustering. To avoid the challenges caused byt the noise and high dimensionality of the scRNA-seq data, clusring is performed after feature selection and dimensionality reduction, usually on the PCA output.
+
+We will introduce three widely used clustering methods: 1) hierarchical, 2) k-means and 3) graph-based clustering, apply them on the data set studied and measure their quality.
+
+We will use the denoised log-expression values to cluster cells.
+
+## Load data
+
+We will load the R file keeping the SCE (SingleCellExperiment) object with the normalised counts for 500 cells per sample and the outcome of feature selection followed by dimensionality reduction.
+
+```{r}
+setName <- "caron"
+setSuf <- "_5hCellPerSpl"
+
+# Read object in:
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_denoised.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+if(!file.exists(tmpFn))
+{
+	knitr::knit_exit()
+}
+sce <- readRDS(tmpFn)
+sce
+
+# head(rowData(sce))
+#any(duplicated(rowData(sce)$ensembl_gene_id))
+# some function(s) used below complain about 'strand' already being used in row data,
+# so rename that column now:
+#colnames(rowData(sce))[colnames(rowData(sce)) == "strand"] <- "strandNum"
+#assayNames(sce)
+#reducedDimNames(sce)
+```
+
+## Clustering cells into putative subpopulations
+
+<!--
+See https://hemberg-lab.github.io/scRNA.seq.course/index.html for three types of clustering.
+See https://www.ncbi.nlm.nih.gov/pubmed/27303057 for review
+-->
+
+### Defining cell clusters from expression data
+
+#### Hierarchical clustering
+
+Hierarchical clustering builds a hierarchy of clusters yielding a dendrogram that groups together cells with similar expression patterns across the chosen genes.
+
+There are two types of strategies:
+- Agglomerative (bottom-up): each observation starts in its own cluster, and pairs of clusters are merged as one moves up the hierarchy.
+- Divisive (top-down): all observations start in one cluster, and splits are performed recursively as one moves down the hierarchy.
+
+<img src="../../Images/bioCellGenHierar.png" style="margin:auto; display:block" />
+
+##### Clustering
+
+Here we will use hierarchical clustering on the Euclidean distances between cells, using Ward D2 criterion to minimize the total variance within each cluster.
+
+```{r comp_hierar}
+# get PCs
+pcs <- reducedDim(sce, "PCA")
+# compute distance:
+my.dist <- dist(pcs)
+# derive tree:
+my.tree <- hclust(my.dist, method="ward.D2")
+```
+
+Show tree:
+
+```{r plot_tree_hierar}
+plot(my.tree, labels = FALSE)
+```
+
+Clusters are identified in the dendrogram using a dynamic tree cut [@doi:10.1093/bioinformatics/btm563].
+
+```{r cutTree_hierar}
+# identify clustering by cutting branches, requesting a minimum cluster size of 20 cells.
+my.clusters <- unname(cutreeDynamic(my.tree, distM=as.matrix(my.dist), minClusterSize=20, verbose=0))
+```
+
+Let us count cells for each cluster and each sample group and for each sample.
+
+```{r table_hierar}
+# per sample group
+table(my.clusters, sce$source_name)
+# per sample
+table(my.clusters, sce$Sample.Name)
+```
+
+Clusters mostly include cells from one sample or the other. This suggests that the samples differ, and/or the presence of batch effect.
+
+Let us show cluster assignments on the t-SNE.
+
+```{r plot_tsne_hierar, fig.width=6, fig.height=6}
+# store cluster assignemnt in SCE object:
+sce$cluster <- factor(my.clusters)
+# make, store and show TSNE plot:
+g <- plotTSNE(sce, colour_by = "cluster", size_by = "sum")
+g
+```
+
+Split by sample group:
+
+```{r plot_tsne_hierar_facet, fig.width=12, fig.height=12}
+# split by sample and show:
+g <- g + facet_wrap(. ~ sce$source_name)
+g
+```
+
+In some areas cells are not all assigned to the same cluster.
+
+##### Separatedness
+
+The congruence of clusters may be assessed by computing the sillhouette for each cell.
+The larger the value the closer the cell to cells in its cluster than to cells in other clusters.
+Cells closer to cells in other clusters have a negative value.
+Good cluster separation is indicated by clusters whose cells have large silhouette values.
+
+Compute silhouette: 
+
+```{r comp_silhouette_hierar}
+sil <- silhouette(my.clusters, dist = my.dist)
+```
+
+Plot silhouettes with one color per cluster and cells with a negative silhouette with the color of their closest cluster.
+Add the average silhouette for each cluster and all cells. 
+
+```{r plot_silhouette_hierar}
+# prepare colours:
+clust.col <- scater:::.get_palette("tableau10medium") # hidden scater colours
+sil.cols <- clust.col[ifelse(sil[,3] > 0, sil[,1], sil[,2])]
+sil.cols <- sil.cols[order(-sil[,1], sil[,3])]
+# 
+plot(sil, main = paste(length(unique(my.clusters)), "clusters"), 
+	border=sil.cols, col=sil.cols, do.col.sort=FALSE) 
+```
+
+The plot shows cells with negative silhoutette indicating too many clusters were defined.
+The method and parameters used defined clusters with properties that may not fit the data set, eg clusters with the same diameter.
+
+#### k-means
+
+In k-means clustering, the goal is to partition N cells into k different clusters. In an iterative manner, cluster centers are assigned and each cell is assigned to its nearest cluster:
+
+<img src="../../Images/bioCellGenKmean.png" style="margin:auto; display:block" />
+
+This approach assumes a pre-determined number of round equally-sized clusters.
+
+The dendogram built above suggests there may be 6 large populations.
+
+Let us define 6 clusters.
+
+```{r comp_kmeans_k6}
+# define clusters:
+kclust <- kmeans(pcs, centers=6)
+
+# compute silhouette
+sil <- silhouette(kclust$cluster, dist(pcs))
+
+# plot silhouette:
+clust.col <- scater:::.get_palette("tableau10medium") # hidden scater colours
+sil.cols <- clust.col[ifelse(sil[,3] > 0, sil[,1], sil[,2])]
+sil.cols <- sil.cols[order(-sil[,1], sil[,3])]
+plot(sil, main = paste(length(unique(kclust$cluster)), "clusters"), 
+    border=sil.cols, col=sil.cols, do.col.sort=FALSE) 
+```
+
+Show clusters on t-SNE:
+
+```{r plot_tSNE_kmeans_k6, fig.width=6, fig.height=6}
+tSneCoord <- as.data.frame(reducedDim(sce, "TSNE"))
+colnames(tSneCoord) <- c("x", "y")
+p2 <- ggplot(tSneCoord, aes(x, y)) +
+	geom_point(aes(color = as.factor(kclust$cluster)))
+p2
+```
+
+Split by sample type:
+
+```{r plot_tSNE_kmeans_k6_split, fig.width=12, fig.height=12}
+p2 + facet_wrap(~ sce$source_name)
+```
+
+To find the most appropriate number of clusters, one performs the analysis for a series of k values, computes a measure of fit of the clusters defined: the within cluster sum-of-square. This value decreases as k increases, by an amount that decreases with k. Choose k at the inflexion point of the curve. 
+
+```{r choose_kmeans, warning=FALSE}
+library(broom)
+require(tibble)
+require(dplyr)
+require(tidyr)
+library(purrr)
+points <- as_tibble(pcs)
+
+kclusts <- tibble(k = 1:20) %>%
+  mutate(
+    kclust = map(k, ~kmeans(points, .x)),
+    tidied = map(kclust, tidy),
+    glanced = map(kclust, glance),
+    augmented = map(kclust, augment, points)
+  )
+
+clusters <- kclusts %>%
+  unnest(tidied)
+
+assignments <- kclusts %>% 
+  unnest(augmented)
+
+clusterings <- kclusts %>%
+  unnest(glanced)
+```
+
+Plot the total within cluster sum-of-squares and decide on k.
+
+```{r plot_withinss}
+ggplot(clusterings, aes(k, tot.withinss)) +
+  geom_line()
+```
+
+Copy the cluster assignment to the SCE object.
+
+```{r copy_k10}
+df <- as.data.frame(assignments)
+sce$kmeans10 <- as.numeric(df[df$k == 10, ".cluster"])
+```
+
+Check silhouette for a k of 10.
+
+```{r silhouette_kmeans_k10}
+library(cluster)
+clust.col <- scater:::.get_palette("tableau10medium") # hidden scater colours
+sil <- silhouette(sce$kmeans10, dist = my.dist)
+sil.cols <- clust.col[ifelse(sil[,3] > 0, sil[,1], sil[,2])]
+sil.cols <- sil.cols[order(-sil[,1], sil[,3])]
+plot(sil, main = paste(length(unique(sce$kmeans10)), "clusters"), 
+    border=sil.cols, col=sil.cols, do.col.sort=FALSE) 
+```
+
+#### Graph-based clustering
+
+Graph-based clustering entails building a shared nearest-neighbour graph using cells as nodes and their similarity as edges, then identifying 'communities' of cells within the network.
+
+<img src="../../Images/bioCellGenGraphDeng.png" style="margin:auto; display:block" />
+
+We will: build the graph, define clusters, check membership across samples, show membership on t-SNE and assess its quality.
+
+```{r comp_snn}
+#compute graph
+snn.gr <- buildSNNGraph(sce, use.dimred="PCA")
+# derive clusters
+cluster.out <- igraph::cluster_walktrap(snn.gr)
+# count cell in each cluster for each sample
+my.clusters <- cluster.out$membership
+table(my.clusters, sce$source_name)
+table(my.clusters, sce$Sample.Name)
+# store membership
+sce$cluster <- factor(my.clusters)
+# shoe clusters on TSNE
+p <- plotTSNE(sce, colour_by="cluster") + fontsize
+p
+p + facet_wrap(~ sce$source_name)
+```
+
+Compute modularity to assess clusters quality. The closer to 1 the better.
+
+```{r modularity_snn}
+igraph::modularity(cluster.out)
+```
+
+```{r clusterModularity_snn, include = TRUE}
+mod.out <- clusterModularity(snn.gr, my.clusters, get.weights=TRUE)
+ratio <- mod.out$observed/mod.out$expected
+lratio <- log10(ratio + 1)
+
+library(pheatmap)
+pheatmap(lratio, cluster_rows=FALSE, cluster_cols=FALSE, 
+    color=colorRampPalette(c("white", "blue"))(100))
+```
+
+Show similarity between clusters on a network. 
+
+```{r plot_clusterNetwork_snn}
+cluster.gr <- igraph::graph_from_adjacency_matrix(ratio, 
+    mode="undirected", weighted=TRUE, diag=FALSE)
+plot(cluster.gr, edge.width=igraph::E(cluster.gr)$weight*10)  
+```
+
+Write SCE object to file.
+
+```{r}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_clustered.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+saveRDS(sce, file=tmpFn)
+```
+
+**Challenge** Apply graph based clustering on a single sample (group?).
+
+```{r, eval=FALSE}
+# eg SRR9264354, GSM3872444, a PBMMC
+
+SplToGet <- "GSM3872444"
+
+# extract cells for this sample:
+cellsToGet <- colData(sce) %>%
+	data.frame() %>%
+	filter(Sample.Name == SplToGet) %>%
+	pull(Barcode)
+sce_c <- sce[, cellsToGet]
+# normalise
+# PCA
+# cluster
+
+```

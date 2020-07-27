@@ -1,0 +1,451 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Dimensionality reduction for visualisation'
+
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
+#date: '`r strftime(Sys.time(), format = "%B %d, %Y")`'
+date: July 2020
+#bibliography: bibliography.bib
+#csl: biomed-central.csl
+output:
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    fig_caption: yes
+    self_contained: true
+    fig_width: 6
+    fig_height: 4
+---
+
+<!--
+Should have Caron and HCA separately
+-->
+
+```{r}
+projDir <- "/mnt/scratcha/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+# First, set some variables:
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+set.seed(123) # for reproducibility
+knitr::opts_chunk$set(eval = TRUE) 
+```
+
+In part 1 we gathered the data, aligned reads, checked quality, and normalised read counts. We will now identify genes to focus on, use visualisation to explore the data, collapse the data set, cluster cells by their expression profile and identify genes that best characterise these cell populations. These main steps are shown below [@ANDREWS2018114]. 
+
+<img src="../../Images/Andrews2017_Fig1.png" style="margin:auto; display:block" />
+
+We'll first explain dimensionality reduction for visualisation, using Principal Component Analysis, t-SNE and UMAP.
+
+# Dimensionality reduction for visualisation
+
+## Principal Component Analysis
+
+In a single cell RNA-seq (scRNASeq) data set, each cell is described by the expression level of thoushands of genes.
+
+The total number of genes measured is referred to as dimensionality. Each gene measured is one dimension in the space characterising the data set. Many genes will little vary across cells and thus be uninformative when comparing cells. Also, because some genes will have correlated expression patterns, some information is redundant. Moreover, we can represent data in three dimensions, not more. So reducing the number of useful dimensions is necessary.
+
+### Description
+
+The data set: a matrix with one row per sample and one variable per column. Here samples are cells and each variable is the normalised read count for a given gene.
+
+The space: each cell is associated to a point in a multi-dimensional space where each gene is a dimension.
+
+The aim: to find a new set of variables defining a space with fewer dimensions while losing as little information as possible.
+
+Out of a set of variables (read counts), PCA defines new variables called Principal Components (PCs) that best capture the variability observed amongst samples (cells), see [@field2012discovering] for example.
+
+The number of variables does not change. Only the fraction of variance captured by each variable differs.
+The first PC explains the highest proportion of variance possible (bound by prperties of PCA).
+The second PC explains the highest proportion of variance not explained by the first PC.
+PCs each explain a decreasing amount of variance not explained by the previous ones.
+Each PC is a dimension in the new space.
+
+The total amount of variance explained by the first few PCs is usually such that excluding remaining PCs, ie dimensions, loses little information. The stronger the correlation between the initial variables, the stronger the reduction in dimensionality. PCs to keep can be chosen as those capturing at least as much as the average variance per initial variable or using a scree plot, see below.
+
+PCs are linear combinations of the initial variables. PCs represent the same amount of information as the initial set and enable its restoration. The data is not altered. We only look at it in a different way.
+
+About the mapping function from the old to the new space:
+
+- it is linear
+- it is inverse, to restore the original space
+- it relies on orthogonal PCs so that the total variance remains the same.
+
+Two transformations of the data are necessary:
+
+- center the data so that the sample mean for each column is 0 so the covariance matrix of the intial matrix takes a simple form
+- scale variance to 1, ie standardize, to avoid PCA loading on variables with large variance.
+
+### Example
+
+Here we will make a simple data set of 100 samples and 2 variables, perform PCA and visualise on the initial plane the data set and PCs [@pca_blog_Patcher2014].
+
+```{r load_packages, warning=FALSE}
+library(ggplot2)
+fontsize <- theme(axis.text=element_text(size=12), axis.title=element_text(size=16))
+```
+
+Let's make and plot a data set.
+
+```{r pca_toy_set}
+set.seed(123)            #sets the seed for random number generation.
+ x <- 1:100              #creates a vector x with numbers from 1 to 100
+ ex <- rnorm(100, 0, 30) #100 normally distributed rand. nos. w/ mean=0, s.d.=30
+ ey <- rnorm(100, 0, 30) # " " 
+ y <- 30 + 2 * x         #sets y to be a vector that is a linear function of x
+ x_obs <- x + ex         #adds "noise" to x
+ y_obs <- y + ey         #adds "noise" to y
+ P <- cbind(x_obs,y_obs) #places points in matrix
+ plot(P,asp=1,col=1) #plot points
+ points(mean(x_obs),mean(y_obs),col=3, pch=19) #show center
+```
+
+Center the data and compute covariance matrix.
+
+```{r pca_cov_var}
+M <- cbind(x_obs - mean(x_obs), y_obs - mean(y_obs)) #centered matrix
+MCov <- cov(M)          #creates covariance matrix
+```
+
+Compute the principal axes, ie eigenvectors and corresponding eigenvalues.
+
+An eigenvector is a direction and an eigenvalue is a number measuring the spread of the data in that direction. The eigenvector with the highest eigenvalue is the first principal component.
+
+The eigenvectors of the covariance matrix provide the principal axes, and the eigenvalues quantify the fraction of variance explained in each component.
+
+```{r pca_eigen}
+eigenValues <- eigen(MCov)$values       #compute eigenvalues
+eigenVectors <- eigen(MCov)$vectors     #compute eigenvectors
+
+# or use 'singular value decomposition' of the matrix
+d <- svd(M)$d          #the singular values
+v <- svd(M)$v          #the right singular vectors
+```
+
+Let's plot the principal axes.
+
+First PC:
+
+```{r pca_show_PC1}
+# PC 1:
+ plot(P,asp=1,col=1) #plot points
+ points(mean(x_obs),mean(y_obs),col=3, pch=19) #show center
+lines(x_obs,eigenVectors[2,1]/eigenVectors[1,1]*M[x]+mean(y_obs),col=8)
+```
+
+Second PC:
+
+```{r pca_show_PC2}
+ plot(P,asp=1,col=1) #plot points
+ points(mean(x_obs),mean(y_obs),col=3, pch=19) #show center
+# PC 1:
+lines(x_obs,eigenVectors[2,1]/eigenVectors[1,1]*M[x]+mean(y_obs),col=8)
+# PC 2:
+lines(x_obs,eigenVectors[2,2]/eigenVectors[1,2]*M[x]+mean(y_obs),col=8)
+```
+
+Add the projections of the points onto the first PC:
+
+```{r pca_add_projection_onto_PC1}
+plot(P,asp=1,col=1) #plot points
+points(mean(x_obs),mean(y_obs),col=3, pch=19) #show center
+# PC 1:
+lines(x_obs,eigenVectors[2,1]/eigenVectors[1,1]*M[x]+mean(y_obs),col=8)
+# PC 2:
+lines(x_obs,eigenVectors[2,2]/eigenVectors[1,2]*M[x]+mean(y_obs),col=8)
+# add projecions:
+trans <- (M%*%v[,1])%*%v[,1] #compute projections of points
+P_proj <- scale(trans, center=-cbind(mean(x_obs),mean(y_obs)), scale=FALSE) 
+points(P_proj, col=4,pch=19,cex=0.5) #plot projections
+segments(x_obs,y_obs,P_proj[,1],P_proj[,2],col=4,lty=2) #connect to points
+```
+
+Compute PCs with prcomp().
+
+```{r pca_prcomp}
+pca_res <- prcomp(M)
+```
+
+```{r pca_summary}
+summary(pca_res)
+```
+
+```{r pca_varExplained}
+var_explained <- pca_res$sdev^2/sum(pca_res$sdev^2)
+var_explained
+```
+
+Check amount of variance captured by PCs on a scree plot.
+
+```{r pca_scree}
+# Show scree plot:
+plot(pca_res)
+```
+
+Plot with ggplot.
+
+```{r pca_show_PC_plane_with_ggplot}
+df_pc <- data.frame(pca_res$x)
+g <- ggplot(df_pc, aes(PC1, PC2)) + 
+  geom_point(size=2) +   # draw points
+  labs(title="PCA", 
+       subtitle="With principal components PC1 and PC2 as X and Y axis") + 
+  coord_cartesian(xlim = 1.2 * c(min(df_pc$PC1), max(df_pc$PC1)), 
+                  ylim = 1.2 * c(min(df_pc$PC2), max(df_pc$PC2)))
+g <- g + geom_hline(yintercept=0)
+g <- g + geom_vline(xintercept=0)
+g
+```
+
+Or use ggfortify autoplot().
+
+```{r pca_show_PC_plane_with_ggfortify}
+# ggfortify
+library(ggfortify)
+g <- autoplot(pca_res)
+g <- g + geom_hline(yintercept=0)
+g <- g + geom_vline(xintercept=0)
+g
+```
+
+Going from 2D to 3D (figure from [@nlpcaPlot]):
+
+<img src="../../Images/hemberg_pca.png" style="margin:auto; display:block" />
+
+## Load packages
+
+```{r packages, results='hide', message=FALSE, warning=FALSE}
+library(scater) # for QC and plots
+```
+
+## Load data
+
+We will load the R file keeping the SCE object with the normalised counts for 500 cells per sample.
+
+```{r}
+setName <- "caron"
+setSuf <- "_5hCellPerSpl"
+
+# Read object in:
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s.Rds", projDir, outDirBit, setName, setSuf)
+print(tmpFn)
+if(!file.exists(tmpFn))
+{
+	knitr::knit_exit()
+}
+sce <- readRDS(tmpFn)
+sce
+
+head(rowData(sce))
+
+#any(duplicated(rowData(nz.sce)$ensembl_gene_id))
+# some function(s) used below complain about 'strand' already being used in row data,
+# so rename that column now:
+colnames(rowData(sce))[colnames(rowData(sce)) == "strand"] <- "strandNum"
+```
+
+## PCA
+
+
+Perform PCA, keep outcome in same object.
+
+```{r sce_pca_comp}
+nbPcToComp <- 50
+# compute PCA:
+#sce <- runPCA(sce, ncomponents = nbPcToComp, method = "irlba")
+sce <- runPCA(sce, ncomponents = nbPcToComp)
+```
+
+Display scree plot.
+
+```{r sce_pca_scree_plot}
+# with reducedDim
+sce.pca <- reducedDim(sce, "PCA")
+attributes(sce.pca)$percentVar
+barplot(attributes(sce.pca)$percentVar,
+        main=sprintf("Scree plot for the %s first PCs", nbPcToComp),
+        names.arg=1:nbPcToComp,
+        cex.names = 0.8)
+```
+
+Display cells on a plot for the first 2 PCs, colouring by 'Sample' and setting size to match 'total_features'.
+
+The proximity of cells reflects the similarity of their expression profiles.
+
+```{r sce_pca_plotColorBySample, include=TRUE}
+g <- plotPCA(sce,
+		colour_by = "Sample.Name",
+		size_by = "sum"
+)         
+g
+```
+
+One can also split the plot by sample.
+
+```{r sce_pca_plotColorBySample_facetBySample, fig.width=12, fig.height=12}
+g <- g +  facet_wrap(sce$source_name ~ .)
+g
+```
+
+Or plot several PCs at once, using plotReducedDim():
+
+```{r sce_pca_plotReducedDim}
+plotReducedDim(sce, dimred="PCA", ncomponents=3, 
+		colour_by = "Sample.Name") + fontsize
+```
+
+### Correlation between PCs and the total number of features detected
+
+The PCA plot above shows cells as symbols whose size depends on the total number of features or library size. It suggests there may be a correlation between PCs and these variables. Let's check:
+
+```{r sce_pca_plotQC_total_features}
+r2mat <- getExplanatoryPCs(sce)
+
+r2mat
+
+dat <- cbind(colData(sce)[,c("Sample.Name",
+			     "source_name",
+			     "sum",
+			     "detected",
+			     "percent_top_200",
+			     "subsets_Mito_percent")],
+			     reducedDim(sce,"PCA"))
+dat <- data.frame(dat)
+dat$sum <- log2(dat$sum)
+ggplot(dat, aes(x=sum, y=PC1, shape=source_name, col=Sample.Name)) +
+    geom_point() +
+    geom_smooth(method=lm, inherit.aes = FALSE, aes(x=sum, y=PC1)) 
+ggplot(dat, aes(x=percent_top_200, y=PC2, shape=source_name, col=Sample.Name)) +
+    geom_point() +
+    geom_smooth(method=lm, inherit.aes = FALSE, aes(x=percent_top_200, y=PC2)) 
+ggplot(dat, aes(x=detected, y=PC3, shape=source_name, col=Sample.Name)) +
+    geom_point() +
+    geom_smooth(method=lm, inherit.aes = FALSE, aes(x=detected, y=PC3)) 
+ggplot(dat, aes(x=subsets_Mito_percent, y=PC2, shape=source_name, col=Sample.Name)) +
+    geom_point() +
+    geom_smooth(method=lm, inherit.aes = FALSE, aes(x=subsets_Mito_percent, y=PC2)) 
+
+ggplot(dat, aes(x=source_name, y=PC7, shape=source_name, col=Sample.Name)) +
+    geom_boxplot()
+```
+
+## t-SNE: t-Distributed Stochastic Neighbor Embedding
+
+<!-- https://biocellgen-public.svi.edu.au/mig_2019_scrnaseq-workshop/public/latent-spaces.html -->
+
+The Stochastic Neighbor Embedding (SNE) approach address two shortcomings of PCA that captures the global covariance structure with a linear combination of initial variables: by preserving the local structure allowing for non-linear projections. It uses two distributions of the pairwise similarities between data points: in the input data set and in the low-dimensional space.
+
+SNE aims at preserving neighbourhoods. For each points, it computes probabilities of chosing each other point as its neighbour based on a Normal distribution depending on 1) the distance matrix and 2) the size of the neighbourhood (perplexity). SNE aims at finding a low-dimension space (eg 2D-plane) such that the similarity matrix deriving from it is as similar as possible as that from the high-dimension space. To address the fact that in low dimension, points are brought together, the similarity matrix in the low-dimension is allowed to follow a t-distribution.
+
+Two characteristics matter:
+
+- perplexity, to indicate the relative importance of the local and global patterns in structure of the data set, usually use a value of 50,
+- stochasticity; running the analysis will produce a different map every time, unless the seed is set.
+
+See [misread-tsne](https://distill.pub/2016/misread-tsne/).
+
+### Perplexity
+
+Compute t-SNE with default perplexity, ie 50.
+
+```{r runTSNE_perp50}
+# runTSNE default perpexity if min(50, floor(ncol(object)/5))
+sce <- runTSNE(sce, dimred="PCA", perplexity=50, rand_seed=123)
+```
+
+Plot t-SNE:
+
+```{r plotTSNE_perp50}
+tsne50 <- plotTSNE(sce,
+		   colour_by="Sample.Name",
+		   size_by="sum") + 
+		   fontsize + 
+		   ggtitle("Perplexity = 50")
+tsne50
+```
+
+<!-- Split by sample type: -->
+
+```{r plotTSNE_perp50_facetBySample, fig.width=12, fig.height=12, eval=FALSE, include=FALSE}
+g <- tsne50 + facet_wrap(. ~ sce$source_name)
+g
+```
+
+Compute t-SNE for several perplexity values: 
+
+```{r runTSNE_perpRange}
+tsne5.run <- runTSNE(sce, use_dimred="PCA", perplexity=5, rand_seed=123)
+tsne5 <- plotTSNE(tsne5.run, colour_by="Sample.Name") + fontsize + ggtitle("Perplexity = 5")
+
+#tsne200.run <- runTSNE(sce, use_dimred="PCA", perplexity=200, rand_seed=123)
+#tsne200 <- plotTSNE(tsne200.run, colour_by="Sample.Name") + fontsize + ggtitle("Perplexity = 200")
+
+tsne500.run <- runTSNE(sce, use_dimred="PCA", perplexity=500, rand_seed=123)
+tsne500 <- plotTSNE(tsne500.run, colour_by="Sample.Name") + fontsize + ggtitle("Perplexity = 500")
+
+#tsne1000.run <- runTSNE(sce, use_dimred="PCA", perplexity=1000, rand_seed=123)
+#tsne1000 <- plotTSNE(tsne1000.run, colour_by="Sample.Name") + fontsize + ggtitle("Perplexity = 1000")
+
+```
+
+```{r plotTSNE_perpRange, fig.width=6, fig.height=6}
+tsne5
+#tsne50
+#tsne200
+tsne500
+```
+
+### Stochasticity
+
+Use a different seed with the same perplexity 50.
+
+```{r plotTSNE_stocha}
+tsne50.b <- runTSNE(sce, use_dimred="PCA", perplexity=50, rand_seed=456)
+
+tsne50.b <- plotTSNE(tsne50.b,
+		   colour_by="Sample.Name",
+		   size_by="sum") + 
+	     fontsize + 
+	     ggtitle("Perplexity = 50, seed 456")
+tsne50.b
+```
+
+## UMAP
+
+Another neighbour graph method. Similar to t-SNE, but that is determistic, faster and claims to preserve both local and global structures.
+
+Compute UMAP.
+
+```{r runUMAP}
+set.seed(123)
+sce <- runUMAP(sce, dimred="PCA")
+```
+
+Plot UMAP:
+
+```{r plotUMAP}
+sce.umap <- plotUMAP(sce,
+		   colour_by="Sample.Name",
+		   size_by="sum") + 
+		   fontsize + 
+		   ggtitle("UMAP")
+sce.umap
+```
+
+<!-- Split by sample: -->
+
+```{r plotUMAP_facetBySample, fig.width=12, fig.height=12, eval=FALSE, include=FALSE}
+g <- sce.umap + facet_wrap(. ~ sce$source_name)
+g
+```
+
+Save SCE object: 
+
+```{r}
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s_dimRed.Rds", projDir, outDirBit, setName, setSuf)
+saveRDS(sce, tmpFn)
+```
