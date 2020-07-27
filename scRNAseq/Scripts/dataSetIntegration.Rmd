@@ -1,8 +1,8 @@
 ---
 title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
-subtitle: 'Data integration, Zeynep Kalender Atak, Katarzyna Kania'
+subtitle: 'Data integration'
 
-author: "Stephane Ballereau"
+author: "Stephane Ballereau, Zeynep Kalender Atak, Katarzyna Kania"
 output:
   html_notebook:
     code_folding: hide
