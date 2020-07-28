@@ -1,0 +1,188 @@
+---
+title: "CRUK CI Summer School 2020 - introduction to single-cell RNA-seq analysis"
+subtitle: 'Doublet detection'
+
+author: "Stephane Ballereau"
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+    number_sections: true
+  html_document:
+    df_print: paged
+    toc: yes
+    number_sections: true
+    code_folding: hide
+  html_book:
+    code_folding: hide
+params:
+  outDirBit: "AnaWiSce/Attempt1"
+---
+
+# Doublet detection
+
+Source: [Doublet detection](https://osca.bioconductor.org/doublet-detection.html) chapter of the OSCA book (with only few edits of its text).
+
+## Learning objectives
+
+In this section we will learn how to identify droplets that may include more than one cell, using a method based on simulation of doublets from the single-cell expression profiles.
+
+## Set up analysis
+
+Let's set some variables (eg path to files) and load R pcakages.
+
+```{r}
+projDir <- "/mnt/scratcha/bioinformatics/baller01/20200511_FernandesM_ME_crukBiSs2020"
+outDirBit <- "AnaWiSce/Attempt1"
+nbPcToComp <- 50
+```
+
+```{r setup, include=FALSE, echo=FALSE}
+# First, set some variables:
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = FALSE)
+set.seed(123) # for reproducibility
+knitr::opts_chunk$set(eval = TRUE) 
+```
+
+We will load:
+
+* ggplot2, for plots
+* dplyr, for data management
+* scater, for UMI count normalisation
+* scran, here for doublet detection 
+
+```{r}
+suppressMessages(library(ggplot2))
+suppressMessages(library(scater)) # for logNormCounts
+suppressMessages(library(scran))
+suppressMessages(library(dplyr))
+suppressMessages(library(BiocSingular)) # for faster PCA
+fontsize <- theme(axis.text=element_text(size=12), axis.title=element_text(size=16))
+```
+
+## Load data
+
+We will load the R file keeping the SCE object with the normalised counts (no cell subsampling).
+
+```{r}
+setName <- "caron"
+setSuf <- ""
+tmpFn <- sprintf("%s/%s/Robjects/%s_sce_nz_postDeconv%s.Rds", projDir, outDirBit, setName, setSuf)
+```
+
+Input file: `r sprintf("%s/Robjects/%s_sce_nz_postDeconv%s.Rds", outDirBit, setName, setSuf)`.
+
+```{r}
+if(!file.exists(tmpFn))
+{
+	knitr::knit_exit()
+}
+sce <- readRDS(tmpFn)
+```
+
+Number of genes: `r nrow(sce)`.
+
+Number of cells: `r ncol(sce)`.
+
+## Overview
+
+In single-cell RNA sequencing (scRNA-seq) experiments, doublets are artifactual libraries generated from two cells. They typically arise due to errors in cell sorting or capture, especially in droplet-based protocols (Zheng et al. 2017) involving thousands of cells. Doublets are obviously undesirable when the aim is to characterize populations at the single-cell level. In particular, doublets can be mistaken for intermediate populations or transitory states that do not actually exist. Thus, it is desirable to identify and remove doublet libraries so that they do not compromise interpretation of the results.
+
+Several experimental strategies are available for doublet removal. One approach exploits natural genetic variation when pooling cells from multiple donor individuals (Kang et al. 2018). Doublets can be identified as libraries with allele combinations that do not exist in any single donor. Another approach is to mark a subset of cells (e.g., all cells from one sample) with an antibody conjugated to a different oligonucleotide (Stoeckius, Zheng, et al. 2017). Upon pooling, libraries that are observed to have different oligonucleotides are considered to be doublets and removed. These approaches can be highly effective but rely on experimental information that may not be available.
+
+A more general approach is to infer doublets from the expression profiles alone (Dahlin et al. 2018). The [Doublet detection](https://osca.bioconductor.org/doublet-detection.html) chapter of the OSCA book also describes a second method, which relies on clusters identified, and their quality. 
+
+## Doublet detection by simulation
+
+This strategy involves in silico simulation of doublets from the single-cell expression profiles (Dahlin et al. 2018). This is performed using the doubletCells() function from scran, which will:
+
+* Simulate thousands of doublets by adding together two randomly chosen single-cell profiles.
+* For each original cell, compute the density of simulated doublets in the surrounding neighborhood.
+* For each original cell, compute the density of other observed cells in the neighborhood.
+* Return the ratio between the two densities as a “doublet score” for each cell.
+
+This approach assumes that the simulated doublets are good approximations for real doublets. The use of random selection accounts for the relative abundances of different subpopulations, which affect the likelihood of their involvement in doublets; and the calculation of a ratio avoids high scores for non-doublet cells in highly abundant subpopulations.
+
+We see the function in action below. To speed up the density calculations, doubletCells() will perform a PCA on the log-expression matrix, and we perform some (optional) parametrization to ensure that the computed PCs are consistent with that from our previous analysis on this dataset.
+
+We will get data for one sample. 
+
+```{r}
+splNames <- unique(colData(sce)$Sample.Name)
+sceOrig <- sce
+sce <- sceOrig[,sce$Sample.Name == splNames[1] ]
+
+set.seed(123)
+#--- normalization ---#
+library(scran)
+#set.seed(101000110)
+clusters <- quickCluster(sce)
+sce <- computeSumFactors(sce, clusters=clusters)
+sce <- logNormCounts(sce)
+#--- variance-modelling ---#
+#set.seed(00010101)
+dec.sce <- modelGeneVarByPoisson(sce)
+top.sce <- getTopHVGs(dec.sce, prop=0.1)
+#--- dimensionality-reduction ---#
+#set.seed(101010011)
+sce <- denoisePCA(sce, technical=dec.sce, subset.row=top.sce)
+sce <- runTSNE(sce, dimred="PCA")
+#--- clustering ---#
+snn.gr <- buildSNNGraph(sce, use.dimred="PCA", k=25)
+sce$cluster <- factor(igraph::cluster_walktrap(snn.gr)$membership)
+sce$clusterStg <- factor(paste0("c", sce$cluster),
+			 levels = paste0("c", levels( sce$cluster)) )
+```
+
+We also plot the t-SNE showing clusters, which are not used for the doublet detection by simulation used here, but help visulaise cells with different expression profiles.
+
+```{r}
+colLabels(sce) <- sce$clusterStg
+plotTSNE(sce, colour_by="clusterStg")
+```
+
+Let's run doubletCells() and display moments of the distribution of the doublet scores returned:
+
+```{r}
+library(BiocSingular)
+set.seed(100)
+
+# Setting up the parameters for consistency with denoisePCA();
+# this can be changed depending on your feature selection scheme.
+dbl.dens <- doubletCells(sce,
+			 subset.row=top.sce, 
+			 d=ncol(reducedDim(sce)))
+summary(dbl.dens)
+```
+
+The t-SNE plot below help identify any cluster with high number of cell with a high score.
+
+```{r}
+sce$DoubletScore <- log10(dbl.dens+1)
+plotTSNE(sce, colour_by="DoubletScore")
+```
+
+The violin plot below shows the distribution of score across clusters identified in the whole data set. Clusters with a large fraction of high-scoring cells are worth checking. Comparing marker genes for these clusters to other, 'doublet-free' clusters may inform on the type of cells involved. If the 'source' clusters are not related biologically these high-scoring cells should be discarded. If on the other hand the 'source' clusters are two well defined steps along a differentiation path, the high-scoring cells may represent an intermediary state.
+
+```{r}
+plotColData(sce, y = "DoubletScore", x = "clusterStg", 
+   colour_by = "DoubletScore")
+```
+
+The advantage of doubletCells() is that it does not depend on clusters, reducing the sensitivity of the results to clustering quality. The downside is that it requires some strong assumptions about how doublets form, such as the combining proportions and the sampling from pure subpopulations. In particular, doubletCells() treats the library size of each cell as an accurate proxy for its total RNA content. If this is not true, the simulation will not combine expression profiles from different cells in the correct proportions. This means that the simulated doublets will be systematically shifted away from the real doublets, resulting in doublet scores that are too low.
+
+Simply removing cells with high doublet scores will not be sufficient to eliminate real doublets from the data set. In some cases, only a subset of the cells in the putative doublet cluster actually have high scores, and removing these would still leave enough cells in that cluster to mislead downstream analyses. In fact, even defining a threshold on the doublet score is difficult as the interpretation of the score is relative. There is no general definition for a fixed threshold above which libraries are to be considered doublets.
+
+We recommend interpreting the doubletCells() scores in the context of cluster annotation. All cells from a cluster with a large average doublet score should be considered suspect, and close neighbors of problematic clusters should also be treated with caution. In contrast, a cluster containing a small proportion of high-scoring cells is probably safe provided that any interesting results are not being driven by those cells (e.g., checking that DE in an interesting gene is not driven solely by cells with high doublet scores). While clustering is still required, this approach is more robust than doubletClusters() to the quality of the clustering as the scores are computed on a per-cell basis.
+
+(As an aside, the issue of unknown combining proportions can be solved completely if spike-in information is available, e.g., in plate-based protocols. This will provide an accurate estimate of the total RNA content of each cell. To this end, spike-in-based size factors from Section 7.4 can be supplied to the doubletCells() function via the size.factors.content= argument. This will use the spike-in size factors to scale the contribution of each cell to a doublet library.)
+
+## Further comments
+
+Doublet detection procedures should only be applied to libraries generated in the same experimental batch. It is obviously impossible for doublets to form between two cells that were captured separately. Thus, some understanding of the experimental design is required prior to the use of the above functions. This avoids unnecessary concerns about the validity of batch-specific clusters that cannot possibly consist of doublets.
+
+It is also difficult to interpret doublet predictions in data containing cellular trajectories. By definition, cells in the middle of a trajectory are always intermediate between other cells and are liable to be incorrectly detected as doublets. Some protection is provided by the non-linear nature of many real trajectories, which reduces the risk of simulated doublets coinciding with real cells in doubletCells(). One can also put more weight on the relative library sizes in doubletCluster() instead of relying solely on N, under the assumption that sudden spikes in RNA content are unlikely in a continuous biological process.
+
+The best solution to the doublet problem is experimental - that is, to avoid generating them in the first place. This should be a consideration when designing scRNA-seq experiments, where the desire to obtain large numbers of cells at minimum cost should be weighed against the general deterioration in data quality and reliability when doublets become more frequent.
