@@ -768,7 +768,7 @@ During Part 2, we need to type in commands in “Terminal” tab of rstudio.</p>
 <p>Summits are the actual binding sites, we would like to make a list of regions with summits in the middle. This is good especially for motif analysis, as you expect to see the motif at the binding site.</p>
 <p>Frist, load the summit file and have a look inside. We will use <code>read.table</code> to load bam file in R.</p>
 <p>R</p>
-<pre class="r"><code>peakfile &lt;-read.table(&quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_summits.bed&quot;)
+<pre class="r"><code>peakfile &lt;-read.table(&quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_summits.bed&quot;)
 head(peakfile)</code></pre>
 <pre><code>##     V1     V2     V3
 ## 1 chr3  51424  51425
@@ -809,10 +809,10 @@ head(Motif_Peaks)</code></pre>
 <pre class="r"><code>?write.table</code></pre>
 <p>We have to modify the arguments of <code>write.table</code> so that it would match bed file format.</p>
 <p>R</p>
-<pre class="r"><code>write.table(Motif_Peaks, &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/Peaks_for_motif_detection_1stattempt.bed&quot;)</code></pre>
+<pre class="r"><code>write.table(Motif_Peaks, &quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection_1stattempt.bed&quot;)</code></pre>
 <p>Let’s have a look at top 10 rows of the file.</p>
 <p>bash</p>
-<pre class="bash"><code>head -n 10 &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/Peaks_for_motif_detection_1stattempt.bed&quot;</code></pre>
+<pre class="bash"><code>head -n 10 &quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection_1stattempt.bed&quot;</code></pre>
 <pre><code>## &quot;X.peakfile.V1.&quot; &quot;X.peakfile.V2...200.&quot; &quot;X.peakfile.V2...200..1&quot;
 ## &quot;1&quot; &quot;chr3&quot; 51224 51624
 ## &quot;2&quot; &quot;chr3&quot; 51393 51793
@@ -832,13 +832,13 @@ head(Motif_Peaks)</code></pre>
 options(scipen=999) # This forces R not to use exponential notations (eg. e+10)
 
 write.table(Motif_Peaks, 
-            file= &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/Peaks_for_motif_detection.bed&quot;, 
-            row.names=___,
-            col.names =___,
-            sep=___,
-            quote =___)</code></pre>
+            file= &quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection.bed&quot;, 
+            row.names=FALSE,
+            col.names =FALSE,
+            sep=&quot;\t&quot;,
+            quote =FALSE)</code></pre>
 <p>bash</p>
-<pre class="bash"><code>head -n 10 &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/Peaks_for_motif_detection.bed&quot;</code></pre>
+<pre class="bash"><code>head -n 10 &quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Peaks_for_motif_detection.bed&quot;</code></pre>
 <pre><code>## chr3 51224   51624
 ## chr3 51393   51793
 ## chr3 111041  111441
@@ -865,7 +865,7 @@ write.table(Motif_Peaks,
 ## Guangchuang Yu, Li-Gen Wang, Qing-Yu He. ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization. Bioinformatics 2015, 31(14):2382-2383</code></pre>
 <p>First, let’s load peak files we just created. ChIPseeker provides <code>readPeakFile</code> to load the peak and store in GRanges object. GRanges object is an object for genomic locations widely used by Bioconductor tools. If you want to find out more about this object, please read <a href="http://bioconductor.org/packages/release/bioc/html/GenomicRanges.html"><code>GenomicRanges</code> vignette</a>.</p>
 <p>R</p>
-<pre class="r"><code>peak &lt;- readPeakFile(&quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/Peaks_for_motif_detection.bed&quot;)
+<pre class="r"><code>peak &lt;- readPeakFile(&quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Peaks_for_motif_detection.bed&quot;)
 peak</code></pre>
 <pre><code>## GRanges object with 2962 ranges and 0 metadata columns:
 ##          seqnames              ranges strand
@@ -944,16 +944,16 @@ Let’s first have a look at the documentation of <code>annotatePeak</code>.</p>
 
 
 peakAnno &lt;- annotatePeak(peak, annoDb=&quot;org.Hs.eg.db&quot;, TxDb = txdb, tssRegion = c(-3000, 3000))</code></pre>
-<pre><code>## &gt;&gt; preparing features information...      2020-07-26 19:03:29 
-## &gt;&gt; identifying nearest features...        2020-07-26 19:03:31 
-## &gt;&gt; calculating distance from peak to TSS...   2020-07-26 19:03:32 
-## &gt;&gt; assigning genomic annotation...        2020-07-26 19:03:32 
-## &gt;&gt; adding gene annotation...          2020-07-26 19:03:53</code></pre>
+<pre><code>## &gt;&gt; preparing features information...      2020-07-30 17:47:41 
+## &gt;&gt; identifying nearest features...        2020-07-30 17:47:43 
+## &gt;&gt; calculating distance from peak to TSS...   2020-07-30 17:47:43 
+## &gt;&gt; assigning genomic annotation...        2020-07-30 17:47:43 
+## &gt;&gt; adding gene annotation...          2020-07-30 17:48:05</code></pre>
 <pre><code>## Loading required package: org.Hs.eg.db</code></pre>
 <pre><code>## </code></pre>
 <pre><code>## 'select()' returned 1:many mapping between keys and columns</code></pre>
-<pre><code>## &gt;&gt; assigning chromosome lengths           2020-07-26 19:03:53 
-## &gt;&gt; done...                    2020-07-26 19:03:53</code></pre>
+<pre><code>## &gt;&gt; assigning chromosome lengths           2020-07-30 17:48:05 
+## &gt;&gt; done...                    2020-07-30 17:48:05</code></pre>
 <p>Now, let’s check <code>peakAnno</code> object we just made.</p>
 <p>R</p>
 <pre class="r"><code>head(as.data.frame(peakAnno))</code></pre>
@@ -1092,7 +1092,7 @@ head(summary(yy))</code></pre>
 <p>First, we need to prepare a intermediate file that can be used to plot heatmap. <code>computeMatrix</code> function takes BigWig file and bed file with the genomic regions of your interest as input, compute the values (score per genome region) needed for heatmaps and summary plots.</p>
 <p>For example, we can run the following command.</p>
 <p>bash</p>
-<pre class="bash"><code>computeMatrix reference-point -S /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_treat_pileup.bw /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_control_lambda.bw -R /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/Peaks_for_motif_detection.bed -a 2000 -b 2000 --skipZeros --sortRegions descend -o /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/matrix.gz --referencePoint &quot;center&quot;</code></pre>
+<pre class="bash"><code>computeMatrix reference-point -S /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_treat_pileup.bw /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_control_lambda.bw -R /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Peaks_for_motif_detection.bed -a 2000 -b 2000 --skipZeros --sortRegions descend -o /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix.gz --referencePoint &quot;center&quot;</code></pre>
 <blockquote>
 <p>Exercise 2</p>
 <p>What does each argument in the code above mean? (Hint: run <code>computeMatrix reference-point</code> in Terminal.)</p>
@@ -1123,7 +1123,7 @@ head(summary(yy))</code></pre>
 </ol>
 <p>Now, we can visualize the read coverages for genomic regions using the matrix we just made. We use a function called <code>plotHeatmap</code>.</p>
 <p>bash</p>
-<pre class="bash"><code>plotHeatmap --matrixFile /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/matrix.gz --outFileSortedRegions /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/heatmapsortedregions.bed --outFileName /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/heatmap.png</code></pre>
+<pre class="bash"><code>plotHeatmap --matrixFile /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix.gz --outFileSortedRegions /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmapsortedregions.bed --outFileName /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmap.png</code></pre>
 <blockquote>
 <p>Exercise 3</p>
 <p>What does each argument in the code above mean? (Hint: run <code>plotHeatmap</code> in Terminal.)</p>
@@ -1141,7 +1141,7 @@ head(summary(yy))</code></pre>
 <p><code>plotHeatmap</code> can sort the genomic regions using the coverage scores calculated in <code>computeMatrix</code> and plots heatmap. By default, the regions are sorted in the decsending order.</p>
 <p>Let’s have a look at the sorted bed file.</p>
 <p>bash</p>
-<pre class="bash"><code>head -n 10 /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/heatmapsortedregions.bed</code></pre>
+<pre class="bash"><code>head -n 10 /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmapsortedregions.bed</code></pre>
 <p>You can see that the genomic regions are reordered. This order matches the order in heatmap.
 Let’s have a look at the heatmap.png file. (Use the tab “Files” on the right side of Rstudio.)</p>
 <blockquote>
@@ -1156,7 +1156,17 @@ Let’s have a look at the heatmap.png file. (Use the tab “Files” on the rig
 <p>Answer 4</p>
 </blockquote>
 <p>bash</p>
-<pre class="bash"><code></code></pre>
+<pre class="bash"><code>#1 
+computeMatrix reference-point -S /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_treat_pileup.bw /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/TAp73beta_r2.fastq_trimmed.fastq_sorted_standard_control_lambda.bw -R /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Peaks_for_motif_detection.bed -a 500 -b 500 --skipZeros --sortRegions descend -o /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix_1.gz --referencePoint &quot;center&quot;
+
+plotHeatmap --matrixFile /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix_1.gz --outFileSortedRegions /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmapsortedregions.bed --outFileName /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmap_1.png
+
+#2
+plotHeatmap --matrixFile /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix.gz --outFileSortedRegions /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmapsortedregions.bed --outFileName /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmap.png --colorMap 'copper'
+
+#3
+plotHeatmap --matrixFile /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/matrix.gz --outFileSortedRegions /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmapsortedregions.bed --outFileName /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/heatmap_3.png --sortRegions ascend
+</code></pre>
 </div>
 <div id="motif-analysis-using-meme-suite" class="section level2">
 <h2><span class="header-section-number">3.3</span> Motif Analysis using MEME Suite</h2>
@@ -1178,10 +1188,10 @@ Let’s have a look at the heatmap.png file. (Use the tab “Files” on the rig
 <p>You need the bed file (“Peaks_for_motif_detection.bed”) and the actual sequence of hg38 (“hg38_chr3.fa”) as input to convert genomic regions specified in bed file into the actual sequences of those regions. We will take a look what the fasta file “hg38_chr3.fa” looks like. You can download this kind of data from <a href="https://www.gencodegenes.org/">gencode</a> or <a href="https://hgdownload.soe.ucsc.edu/downloads.html">UCSC websites</a>. Ideally, you use the same fasta file as you used for the upstream analysis.</p>
 <p>bash</p>
 <pre class="bash"><code># If strand information is known use -s option as well
-bedtools getfasta -fi &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/hg38_chr3.fa&quot; -bed &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/Peaks_for_motif_detection.bed&quot; -fo &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/Tp73_peaks.fa&quot;</code></pre>
+bedtools getfasta -fi &quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/hg38_chr3.fa&quot; -bed &quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Peaks_for_motif_detection.bed&quot; -fo &quot;/home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Tp73_peaks.fa&quot;</code></pre>
 <p>Now, let’s have a look at the first 10 lines of this fasta file.</p>
 <p>bash</p>
-<pre class="bash"><code>head -n 10 /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/Tp73_peaks.fa</code></pre>
+<pre class="bash"><code>head -n 10 /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/Tp73_peaks.fa</code></pre>
 <p>With this fasta file, we are ready to run meme-chip!</p>
 <p>bash</p>
 <pre class="bash"><code>meme-chip</code></pre>
@@ -1192,7 +1202,7 @@ bedtools getfasta -fi &quot;/home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/pr
 <p>bash</p>
 <pre class="bash"><code># This takes a while to run (30-45 mins)
 
-meme-chip -oc /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/output/meme -db /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/JASPAR/JASPAR_CORE_2016_vertebrates.meme /home/ubuntu/Course_Materials/ChIPSeq/course/ChIP/practicals/data/Tp73_peaks.fa</code></pre>
+meme-chip -oc /home/ubuntu/Course_Materials/ChIPSeq/practicals/output/meme -db /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/JASPAR/JASPAR_CORE_2016_vertebrates.meme /home/ubuntu/Course_Materials/ChIPSeq/practicals/data/Tp73_peaks.fa</code></pre>
 <p>The function above takes a while to run, so let’s have a look at the results first.</p>
 </div>
 </div>
