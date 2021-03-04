@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en" class="grade-c">
+<head>
+    
+<link rel="preload" href=/static/fonts/Lora-Regular.8861b0072d.woff2 as="font" type="font/woff2" crossorigin>
+
+
+<link rel="preconnect" href="https://code.jquery.com" crossorigin>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=2.5,user-scalable=yes"/>
+
+
+<script>
+    (function(e){var t=e.documentElement,n=e.implementation;t.className+=' js';if(n&&n.hasFeature('http://www.w3.org/TR/SVG11/feature#Image','1.1')){t.className+=' svg'}})(document)
+</script>
+
+<script data-test="dataLayer">
+    dataLayer = [{"content":{"category":{"contentType":"perspective","legacy":{"webtrendsPrimaryArticleType":"reviews","webtrendsSubjectTerms":"genomic-analysis;software","webtrendsContentCategory":null,"webtrendsContentCollection":null,"webtrendsContentGroup":"Nature Methods","webtrendsContentGroupType":null,"webtrendsContentSubGroup":"Perspective"}},"article":{"doi":"10.1038/s41592-019-0654-x"},"attributes":{"cms":null,"deliveryPlatform":"oscar","copyright":{"open":false,"legacy":{"webtrendsLicenceType":null}}},"contentInfo":{"authors":["Robert A. Amezquita","Aaron T. L. Lun","Etienne Becht","Vince J. Carey","Lindsay N. Carpp","Ludwig Geistlinger","Federico Marini","Kevin Rue-Albrecht","Davide Risso","Charlotte Soneson","Levi Waldron","Hervé Pagès","Mike L. Smith","Wolfgang Huber","Martin Morgan","Raphael Gottardo","Stephanie C. Hicks"],"publishedAt":1575244800,"publishedAtString":"2019-12-02","title":"Orchestrating single-cell analysis with Bioconductor","legacy":null,"publishedAtTime":null,"documentType":"aplusplus"},"journal":{"pcode":"nmeth","title":"nature methods","volume":"17","issue":"2"},"authorization":{"status":true},"features":[{"name":"furtherReadingSection","present":true}],"collection":null},"page":{"category":{"pageType":"figure"},"attributes":{"template":"mosaic","featureFlags":[{"name":"ab_test_pandemic_bypass_paywall","active":false},{"name":"ab_use_nature_150_split_header","active":true}]},"search":null},"privacy":{},"version":"1.0.0","product":null,"session":null,"user":null,"backHalfContent":true}];
+</script>
+<script src="//cdn.cookielaw.org/consent/792a5a21-3d99-4432-8f70-957d389bf2b9.js" async=""></script>
+<script id="js-position0">
+    window.abTestSharedArticleRenderer = true;
+    window.idpVerifyPrefix = 'https://verify.nature.com';
+    window.ra21Host = 'https://wayf.springernature.com';
+</script>
+
+
+    <script>
+        (function() {
+            window.onerror = function(message, url, line, column, error) {
+                if (window.Raven) {
+                    window.Raven.captureException(error);
+                } else {
+                    var s = document.createElement('script');
+                    s.src = 'https://cdn.ravenjs.com/3.27.0/raven.min.js';
+                    s.crossorigin = 'anonymous';
+                    s.defer = 'defer';
+                    s.onload = function() {
+                        window.Raven.config('https://bddad754e8264fc7b4d73878b697b599@sentry.i-ris.io/39', {
+                            whitelistUrls: [
+                                'www.nature.com/'
+                            ]
+                        }).install();
+                        window.Raven.captureException(error);
+                    };
+                    document.body.appendChild(s);
+                }
+            };
+
+            if (window.matchMedia && window.matchMedia('only screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0), (-ms-high-contrast: none), only all and (min--moz-device-pixel-ratio:0) and (min-resolution: 3e1dpcm)').matches) {
+                var index = 0;
+                var scripts = [
+                    {src: '/static/js/nature.2093dd0acc.js', test: 'nature-js'},
+                    {src: '/static/js/nature-es6-bundle.23b1b82c38.js', test: 'nature-es6-js'},
+                    {src: '/static/js/shared-es6-bundle.076f9d1226.js', test: 'shared-es6-js'}
+                    
+                ];
+                var initOnceWhenReady = function() {
+                    if (window.initEs5 && window.initEs6 && !window.inited) {
+                        setTimeout(window.initEs5, 0);
+                        setTimeout(window.initEs6, 0);
+                        window.inited = true;
+                    }
+                };
+                var createScript = function(src, test, beforeLoad) {
+                    var s = document.createElement('script');
+                    s.id = 'js-position' + (index + 1);
+                    s.setAttribute('data-test', test);
+                    if (beforeLoad) {
+                        s.defer = 'defer';
+                        s.onload = function() {
+                            if (document.readyState === 'complete' || (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
+                                initOnceWhenReady();
+                            }
+                        };
+                    } else {
+                        s.async = 'async';
+                    }
+                    s.src = src;
+                    return s;
+                };
+                var insert = function(s) {
+                    document.getElementById('js-position' + index).insertAdjacentElement('afterend', s);
+                    ++index;
+                };
+
+                scripts.forEach(function (script) {
+                    insert(createScript(script.src, script.test, true));
+                });
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    initOnceWhenReady();
+
+                    var conditionalScripts = [
+                        {match: 'div[data-pan-container]', src: '/static/js/pan-zoom.3afd0786ef.js', test: 'pan-zoom-js'},
+                        {match: 'math,span.mathjax-tex', src: '/static/js/math.fbd3babae9.js', test: 'math-js'}
+                    ];
+                    conditionalScripts.filter(function(script) {
+                        return !!document.querySelector(script.match);
+                    }).forEach(function(script) {
+                        insert(createScript(script.src, script.test));
+                    });
+                }, false);
+            }
+        })();
+    </script>
+
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href=/static/images/favicons/nature/apple-touch-icon.f39cb19454.png>
+<link rel="icon" type="image/png" sizes="32x32" href=/static/images/favicons/nature/favicon-32x32.3fe59ece92.png>
+<link rel="icon" type="image/png" sizes="16x16" href=/static/images/favicons/nature/favicon-16x16.951651ab72.png>
+<link rel="manifest" href=/static/manifest.1a481c42b1.json>
+<link rel="mask-icon" href=/static/images/favicons/nature/safari-pinned-tab.69bff48fe6.svg color="#000000">
+<link rel="shortcut icon" href=/static/images/favicons/nature/favicon.62367f778b.ico>
+<meta name="msapplication-TileColor" content="#000000">
+<meta name="msapplication-config" content=/static/browserconfig.e35b3b052c.xml>
+<meta name="theme-color" content="#000000">
+<meta name="application-name" content="Nature">
+
+
+
+
+    
+     
+        
+            
+
+
+    <style>html{font-family:sans-serif;line-height:1.15;height:100%;overflow-y:scroll;font-size:62.5%}article,aside,header,nav,section{display:block}h1{font-size:30px}a,sub,sup{vertical-align:baseline}a{background-color:transparent;text-decoration:none;color:#069}b{font-weight:bolder}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}img{border:0;max-width:100%;height:auto;vertical-align:middle}svg:not(:root){overflow:hidden}button,input{font-family:sans-serif;font-size:100%;line-height:1.15;overflow:visible}button{text-transform:none}[type=submit],button,html [type=button]{-webkit-appearance:button}[type=checkbox]{box-sizing:border-box;padding:0}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}button{cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;border-top-left-radius:0;border-top-right-radius:0;border-bottom-right-radius:0;border-bottom-left-radius:0}h2{font-size:24px}h3{font-size:17px}h4{font-size:14px}nav ul{list-style:none none}.c-article-identifiers,body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif}body{min-height:100%;background-color:#eee;line-height:1.76;color:#222;background-position:initial initial;background-repeat:initial initial}.c-article-header{margin-bottom:40px}.c-article-identifiers{list-style:none;font-size:1.6rem;line-height:1.3;display:-webkit-flex;-webkit-flex-wrap:wrap;color:#6f6f6f;padding:0;margin:0 0 8px}.c-article-identifiers__item{border-right:1px solid #6f6f6f;margin-right:8px;padding-right:8px;list-style:none}.c-article-identifiers__item a{color:#069;text-decoration:none}.c-article-identifiers__item:last-child{margin-right:0;padding-right:0;border-right-width:0}.c-article-identifiers__open{color:#b74616}.c-article-title{font-size:2.4rem;line-height:1.25;margin-bottom:16px}@media only screen and (min-width:768px){.c-article-title{font-size:3rem;line-height:1.2}}.c-author-list{font-size:1.6rem;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;list-style:none;margin-bottom:0;padding:0;width:100%}.c-author-list__item{margin-left:0}.c-author-list__item,.c-author-list li{display:inline;padding-right:0}.c-author-list__item svg,.c-reading-companion__figure-full-link svg{margin-left:4px}.c-author-list__show-less{margin-left:8px}.c-author-list__show-more{margin-right:4px}.c-article-info-details{font-size:1.6rem;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;margin-bottom:8px;margin-top:16px}.c-article-info-details__cite-as{border-left:1px solid #6f6f6f;margin-left:8px;padding-left:8px}.c-article-metrics-bar{display:-webkit-flex;-webkit-flex-wrap:wrap;line-height:1.3;font-size:1.6rem;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif}.c-article-metrics-bar__item{-webkit-box-align:baseline;-webkit-align-items:baseline;border-right:1px solid #6f6f6f;margin-right:8px}.c-article-metrics-bar__item:last-child{border-right-width:0}.c-article-metrics-bar__count{font-weight:700;margin:0}.c-article-metrics-bar__label{color:#626262;font-weight:400;font-style:normal;margin:0 10px 0 5px}.c-article-metrics-bar__details{margin:0}.c-article-main-column{width:60.2%;margin-right:8.6%}@media only screen and (max-width:1023px){.c-article-main-column{width:100%;margin-right:0}}.c-article-section{font-family:Lora,Palatino,Times,Times New Roman,serif;clear:both}.c-article-section__title{border-bottom:2px solid #d5d5d5;font-size:2rem;line-height:1.3;padding-bottom:8px}@media only screen and (min-width:768px){.c-article-section__title{font-size:2.4rem;line-height:1.24}}.c-article-section__content{font-family:Lora,Palatino,Times,Times New Roman,serif;margin-bottom:40px}@media only screen and (max-width:1023px){.c-article-section__content{padding-left:0}}.c-article-authors-search{margin-top:0;margin-bottom:24px}.c-article-authors-search__item,.c-article-authors-search__title{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif}.c-article-authors-search__title{color:#626262;font-weight:700;margin:0;padding:0;font-size:1.7rem}.c-article-authors-search__item{font-size:1.6rem}.c-article-authors-search__text{margin:0}.c-article-share-box__no-sharelink-info{font-size:1.3rem;font-weight:700;padding-top:4px;margin-bottom:24px}.c-article-share-box__only-read-input{border:1px solid #d5d5d5;display:inline-block;margin-bottom:8px;font-size:1.4rem;font-weight:700;padding:8px 10px}.c-article-share-box__button--link-like{background-color:transparent;border:0;color:#069;cursor:pointer;font-size:1.4rem;margin-bottom:8px;margin-left:10px}.c-article-body{clear:both}.c-article-body a,.c-article-body p{word-wrap:break-word}.c-article-body a{word-break:break-word}.c-pdf-download{display:-webkit-flex;margin-bottom:24px;max-height:48px}@media only screen and (min-width:540px){.c-pdf-download{max-height:none}}@media only screen and (min-width:1024px){.c-pdf-download{max-height:48px}}.c-article-extras{width:31.2%;float:left}@media only screen and (max-width:1023px){.c-article-extras{display:none}}.c-pdf-download__link{display:-webkit-flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;color:#fff;background-color:#069;border:1px solid #069;border-top-left-radius:2px;border-top-right-radius:2px;border-bottom-right-radius:2px;border-bottom-left-radius:2px;text-decoration:none;font-size:1.6rem;line-height:1.3;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;-webkit-box-flex:1;-webkit-flex:1 1 0px;padding:13px 24px;background-position:initial initial;background-repeat:initial initial}.c-reading-companion{clear:both}.c-reading-companion__sticky{max-width:582px}.c-reading-companion__scroll-pane{overflow-x:hidden;overflow-y:auto;margin:0 0 16px}.c-reading-companion__tabs{font-size:1.6rem;list-style:none;display:-webkit-flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-flow:row nowrap;margin:0 0 8px;padding:0}.c-reading-companion__tabs>li{-webkit-box-flex:1;-webkit-flex-grow:1}.c-reading-companion__tab{color:#069;border:1px solid #d5d5d5;border-left-width:0;background-color:#eee;padding:8px 8px 8px 15px;text-align:left;font-size:1.6rem;width:100%}.c-reading-companion__tabs li:first-child .c-reading-companion__tab{border-left-width:1px}.c-reading-companion__tab--active{color:#222;background-color:#fff;border-bottom:1px solid #fff;font-weight:700}.c-reading-companion__figures-list,.c-reading-companion__references-list,.c-reading-companion__sections-list{list-style:none;padding:0}.c-reading-companion__references-list--numeric{list-style:decimal;padding:0 0 0 30px}.c-reading-companion__sections-list{margin:0 0 8px;min-height:50px}.c-reading-companion__section-item{font-size:1.6rem;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;padding:0}.c-reading-companion__section-item a{display:block;padding:8px 0 8px 16px;line-height:1em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-decoration:none}.c-reading-companion__figure-item{padding:16px 8px 16px 0;border-top:1px solid #d5d5d5;font-size:1.6rem}.c-reading-companion__figure-item:first-child{border-top-style:none;padding-top:8px}.c-reading-companion__reference-item{padding:8px 8px 8px 0;border-top:1px solid #d5d5d5;font-size:1.6rem}.c-reading-companion__reference-item:first-child{border-top-style:none}.c-reading-companion__reference-citation{margin:0;font-family:Lora,Palatino,Times,Times New Roman,serif}.c-reading-companion__reference-links{list-style:none;text-align:right;margin:8px 0 0;padding:0;font-weight:700;font-size:1.3rem}.c-reading-companion__reference-links>a{display:inline-block;padding-left:8px}.c-reading-companion__reference-links>a:first-child{display:inline-block;padding-left:0}.c-reading-companion__figure-title{font-weight:700;font-family:Lora,Palatino,Times,Times New Roman,serif;display:block;margin:0 0 8px}.c-reading-companion__figure-links{margin:8px 0 0;display:-webkit-flex;-webkit-box-pack:justify;-webkit-justify-content:space-between}.c-reading-companion__figure-links>a{display:inline-block}.c-reading-companion__panel{display:none;border-top:1px solid #d5d5d5;margin-top:-9px;padding-top:9px}.c-reading-companion__panel--active{display:block}.c-ad{display:none;padding:8px;text-align:center}@media only screen and (min-width:768px){.js .c-ad{display:block}}.c-ad--728x90{background-color:#ccc}.c-ad--728x90 .c-ad__inner{min-height:calc(1.5em + 94px)}.c-ad__label{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;font-weight:400;margin-bottom:4px;color:#333;line-height:1.5;font-size:1.4rem}.u-display-none{display:none}.js .u-js-hide,.u-hide{display:none;visibility:hidden}.u-visually-hidden{border:0;clip:rect(0 0 0 0);height:1px;margin:-100%;overflow:hidden;padding:0;width:1px;position:absolute!important}@media print{.u-hide-print{display:none}}.u-icon{fill:currentColor;-webkit-transform:translate(0);display:inline-block;vertical-align:text-top}.u-float-left{float:left}.u-list-reset{list-style:none;margin:0;padding:0}.u-h3{font-size:1.7rem}.c-article-section__title,.c-article-title{font-weight:700}@media only screen and (min-width:1024px){.c-pdf-button__container{display:none}}@media screen and (min-width:876px){.background-brand-secondary-pdf{display:none}}body,button,div,form,input{margin:0;padding:0}h1,h2,h3,h4,p{padding:0}body{font-size:1.8em}p{margin:0 0 28px}ol,ul{margin-top:0;margin-bottom:28px}h1{font-size:3rem;margin:0 0 24px;font-weight:400}h1,h2,h3{font-family:Lora,Palatino,Times,Times New Roman,serif}h2{font-size:2.4rem}h2,h3,h4{margin:0 0 8px;font-weight:400}h3{font-size:1.7rem}h4{font-size:1.4rem;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif}.box-sizing{box-sizing:border-box}.grid,.grid-ng{float:left;padding-left:0!important;padding-right:0!important}.container{margin:0}.pin-right{float:right}.pin-left{float:left}.position-absolute{position:absolute}.position-relative{position:relative}.position-top{top:0}.position-right{right:0}.block{display:block}.inline-block{display:inline-block}.inline-list>li{display:inline}.inline-group-top{vertical-align:top}.cleared:after,.cleared:before{content:" ";display:table}.clear,.cleared:after{clear:both}.hide,.js .js-hide{display:none;visibility:hidden}.visually-hidden{width:1px;height:1px;clip:rect(1px 1px 1px 1px);position:absolute!important}.hide-text{display:block;text-indent:-9999em;direction:ltr}.hide-overflow,.hide-text{overflow:hidden}.text-center{text-align:center}.lower{text-transform:lowercase}.nowrap{white-space:nowrap}.overflow-ellipsis{text-overflow:ellipsis}.unstyled{font-weight:400;font-style:normal}.search-btn{width:4rem;min-width:40px;height:4rem;min-height:40px;font-size:1.2rem;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'16'%20height%3D'16'%20viewBox%3D'0%200%2016%2016'%3E%3Cpath%20fill%3D'%23fff'%20d%3D'M10.6%201.3c2.3%200%204.2%201.9%204.2%204.2s-1.9%204.2-4.2%204.2-4.2-2-4.2-4.3%201.9-4.1%204.2-4.1m0-1.3c-3%200-5.4%202.4-5.4%205.4s2.4%205.4%205.4%205.4%205.4-2.4%205.4-5.4-2.4-5.4-5.4-5.4zm-3.5%2011.1l-4.9%204.9-2.2-2.2%204.9-4.8%202.2%202.1z'%2F%3E%3C%2Fsvg%3E"),none;background-size:40%;background-color:#069;border:1px solid #069;color:transparent}@media not all{.search-btn{background-size:16px}}.content{max-width:1000px;margin:0 auto}.article-page{background-color:#fff;background-position:initial initial;background-repeat:initial initial}.z-index-100{z-index:100}.z-index-50{z-index:50}.z-index-1{z-index:1}.composite-layer{-webkit-transform:translateZ(0)}.grid{margin-right:3.2%}.grid-8{width:65.6%}.grid-12{width:100%}.grid-left-2{margin-left:17.2%}.grid-1of4{width:25%}.grid-1of2{width:50%}.standard-space-below{margin-bottom:28px}.serif{font-family:Lora,Palatino,Times,Times New Roman,serif}.sans-serif{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif}.strong{font-weight:700;-webkit-font-smoothing:antialiased}.contrast-text,.contrast-text a{color:#fff}.text-gray{color:#222}.text-orange{color:#cc4b14}.equalize-line-height{line-height:1em}.tighten-line-height{line-height:1.4}.text11{font-size:1.1rem}.text14{font-size:1.4rem}.border-gray,.border-gray-medium{border:0 solid #999}.border-gray-medium{border-color:#dadada}.border-all-1{border-width:1px}.border-bottom-1{border-bottom-width:1px}.border-bottom-2{border-bottom-width:2px}.kill-border{border-width:0}.background-white{background-color:#fff}.background-gray-dark{background-color:#333}.background-bluegray{background-color:#5a5a62}.ma0{margin:0}.mt1{margin-top:1px}.mt4{margin-top:4px}.mt6{margin-top:6px}.mr1{margin-right:1px}.mr20{margin-right:20px}.mb0{margin-bottom:0}.mb4{margin-bottom:4px}.mb6{margin-bottom:6px}.mb20{margin-bottom:20px}.mb40{margin-bottom:40px}.ml6{margin-left:6px}.ml20{margin-left:20px}.pa6{padding:6px}.pa10{padding:10px}.pa20{padding:20px}.pt10{padding-top:10px}.pt20{padding-top:20px}.pt30{padding-top:30px}.pr10{padding-right:10px}.pr15{padding-right:15px}.pr20{padding-right:20px}.pr40{padding-right:40px}.pb10{padding-bottom:10px}.pl15{padding-left:15px}.pl20{padding-left:20px}@media only screen and (max-width:75em){.mq1200-padded{padding-left:20px;padding-right:20px}}@media only screen and (max-width:54.688em){.mq875-ml0{margin-left:0}.mq875-mt20{margin-top:20px}.mq875-pa0{padding:0}}@media only screen and (max-width:40em){.mq640-pr5{padding-right:5px}.mq640-pb30{padding-bottom:30px}}.js .js-author-etal{display:none;visibility:hidden}@media only screen and (max-width:40em){.mq640-hide{display:none;visibility:hidden}}@media only screen and (max-width:30em){.js .js-mq480-show-inline{display:inline;visibility:visible}.js .js-smaller-author-etal{display:none;visibility:hidden}}.icon{background-repeat:no-repeat}.icon-right{background-position:100% 50%}.icon-above{padding-top:25px;min-width:25px;background-position:50% 0}.icon-center{background-position:50% 50%}.icon-rotate:after{content:"";position:absolute;top:50%;-webkit-transform:translateY(-50%);transition:.2s;-webkit-transition:.2s;background-position:0 0;background-repeat:no-repeat;right:0}.icon-login-25x25-white,.icon-search-25x25-white{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'25'%20height%3D'25'%20viewBox%3D'138.481%2015.385%2025%2025'%20enable-background%3D'new%20138.481%2015.385%2025%2025'%3E%3Cpath%20fill%3D'%23fff'%20d%3D'M150.98%2024.757c2.604%200%204.687-2.083%204.687-4.686s-2.083-4.685-4.686-4.685c-2.603%200-4.685%202.083-4.685%204.686s2.083%204.687%204.686%204.687zm4.79%201.562c-2.498%200-2.394%204.998-4.79%204.998-2.395%200-2.29-5-4.79-5s-6.143%203.958-6.143%209.27c0%205.102%205.832%204.79%2010.934%204.79s10.935.416%2010.935-4.687c0-5.31-3.644-9.37-6.144-9.37z'%2F%3E%3C%2Fsvg%3E"),none;background-size:25px}.icon-search-25x25-white{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'25'%20height%3D'25'%20viewBox%3D'235%2015%2025%2025'%20enable-background%3D'new%20235%2015%2025%2025'%3E%3Cg%20fill%3D'%23fff'%3E%3Cpath%20d%3D'M251.583%2017c3.583%200%206.583%203%206.583%206.583s-3%206.583-6.583%206.583-6.583-3-6.583-6.583S248%2017%20251.583%2017m0-2c-4.667%200-8.417%203.75-8.417%208.417s3.75%208.417%208.417%208.417S260%2028.167%20260%2023.417%20256.25%2015%20251.583%2015zM246.083%2032.333L238.417%2040%20235%2036.583l7.667-7.666z'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"),none}.icon-ealert-25x25-white,.icon-submit-25x25-white{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'25'%20height%3D'25'%20viewBox%3D'0%200%2025%2025'%3E%3Cpath%20fill%3D'%23fff'%20d%3D'M15.6%201.3v5.3h5.3v17h-17v-22.3h11.7m1.4-1.3h-14.3v25h19.6v-19.6h-5.4l.1-5.4zm-.6%201.3l4.6%204.6v17.7h-17v-22.3h12.4m.6-1.3h-14.3v25h19.6v-19.6l-5.3-5.4zM16.6%2013.5l-3.1-3.1-.8-.8c-.1-.1-.3-.1-.4%200l-.8.8-3.1%203.1-.7.7c-.1.1-.2.2-.2.3s.1.2.2.2h2.7c.1%200%20.2.1.2.2v3.3c0%20.2.2.4.4.4h3c.2%200%20.4-.2.4-.4v-3.3c0-.1.1-.2.2-.2h2.7c.1%200%20.2-.1.2-.2s-.1-.3-.2-.4c-.1-.1-.4-.3-.7-.6z'%2F%3E%3C%2Fsvg%3E"),none;background-size:25px}.icon-ealert-25x25-white{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'25'%20height%3D'25'%20viewBox%3D'0%200%2025%2025'%3E%3Cpath%20fill%3D'%23fff'%20d%3D'M25%203.1h-25v18.8h25v-18.8zm-17.8%2012.8l-3.9%204.4c-.2.2-.5.3-.6.3-.2%200-.5-.2-.6-.3-.3-.3-.3-.9%200-1.4l3.9-4.4c.3-.3.9-.3%201.3%200%20.2.5.2%201.1-.1%201.4zm5.3-.9c-.2%200-.3%200-.5-.2l-9.8-8.9c-.5-.3-.5-.7-.2-1.1.3-.5.8-.5%201.1-.2l9.4%208.4%209.4-8.4c.3-.3.8-.3%201.1.2.3.3.3.9-.2%201.1l-9.7%208.9c-.1.2-.4.2-.6.2zm10.5%205.3c-.2.2-.5.3-.6.3s-.5-.2-.6-.3l-4.1-4.4c-.3-.3-.3-.9%200-1.4.3-.3.9-.3%201.3%200l4.1%204.4c.2.5.2%201.1-.1%201.4z'%2F%3E%3C%2Fsvg%3E"),none}.icon-arrow-right-6x10-white{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'6'%20height%3D'10'%20viewBox%3D'-0.064%20-1.375%206%2010'%20enable-background%3D'new%20-0.064%20-1.375%206%2010'%3E%3Cpath%20fill%3D'%23fff'%20d%3D'M-.064.625l3.686%203-3.686%203v2l6-5-6-5v2z'%2F%3E%3C%2Fsvg%3E"),none;background-size:7px}.icon-rotate.menu-button-icon:after{margin-top:-1px}.header-tools-link{height:29px}.clean-list{padding:0;list-style:none}@media only screen and (max-width:54.688em){.mq875-grid-12{width:100%}.mq875-grid-4{width:31.2%}}@media only screen and (max-width:40em){.mq640-grid-12{width:100%}}.skiplink{width:1px;height:1px;display:block;overflow:hidden;position:absolute}.breadcrumbs{padding:0 15px 5px}.breadcrumbs ol{padding:10px 5px 5px;overflow:hidden;line-height:1.1em;white-space:nowrap;text-overflow:ellipsis}.small-header-icons{padding-left:7px;padding-right:7px;margin-top:14px;width:65px}@media only screen and (max-width:75em){.breadcrumbs{padding:0 15px 5px 0}}.header-logo-container{height:50px;padding:15px 20px}.nature-research-logo{width:319px;background-position:50% 50%;background-repeat:no-repeat}.small-header-side{right:0}@media only screen and (max-width:54.688em){.small-header-hide{position:absolute;width:1px;left:-9999em}}.header-logo,.header-logo-container{overflow:hidden}.header-logo img{max-height:50px;margin:0;padding:0}.header-logo-primary{display:inline;visibility:visible}.header-logo-secondary{display:none;visibility:hidden}.menu-button{position:absolute;top:15px;right:100%;padding:6px 10px;border:1px solid rgba(34,34,34,.74902);text-transform:uppercase;font-size:1.4rem;color:#222}.menu-button-icon{display:block;position:relative;padding-right:15px;text-align:right;background-position:100% 50%;background-repeat:no-repeat}.menu-button-icon:after{width:12px;height:7px;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'12'%20height%3D'7'%20viewBox%3D'0%200%2012%207'%3E%3Cpath%20fill%3D'%23222'%20d%3D'M9.7%200L6%204.3%202.3%200H0l6%207%206-7H9.7z'%2F%3E%3C%2Fsvg%3E"),none;background-size:12px}.menu-button-label{padding-right:4px}.menu-button-icon,.menu-button-label{height:11px;line-height:11px}.menu-button-icon{min-width:45px}@media only screen and (max-width:75em){.small-header-side{right:20px}.menu-button{display:inline-block;float:none;vertical-align:top;position:static;margin:1px 20px 1px 0}.menu-button-icon{min-width:0;padding-right:12px}.menu-button-label{position:absolute;left:-9999em;width:1px}.header-logo-container{padding-left:0}.banner{padding-left:20px;padding-right:0}}@media only screen and (max-width:54.688em){.menu-button{margin:1px 20px 1px 0}.header-logo-container{padding:7px 0;height:25px}.header-logo{height:25px}.header-logo img{max-height:25px}.header-logo-primary{display:none;visibility:hidden}.header-logo-secondary{display:inline;visibility:visible}.small-header-icons{border-left:1px solid #8d8d78;margin-top:0;margin-right:0;padding:7px 16px;width:auto;background-color:#5a5a62}.small-header-icons:first-of-type{border-left-width:0}.small-header-main,.small-header-side{width:auto;margin:0}.small-header-side{float:right;position:static}.nature-research-logo{width:231px;margin-right:-20px}}@media only screen and (max-width:40em){.menu-button{margin-right:4px}.header-logo-primary{display:inline;visibility:visible}.header-logo-secondary{display:none;visibility:hidden}}.js .menu{position:absolute;overflow-y:auto;left:0;right:0;display:none;margin:0}@media only screen and (max-width:75em) and (min-width:54.74em){.banner{padding-right:20px}}.grade-c-hide{display:block}.grade-c-show{display:none;visibility:hidden}.grade-c-invisible{visibility:visible}.menu-button{float:none}.header-logo-container h1{color:#000;padding:0;line-height:0;background-position:0 0;background-repeat:initial initial}.container{max-width:none}</style>
+
+
+
+
+    <link id="mustard" rel="stylesheet" href="/static/css/article.b6a4111a0f.css" media="print" onload="this.media='only screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0), (-ms-high-contrast: none), only all and (min--moz-device-pixel-ratio:0) and (min-resolution: 3e1dpcm)';this.onload=null">
+    <noscript>
+        <link id="mustard" rel="stylesheet" type="text/css" href="/static/css/article.b6a4111a0f.css" media="only screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0), (-ms-high-contrast: none), only all and (min--moz-device-pixel-ratio:0) and (min-resolution: 3e1dpcm)">
+    </noscript>
+
+
+<link rel="stylesheet" type="text/css" href="/static/css/article-print.553b5f0277.css" media="print">
+
+        
+    
+
+
+
+    
+        
+            <style>
+                .header-logo img {
+                    max-width: 280px;
+                }
+
+                 .background-brand-primary {
+                      background-color: #617693;
+                      color: #fff;
+                 }
+
+                 .background-brand-secondary {
+                      background-color: #3b5477;
+                      color: #fff;
+                 }
+
+                 .background-brand-secondary-pdf {
+                      background-color: #036599;
+                      background-size: 22px auto;
+                      background-position: 80% 50%;
+                      color: #fff;
+                 }
+
+                 .background-brand-secondary-pdf a {
+                      color: #fff;
+                 }
+
+                 .background-brand-tertiary {
+                      background-color: #dbdcdf;
+                      color: #222;
+                 }
+
+                 .background-gradient-brand-primary {
+                      background-image: linear-gradient(to right, #617693, #617693 50%, transparent 50%);
+                 }
+
+                 .background-gradient-brand-secondary-tertiary {
+                      background-image: linear-gradient(to right, #3b5477, #3b5477 50%, #dbdcdf 50%);
+                 }
+
+                 .background-gradient-brand-gray {
+                      background-image: linear-gradient(to right, #e0e0e0, #e0e0e0 50%, transparent 50%);
+                 }
+
+                 .background-gradient-brand-gray-light {
+                      background-image: linear-gradient(to right, #eee, #eee 50%, transparent 50%);
+                 }
+
+                 
+                      .background-brand-primary a {
+                          color: #fff;
+                      }
+                 
+
+                 
+                      .background-brand-secondary a {
+                          color: #fff;
+                      }
+                 
+
+                 
+
+                 .nav-border {
+                      border-bottom: 4px solid #3b5477;
+                 }
+
+                 /* less than or equal to 875px */
+                 @media only screen and (max-width: 54.688em) {
+                      .banner {
+                          background-color: #617693;
+                      }
+
+                      .nav-border .menu-cell li {
+                          border-bottom: 1px solid #3b5477;
+                      }
+                 }
+
+                 .sticky-header .inner-banner,
+                 .header-primary-color {
+                      background-color: #617693;
+                 }
+
+                 
+                     .menu-button,
+                     .menu-button-clone,
+                     .header-submit-button {
+                         border: 1px solid #fff;
+                         border: 1px solid rgba(255, 255, 255, 0.75);
+                         color: #fff;
+                     }
+                     .header-top-bar {
+                         border-bottom: 1px solid #fff;
+                         border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+                     }
+
+                     .icon-rotate.tools-menu-button-icon:after,
+                     .menu-button-icon:after {
+                          background-image: url("/static/images/icons/icon-arrow-down-12x7-white.e10aedb54f.svg"), none;
+                     }
+
+                     .nature-research-logo {
+                          background-image: url("/static/images/product-logos/nature-research-logo-white.a9028dbd21.svg"), none;
+                     }
+                     .header-search-button {
+                          padding-right: 25px;
+                          background-image: url("/static/images/icons/icon-search-24x24-white.7b3ba09d04.svg"), none;
+                     }
+                 
+             </style>
+         
+    
+
+
+<script>(function(w,d){if(w.matchMedia && w.matchMedia(d.getElementById('mustard').media).matches){d.documentElement.className=d.documentElement.className.replace(/\s*grade-c/, "")}})(window,document)</script>
+
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NWDMT9Q');</script>
+
+
+
+
+<meta name="robots" content="noarchive">
+<meta name="access" content="Yes">
+<meta name="WT.cg_s" content="Figure"/>
+<meta name="WT.z_bandiera_abtest" content="a"/>
+<meta name="WT.page_categorisation" content="Article_Satellite"/>
+
+    <meta name="WT.template" content="oscar"/>
+    <meta name="WT.z_cg_type" content="Nature Research Journals"/>
+    <meta name="WT.cg_n" content="Nature Methods"/>
+    <meta name="dc.rights" content="©2020 Macmillan Publishers Limited. All Rights Reserved."/>
+    <meta name="prism.issn" content="1548-7105"/>
+
+
+<link rel="search" href="http://www.nature.com/search">
+<link rel="search" href="http://www.nature.com/opensearch/opensearch.xml" type="application/opensearchdescription+xml" title="nature.com">
+<link rel="search" href="http://www.nature.com/opensearch/request" type="application/sru+xml" title="nature.com">
+
+
+    <title>Fig. 2: Overview of the SingleCellExperiment class. | Nature Methods</title>
+</head>
+<!--[if IE 9]><body class="ie9 article-page"><![endif]-->
+<!--[if gt IE 9]><!--><body class="article-page"><!--<![endif]-->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWDMT9Q"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+
+<div role="banner" class="position-relative cleared z-index-50" data-test="top-containers">
+    
+    
+        <div class="hide-print container background-gray-dark">
+            <div class="content mq1200-padded">
+                <a href="#content" id="skiplink" class="skiplink contrast-text js-no-scroll" data-track="click"
+                   data-track-action="skip to content" data-track-category="header" data-track-label="link">Skip to main
+                    content</a>
+            </div>
+        </div>
+    
+
+    
+        
+
+        
+
+        <aside class="c-ad c-ad--728x90">
+            <div class="c-ad__inner" data-container-type="banner-advert">
+                <p class="c-ad__label">Advertisement</p>
+                    
+            
+            
+                <div id="article-doubleclickad-container">
+    <div id="div-gpt-ad-top-1"
+         class="div-gpt-ad advert leaderboard js-ad text-center hide-print grade-c-hide"
+         data-ad-type="top"
+         data-gpt-unitpath="/285/nmeth.nature.com/article"
+         data-gpt-sizes="728x90"
+         data-gpt-targeting="type=article;pos=top;artid=s41592-019-0654-x;doi=10.1038/s41592-019-0654-x;subjmeta=1647,2217,631,794;kwrd=Genomic analysis,Software">
+        <noscript>
+            <a href="//pubads.g.doubleclick.net/gampad/jump?iu=/285/nmeth.nature.com/article&amp;sz=728x90&amp;c=-261652248&amp;t=pos%3Dtop%26type%3Darticle%26artid%3Ds41592-019-0654-x%26doi%3D10.1038/s41592-019-0654-x%26subjmeta%3D1647,2217,631,794%26kwrd%3DGenomic analysis,Software">
+                <img data-test="gpt-advert-fallback-img"
+                     src="//pubads.g.doubleclick.net/gampad/ad?iu=/285/nmeth.nature.com/article&amp;sz=728x90&amp;c=-261652248&amp;t=pos%3Dtop%26type%3Darticle%26artid%3Ds41592-019-0654-x%26doi%3D10.1038/s41592-019-0654-x%26subjmeta%3D1647,2217,631,794%26kwrd%3DGenomic analysis,Software"
+                     alt="Advertisement"
+                     width="728"
+                     height="90"></a>
+        </noscript>
+    </div>
+</div>
+
+            
+            
+        
+            </div>
+        </aside>
+    
+
+    
+
+    
+        <div class="hide-print text-orange content grade-c-show">
+            
+        <p>Thank you for visiting nature.com. You are using a browser version with limited support for CSS. To obtain
+            the best experience, we recommend you use a more up to date browser (or turn off compatibility mode in
+            Internet Explorer). In the meantime, to ensure continued support, we are displaying the site without styles
+            and JavaScript.</p>
+    
+        </div>
+    
+
+
+    
+        
+    <div class="hide-print container background-bluegray contrast-text text14 strong lower mq640-hide position-relative z-index-100"
+         data-test="header-breadcrumbs">
+        <div class="content cleared mq1200-padded">
+            
+            <div class="breadcrumbs pin-left">
+                <ol class="ma0 cleared clean-list inline-list"><li id="breadcrumb0" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"
+                                     itemref="breadcrumb1"><a href="/" itemprop="url" class="icon icon-right icon-arrow-right-6x10-white pr15 "
+                                                                                                                 data-track="click" data-track-action="breadcrumb" data-track-category="header" data-track-label="link:nature"><span itemprop="title">nature</span></a></li><li id="breadcrumb1" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"
+                                     itemref="breadcrumb2" class="ml6"><a href="/nmeth" itemprop="url" class="icon icon-right icon-arrow-right-6x10-white pr15 "
+                                                                                                                 data-track="click" data-track-action="breadcrumb" data-track-category="header" data-track-label="link:nature methods"><span itemprop="title">nature methods</span></a></li><li id="breadcrumb2" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"
+                                     itemref="breadcrumb3" class="ml6"><a href="/nmeth/articles?type&#x3D;perspective" itemprop="url" class="icon icon-right icon-arrow-right-6x10-white pr15 "
+                                                                                                                 data-track="click" data-track-action="breadcrumb" data-track-category="header" data-track-label="link:perspectives"><span itemprop="title">perspectives</span></a></li><li id="breadcrumb3" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"
+                                     itemref="breadcrumb4" class="ml6"><a href="/articles/s41592-019-0654-x" itemprop="url" class="icon icon-right icon-arrow-right-6x10-white pr15 "
+                                                                                                                 data-track="click" data-track-action="breadcrumb" data-track-category="header" data-track-label="link:article"><span itemprop="title">article</span></a></li><li id="breadcrumb4" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="" itemprop="url" data-track="click" data-track-action="breadcrumb" data-track-category="header" data-track-label="link:figure" class="ml6 text-gray"><span itemprop="title">figure</span></a></li></ol>
+            </div>
+            
+            
+                <p class="pin-right box-sizing header-primary-color nature-research-logo ma0 pa6 hide-text grade-c-hide">A Nature Research Journal</p>
+            
+        </div>
+    </div>
+
+
+    
+
+    <div class="u-mb-16">
+        
+    
+        <div class="hide-print container js-header-container mb20 position-relative z-index-50" data-ui="header-container"
+             data-container-type="header">
+            <div class="cleared clear hide-print position-relative background-gradient-brand-primary js-header default-header z-index-100 composite-layer tighten-line-height">
+                <div class="banner js-banner content mq1200-padded position-relative">
+                    <div class="inner-banner cleared">
+                        <div class="main-column small-header-main pin-left">
+                            <div class="header-logo-container header-primary-color">
+                                <a href="#menu" id="menu-button" class="js-header-menu-button menu-button js-no-scroll"
+                                   data-test="menu-button">
+                                    <span class="menu-button-icon icon-rotate">
+                                        <span class="menu-button-label">Menu</span>
+                                    </span>
+                                </a>
+                                <h1 class="inline-block">
+                                    <a href="/nmeth"
+                                       class="header-logo inline-block"
+                                       data-track="click" data-track-action="home" data-track-category="header" data-track-label="image">
+                                        
+                                            <img alt="Nature Methods"
+                                                 src="//media.springernature.com/full/nature-cms/uploads/product/nmeth/header-14e426c946926ee6925c48c320885794.svg"
+                                                 class="grade-c-invisible header-logo-primary js-svg"
+                                                 data-png="//media.springernature.com/full/nature-cms/uploads/product/nmeth/header-3d52398c03b7661e5b880eebbd637d40.png"><img alt="Nature Methods"
+                                                 src="//media.springernature.com/full/nature-cms/uploads/product/nmeth/header-14e426c946926ee6925c48c320885794.svg"
+                                                 class="grade-c-invisible header-logo-secondary js-svg"
+                                                 data-png="//media.springernature.com/full/nature-cms/uploads/product/nmeth/header-4772d747277dac66fd8641d6240d8e77.png">
+                                        
+                                    </a>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="position-absolute position-right small-header-side">
+                            <div class="pin-right">
+                                
+                                    <a href="#search-menu" data-component="tray-button"
+                                       class="pin-left inline-group-top pa10 pr15 pl15 small-header-icons background-bluegray contrast-text text11 mr1"
+                                       data-test="search-link" data-track="click" data-track-category="header"
+                                       data-track-action="open tray" data-track-label="button">
+                                            <span
+                                                    class="icon icon-above icon-search-25x25-white icon-search-25x25-gray block text-center">
+                                                <span class="block mt6 small-header-hide">Search</span>
+                                            </span>
+                                    </a>
+                                    
+                                        <a href="https://www.nature.com/my-account/alerts/subscribe-journal?list-id&#x3D;95"
+                                           class="mq640-hide pin-left inline-group-top pa10 small-header-icons background-bluegray contrast-text text11 mr1"
+                                           data-test="ealert-link" data-track="click" data-track-action="ealert"
+                                           data-track-category="header" data-track-label="link">
+                                            <span
+                                                    class="icon icon-above icon-ealert-25x25-white icon-ealert-25x25-gray block text-center">
+                                                <span class="block mt6 small-header-hide">E-alert</span>
+                                            </span>
+                                        </a>
+                                    
+                                    
+                                        <a href="https://mts-nmeth.nature.com/cgi-bin/main.plex"
+                                           class="mq640-hide inline-block pin-left inline-group-top pa10 pr15 pl15 small-header-icons background-bluegray contrast-text text11 mr1"
+                                           data-test="submit-link" data-track="click" data-track-action="manuscript submission"
+                                           data-track-category="header" data-track-label="link">
+                                            <span
+                                                    class="icon icon-above icon-submit-25x25-white icon-submit-25x25-gray block text-center">
+                                                <span class="block mt6 small-header-hide">Submit</span>
+                                            </span>
+                                        </a>
+                                    
+                                    
+    <a href="/nams/svc/myaccount"
+       id="my-account"
+       class="placeholder inline-block pin-left inline-group-top pa10 pr15 pl15 small-header-icons background-bluegray contrast-text text11"
+       data-test="login-link" data-track="click" data-track-action="my account" data-track-category="header" data-track-label="link">
+        <span class="icon icon-above icon-login-25x25-white icon-login-25x25-gray block text-center">
+            <span class="block mt6 small-header-hide">My Account</span>
+        </span>
+    </a>
+    <a href="https://idp.nature.com/authorize/natureuser?client_id&#x3D;grover&amp;redirect_uri&#x3D;https%3A%2F%2Fwww.nature.com%2Farticles%2Fs41592-019-0654-x%2Ffigures%2F2"
+       id="login-button"
+       style="display: none;"
+       class="placeholder inline-block pin-left inline-group-top pa10 pr15 pl15 small-header-icons background-bluegray contrast-text text11"
+       data-test="login-link" data-track="click" data-track-action="login" data-track-category="header" data-track-label="link">
+        <span class="icon icon-above icon-login-25x25-white icon-login-25x25-gray block text-center">
+            <span class="block mt6 small-header-hide">Login</span>
+        </span>
+    </a>
+
+
+
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+        
+    </div>
+
+    
+    
+
+</div>
+
+
+<div role="main" id="content">
+    <div class="container cleared container-type-article" data-container-type="article">
+        <div class="content position-relative cleared clear mq1200-padded" data-component="article-container" data-track-component="figure">
+            <div id="figure-2-title" class="u-display-none">Fig. 2: Overview of the SingleCellExperiment class. | Nature Methods</div><article itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="c-article-figure-title u-h1" data-test="top-caption">Fig. 2: Overview of the SingleCellExperiment class.</h1><p class="c-article-figure-subtitle">From: <a data-test="subtitle" data-article-title="true" data-track="click" data-track-action="back to article" data-track-label="link" data-track-category="figure" href="/articles/s41592-019-0654-x">Orchestrating single-cell analysis with Bioconductor</a></p></header><div class="c-article-figure-content"><figure data-test="figure"><div class="c-article-figure-content-image"><div class="c-article-figure-content-image-inline"><picture><source type="image/webp" srcset="//media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41592-019-0654-x/MediaObjects/41592_2019_654_Fig2_HTML.png?as=webp"></source><img aria-describedby="figure-2-desc" src="//media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41592-019-0654-x/MediaObjects/41592_2019_654_Fig2_HTML.png" alt="Fig. 2" width="1015" height="535" /></picture></div></div><div class="c-article-figure-description" data-test="bottom-caption" id="figure-2-desc"><p>The SingleCellExperiment class instantiates an object (SingleCellExperiment, abbreviated as sce) capable of storing various datatypes generated from single-cell assays. An sce object is organized into components (for example, rowData, assays, colData, reducedDims). In the assays component, the rows represent features such as genes (horizontal pink bands), and the columns represent cells (vertical yellow band). The rowData and colData components can hold information (such as metadata) about those features and cells, respectively. Note that in the colData and reducedDims components, cells are represented as rows (horizontal yellow bands) and the number of columns in the assays component must match the number of rows in the colData and reducedDims components.</p></div><div class="c-article-figure-button-container hide-print"><a class="c-article__pill-button" data-test="back-link" data-track="click" data-track-action="back to article" data-track-label="button" data-track-category="figure" href="/articles/s41592-019-0654-x#Fig2"><span>Back to article page</span><svg width="16" height="16" class="u-icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#global-icon-chevron-right"></use></svg></a></div></figure></div></article>
+        </div>
+    </div>
+</div>
+
+
+<div class="hide-print js-header-menu menu mb20 z-index-50 composite-layer background-white border-bottom-2 border-gray-medium tighten-line-height" id="menu" data-track-component="menu">
+    <div class="menu-inner content js-hide">
+        <nav>
+            <div class="cleared border-bottom-1 border-gray-medium ml20 mr20">
+                <div class="grid-ng grid-1of4 mq875-grid-12">
+                    <h3 class="h3 pa20 mq875-pa0 mq875-mt20">
+                        Nature Methods<span class="visually-hidden"> menu</span>
+                    </h3>
+                </div>
+                
+    
+        
+        <div class="grid-ng grid-1of4 text14 pa20 mq875-grid-4 mq640-grid-12">
+            <ul class="clean-list mb0">
+                
+                <li class="mb4 pr10"><a href="/nmeth/news-and-comment" data-track="click" data-track-action="news &amp; comment" data-track-label="link">News &amp; Comment</a></li>
+                
+                <li class="mb4 pr10"><a href="/nmeth/research" data-track="click" data-track-action="research" data-track-label="link">Research</a></li>
+                
+            </ul>
+        </div>
+        
+
+        
+        <div class="grid-ng grid-1of4 text14 pa20 mq875-grid-4 mq640-grid-12">
+            <ul class="clean-list mb0">
+                
+                <li class="mb4 pr10"><a href="/nmeth/current-issue" data-track="click" data-track-action="current issue" data-track-label="link">Current Issue</a></li>
+                
+                <li class="mb4 pr10"><a href="/nmeth/browse-issues" data-track="click" data-track-action="browse issues" data-track-label="link">Browse Issues</a></li>
+                
+                <li class="mb4 pr10"><a href="/nmeth/articles" data-track="click" data-track-action="browse articles" data-track-label="link">Browse Articles</a></li>
+                
+                <li class="mb4 pr10"><a href="/nmeth/collections" data-track="click" data-track-action="browse collections" data-track-label="link">Browse Collections</a></li>
+                
+            </ul>
+        </div>
+        
+
+        
+        <div class="grid-ng grid-1of4 text14 pa20 mq875-grid-4 mq640-grid-12">
+            <ul class="clean-list mb0">
+                
+                <li class="mb4 pr10"><a href="/nmeth/about" data-track="click" data-track-action="about the journal" data-track-label="link">About the Journal</a></li>
+                
+                <li class="mb4 pr10"><a href="/nmeth/for-authors" data-track="click" data-track-action="for authors" data-track-label="link">For Authors</a></li>
+                
+                <li class="mb4 pr10"><a href="/nmeth/for-reviewers" data-track="click" data-track-action="for reviewers" data-track-label="link">For Reviewers</a></li>
+                
+                <li class="mb4 pr10"><a href="/nmeth/web-feeds" data-track="click" data-track-action="web feeds" data-track-label="link">Web Feeds</a></li>
+                
+            </ul>
+        </div>
+        
+    
+
+            </div>
+            <div class="cleared ml20 mr20">
+                
+    <div class="cleared pb10">
+        <div class="grid-ng grid-1of4 mq875-grid-12">
+            <h3 class="serif pa20 mq875-pa0 mq875-mt20">Nature Research<span class="visually-hidden"> menu</span></h3>
+        </div>
+        <div class="grid-ng grid-1of4 text14 pa20 mq875-grid-4 mq640-grid-12">
+            <h4 class="mb4">Our Journals</h4>
+            <ul class="clean-list mb0">
+                <li class="mb4 pr10"><a href="/nature" data-track="click" data-track-action="nature" data-track-label="link">Nature</a></li>
+                <li class="mb4 pr10"><a href="/ncomms" data-track="click" data-track-action="nature communications" data-track-label="link">Nature Communications</a></li>
+                <li class="mb4 pr10"><a href="/nprot" data-track="click" data-track-action="nature protocols" data-track-label="link">Nature Protocols</a></li>
+                <li class="mb4 pr10"><a href="/srep" data-track="click" data-track-action="scientific reports" data-track-label="link">Scientific Reports</a></li>
+                <li class="mb4 pr10"><a href="/siteindex" data-track="click" data-track-action="journal a-z view all" data-track-label="link">View all journals</a></li>
+            </ul>
+        </div>
+        <div class="grid-ng grid-1of4 text14 pa20 mq875-grid-4 mq640-grid-12">
+            <h4 class="mb4">Subjects</h4>
+            <ul class="clean-list mb0">
+                <li class="mb4 pr10"><a href="/subjects/biological-sciences" data-track="click" data-track-action="biological sciences" data-track-label="link">Biological Sciences</a></li>
+                <li class="mb4 pr10"><a href="/subjects/scientific-community-and-society" data-track="click" data-track-action="scientific community and society" data-track-label="link">Scientific Community &amp; Society</a></li>
+                <li class="mb4 pr10"><a href="/subjects/earth-and-environmental-sciences" data-track="click" data-track-action="earth and environmental sciences" data-track-label="link">Earth &amp; Environmental Sciences</a></li>
+                <li class="mb4 pr10"><a href="/subjects/health-sciences" data-track="click" data-track-action="health sciences" data-track-label="link">Health Sciences</a></li>
+                <li class="mb4 pr10"><a href="/subjects/physical-sciences" data-track="click" data-track-action="physical sciences" data-track-label="link">Physical Sciences</a></li>
+                <li class="mb4 pr10"><a href="/subjects" data-track="click" data-track-action="subjects view all" data-track-label="link">View all subjects</a></li>
+            </ul>
+        </div>
+        <div class="grid-ng grid-1of4 text14 pa20 mq875-grid-4 mq640-grid-12">
+            <h4 class="mb4">More</h4>
+            <ul class="clean-list mb0">
+                <li class="mb4 pr10"><a href="https://support.nature.com/support/home" data-track="click" data-track-action="subscriptions" data-track-label="link">Contact us</a></li>
+                <li class="mb4 pr10"><a href="/authors/index.html" data-track="click" data-track-action="authors and referees" data-track-label="link">Authors &amp; Referees</a></li>
+                <li class="mb4 pr10"><a href="/libraries/index.html" data-track="click" data-track-action="librarians" data-track-label="link">Librarians</a></li>
+                <li class="mb4 pr10"><a href="/advertising/index.html" data-track="click" data-track-action="advertisers" data-track-label="link">Advertisers</a></li>
+                <li class="mb4 pr10"><a href="/npg_/press_room/index.html" data-track="click" data-track-action="press" data-track-label="link">Press</a></li>
+                <li class="mb4 pr10"><a href="/npg_/index_npg.html" data-track="click" data-track-action="about" data-track-label="link">About Nature Research</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+
+    <div id="search-menu" class="menu pt20 mb20 z-index-50 composite-layer background-white border-gray-medium border-bottom-2" data-component="tray" data-track-component="header">
+        <div class="menu-inner js-hide">
+            <section>
+                <h2 class="visually-hidden">Search</h2>
+                <div class="hide-print content mb40 mq1200-padded position-relative" data-test="inline-search">
+                    <div class="pt30 cleared background-white sans-serif">
+                        <div class="grid grid-8 grid-left-2 mq875-grid-12 mq875-ml0 mq640-pb30">
+                            <form action="/search" method="get" role="search" autocomplete="off" class="standard-space-below" data-track="submit" data-track-action="search" data-track-label="form">
+                                <label for="keywords" class="block strong">Article search</label>
+                                <div class="position-relative">
+                                    <input type="search" id="keywords" class="border-gray border-all-1 equalize-line-height pa10 pr40 box-sizing grid-12" name="q" value="" placeholder="Search by keywords or author" data-test="search-keywords">
+                                    <div class="position-absolute position-right position-top mt1 mr1">
+                                        <button type="submit" class="icon icon-center search-btn kill-border" data-test="search-submit">
+                                            Search
+                                        </button>
+                                    </div>
+                                    <p class="mb0 mt4 text14"><a href="/search/advanced" data-track="click" data-track-action="advanced search" data-track-label="link">Advanced search</a></p>
+                                </div>
+                            </form>
+                            <h3 class="h3 strong mb4 border-gray-medium border-bottom-1 sans-serif">Quick links</h3>
+                            <ul class="clean-list mb0 text14">
+                                <li class="grid-ng grid-1of2 mb6 mt6"><a href="/subjects" data-track="click" data-track-action="explore articles by subject" data-track-label="link">Explore articles by subject</a></li>
+                                <li class="grid-ng grid-1of2 mb6 mt6"><a href="/naturecareers" data-track="click" data-track-action="find a job" data-track-label="link">Find a job</a></li>
+                                <li class="grid-ng grid-1of2"><a href="/authors/index.html" data-track="click" data-track-action="guide to authors" data-track-label="link">Guide to authors</a></li>
+                                <li class="grid-ng grid-1of2"><a href="/authors/editorial_policies/" data-track="click" data-track-action="editorial policies" data-track-label="link">Editorial policies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+
+
+<footer role="contentinfo" class="composite-layer">
+    
+        
+    
+
+
+    
+
+    <div itemscope itemtype="http://schema.org/Periodical">
+        <meta itemprop="publisher" content="Springer Nature">
+        
+            <div class="container-footer mt40 cleared container-footer-full">
+                
+                    <div class="content pt20 pr30 pl30">
+                        <div class="grid grid-12 last clear-float cleared mb15 text-gray-light text13 flex-box flex-wrap-reverse">
+                            <h2 aria-level="2" class="text13 strong emphasis ma0 sans-serif" itemprop="name">Nature Methods</h2>
+                            <p class="pt0 pr10 pb0 pl10 ma0"><abbr title="International Standard Serial Number">ISSN</abbr> <span itemprop="issn">1548-7105</span> (online)</p>
+                        </div>
+                    </div>
+                
+
+                
+    <div class="grid grid-12 pl30 pr30 last" id="footer">
+        <h2 aria-level="2" class="hide">nature.com sitemap</h2>
+    </div>
+
+    <div class="pl30 pr30 content" data-track-component="footer">
+
+        <div class="grid grid-12 last clear-float cleared mb5 pt20 text-gray-light flex-wrap">
+            <div class="grid grid-3 mq875-grid-12 just-mq640-last just-mq875-last mb20"><img alt="Nature Research" src="/static/images/logos/nature research-colour-150.a383514567.svg" loading="lazy" width="255" height="33"></div>
+            <ul class="grid grid-7 mq875-grid-8 mq640-grid-12 just-mq640-last clean-list mb10 mt10 text15 u-hide-print">
+                <li class="grid grid-3 mq875-grid-3 mq640-grid-6 mq480-grid-12"><a href="https://www.nature.com/npg_/company_info/index.html" data-track="click" data-track-action="about us" class="text-gray-light" data-track-label="link">About us</a></li>
+                <li class="grid grid-3 mq875-grid-3 mq640-grid-6 mq480-grid-12 just-mq640-last just-mq480-last"><a href="https://www.nature.com/npg_/press_room/press_releases.html" data-track="click" data-track-action="press releases" data-track-label="link" class="text-gray-light">Press releases</a></li>
+                <li class="grid grid-3 mq875-grid-3 mq640-grid-6 mq480-grid-12"><a href="https://press.nature.com/" data-track="click" data-track-action="press office" data-track-label="link" class="text-gray-light">Press office</a></li>
+                <li class="grid grid-3 mq875-grid-3 mq640-grid-6 mq480-grid-12 last"><a href="https://support.nature.com/support/home" data-track="click" data-track-action="contact us" class="text-gray-light" data-track-label="link">Contact us</a></li>
+            </ul>
+            <ul class="grid grid-2 mq875-grid-4 mq640-grid-12 last clean-list mb10 mt4 u-hide-print">
+                <li class="grid grid-4 mq875-grid-3"><a href="https://www.facebook.com/nature/" data-track="click" data-track-action="facebook" data-track-label="link" class="text-gray-light"><img src="/static/images/fb.49ba391f15.svg" class="cleared text-footer-img" alt="Facebook"/></a></li>
+                <li class="grid grid-4 mq875-grid-3"><a href="https://twitter.com/nresearchnews?lang=en" data-track="click" data-track-action="twitter" data-track-label="link" class="text-gray-light"><img src="/static/images/twitter.a90dbeb03a.svg" class="cleared text-footer-img" alt="Twitter"/></a></li>
+                <li class="grid grid-4 mq875-grid-3 last"><a href="https://www.youtube.com/channel/UCvCLdSgYdSTpWcOgEJgi-ng" data-track="click" data-track-action="youtube" data-track-label="link" class="text-gray-light"><img src="/static/images/youtube.6071f6012c.svg" class="cleared text-footer-img" alt="Youtube"/></a></li>
+            </ul>
+        </div>
+
+        <div class="cleared z-index-1 pt30 pb20 border-top-1 border-gray text-footer-mobile-bottom hide-print u-hide-print">
+            <div class="grid grid-3 mq875-grid-4 mq640-grid-6 mq480-grid-12">
+                <h3 class="text-footer-heading">Discover content</h3>
+                <ul class="clean-list ma0 mb6 text15">
+                    <li class="pb4"><a href="https://www.nature.com/siteindex" data-track="click" data-track-action="journals a-z" data-track-label="link" class="text-gray-light">Journals A-Z</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/subjects/" data-track="click" data-track-action="article by subject" data-track-label="link" class="text-gray-light">Articles by subject</a></li>
+                    <li class="pb4"><a href="https://nano.nature.com/" data-track="click" data-track-action="nano" data-track-label="link" class="text-gray-light">Nano</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/protocolexchange/" data-track="click" data-track-action="protocol exchange" data-track-label="link" class="text-gray-light">Protocol Exchange</a></li>
+                    <li class="pb4"><a href="https://www.natureindex.com/" data-track="click" data-track-action="nature index" data-track-label="link" class="text-gray-light">Nature Index</a></li>
+                </ul>
+            </div>
+
+            <div class="grid grid-3 mq875-grid-4 mq640-grid-6 mq480-grid-12 just-mq640-last">
+                <h3 class="text-footer-heading">Publish with us</h3>
+                <ul class="clean-list ma0 mb6 text15">
+                    <li class="pb4"><a href="https://www.nature.com/authors/author_resources/index.html" data-track="click" data-track-action="guide to authors" data-track-label="link" class="text-gray-light" >Guide to Authors</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/authors/peer_review/" data-track="click" data-track-action="guide to referees" data-track-label="link" class="text-gray-light">Guide to Referees</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/authors/editorial_policies/" data-track="click" data-track-action="editorial policies" data-track-label="link" class="text-gray-light">Editorial policies</a></li>
+                    <li class="pb4"><a href="http://www.nature.com/openresearch/publishing-with-npg/" data-track="click" data-track-action="open access" data-track-label="link" class="text-gray-light">Open access</a></li>
+                    <li class="pb4" ><a href="https://www.nature.com/reprints/" data-track="click" data-track-action="reprints and permissions" data-track-label="link" class="text-gray-light">Reprints &amp; permissions</a></li>
+                </ul>
+            </div>
+
+            <div class="grid grid-3 mq875-grid-4 mq640-grid-6 mq480-grid-12 just-mq875-last">
+                <h3 class="text-footer-heading">Researcher services</h3>
+                <ul class="clean-list ma0 mb6 text15">
+                    <li class="pb4"><a href="https://www.springernature.com/gp/authors/research-data" data-track="click" data-track-action="data research service" data-track-label="link" class="text-gray-light">Research data</a></li>
+                    <li class="pb4"><a href="https://authorservices.springernature.com/go/nr" data-track="click" data-track-action="language editing" data-track-label="link" class="text-gray-light">Language editing</a></li>
+                    <li class="pb4"><a href="https://authorservices.springernature.com/scientific-editing/" data-track="click" data-track-action="scientific editing" data-track-label="link" class="text-gray-light">Scientific editing</a></li>
+                    <li class="pb4"><a href="https://masterclasses.nature.com/" data-track="click" data-track-action="nature masterclasses" data-track-label="link" class="text-gray-light">Nature Masterclasses</a></li>
+                    <li class="pb4"><a href="https://partnerships.nature.com/product/researcher-training/" data-track="click" data-track-action="nature research academies" data-track-label="link" class="text-gray-light">Nature Research Academies</a></li>
+                </ul>
+            </div>
+
+            <div class="grid grid-3 mq875-grid-4 mq640-grid-6 mq480-grid-12 just-mq875-clear just-mq640-last full-size-last just-mq1200-last just-mq875-last just-mq480-last">
+                <h3 class="text-footer-heading">Libraries &amp; institutions</h3>
+                <ul class="clean-list ma0 mb6 text15">
+                    <li class="pb4"><a href="https://www.springernature.com/gp/librarians/tools-services" data-track="click" data-track-action="librarian service and tools" data-track-label="link" class="text-gray-light">Librarian service &amp; tools</a></li>
+                    <li class="pb4"><a href="https://www.springernature.com/gp/librarians/manage-your-account/librarianportal" data-track="click" data-track-action="librarian portal" data-track-label="link" class="text-gray-light">Librarian portal</a></li>
+                    <li class="pb4"><a href="http://www.nature.com/openresearch/about-open-access/information-for-institutions/" data-track="click" data-track-action="open research" data-track-label="link" class="text-gray-light">Open research</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cleared z-index-1 pt30 pb20 border-top-1 border-gray text-footer-mobile-top hide-print u-hide-print">
+            <div class="grid grid-3 mq875-grid-4 mq640-grid-6 mq480-grid-12">
+                <h3 class="text-footer-heading">Advertising &amp; partnerships</h3>
+                <ul class="clean-list ma0 mb6 text15">
+                    <li class="pb4"><a href="https://partnerships.nature.com/product/digital-advertising/" data-track="click" data-track-action="advertising" data-track-label="link" class="text-gray-light">Advertising</a></li>
+                    <li class="pb4"><a href="https://partnerships.nature.com/" data-track="click" data-track-action="partnerships and services" data-track-label="link" class="text-gray-light">Partnerships &amp; Services</a></li>
+                    <li class="pb4"><a href="https://partnerships.nature.com/media-kits/" data-track="click" data-track-action="media kits" data-track-label="link" class="text-gray-light">Media kits</a></li>
+                    <li class="pb4"><a href="https://partnerships.nature.com/product/branded-content-native-advertising/" data-track-action="branded content" data-track-label="link" class="text-gray-light">Branded content</a></li>
+                </ul>
+            </div>
+
+            <div class="grid grid-3 mq875-grid-4 mq640-grid-6 mq480-grid-12 just-mq640-last just-mq875-last">
+                <h3 class="text-footer-heading">Career development</h3>
+                <ul class="clean-list ma0 mb6 text15">
+                    <li class="pb4"><a href="https://www.nature.com/naturecareers" data-track="click" data-track-action="nature careers" data-track-label="link" class="text-gray-light">Nature Careers</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/natureconferences/" data-track="click" data-track-action="nature conferences" data-track-label="link" class="text-gray-light">Nature<span class="visually-hidden"> </span> Conferences</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/natureevents/" data-track="click" data-track-action="nature events" data-track-label="link" class="text-gray-light">Nature<span class="visually-hidden"> </span> events</a></li>
+                </ul>
+            </div>
+
+            <div class="grid grid-3 mq875-grid-4 mq640-grid-6 mq480-grid-12">
+                <h3 class="text-footer-heading">Regional websites</h3>
+                <ul class="clean-list ma0 mb6 text15">
+                    <li class="pb4"><a href="http://www.naturechina.com" data-track="click" data-track-action="nature china" data-track-label="link" class="text-gray-light">Nature China</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/nindia" data-track="click" data-track-action="nature india" data-track-label="link" class="text-gray-light">Nature India</a></li>
+                    <li class="pb4"><a href="https://www.natureasia.com/ja-jp/" data-track="click" data-track-action="nature japan" data-track-label="link" class="text-gray-light">Nature Japan</a></li>
+                    <li class="pb4"><a href="https://www.natureasia.com/ko-kr/" data-track="click" data-track-action="nature korea" data-track-label="link" class="text-gray-light">Nature Korea</a></li>
+                    <li class="pb4"><a href="https://www.nature.com/nmiddleeast/" data-track="click" data-track-action="nature middle east" data-track-label="link" class="text-gray-light">Nature Middle East</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+            </div>
+        
+    </div>
+
+    
+    <div class="container-footer-box cleared text14 border-gray-medium border-top-1">
+        <div class="content">
+            <img src="/static/images/sn-logo.4368f3b177.svg" alt="Springer Nature" loading="lazy" width="140" height="14" class="cleared"/>
+            <p class="mb10 text-gray-light">© 2020 Springer Nature Limited</p>
+            <ul class="ma0 clean-list grid grid-12 hide-print u-hide-print">
+                <li class="grid grid-2 mq875-grid-4 mq640-grid-6 mq480-grid-12 mb10 just-mq480-last"><a href="https://www.nature.com/info/privacy.html" data-track="click" data-track-action="privacy policy" data-track-label="link" class="text-gray-light">Privacy Policy</a></li>
+                <li class="grid grid-2 mq875-grid-4 mq640-grid-6 mq480-grid-12 mb10 just-mq640-last just-mq480-last"><a href="https://www.nature.com/info/cookies.html" data-track="click" data-track-action="use of cookies" data-track-label="link" class="text-gray-light">Use of cookies</a></li>
+                <li class="grid grid-2 mq875-grid-4 mq640-grid-6 mq480-grid-12 mb10 just-mq875-last just-mq480-last"><a href="javascript:;" class="optanon-toggle-display text-gray-light" data-track="click" data-track-action="manage cookies" data-track-label="link">Manage cookies</a></li>
+                <li class="grid grid-2 mq875-grid-4 mq640-grid-6 mq480-grid-12 mb10 just-mq640-last just-mq480-last"><a href="https://www.nature.com/info/legal_notice.html" data-track="click" data-track-action="legal notice" data-track-label="link" class="text-gray-light">Legal notice</a></li>
+                <li class="grid grid-2 mq875-grid-4 mq640-grid-6 mq480-grid-12 mb10 just-mq480-last"><a href="https://www.nature.com/info/accessibility_statement.html" data-track="click" data-track-action="accessibility statement" data-track-label="link" class="text-gray-light">Accessibility statement</a></li>
+                <li class="grid grid-2 mq875-grid-4 mq640-grid-6 mq480-grid-12 mb10 last"><a href="https://www.nature.com/info/tandc.html" data-track="click" data-track-action="terms and conditions" data-track-label="link" class="text-gray-light">Terms &amp; Conditions</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+    
+    <svg class="u-hide hide">
+        <symbol id="global-icon-chevron-right" viewBox="0 0 16 16">
+            <path d="M7.782 7L5.3 4.518c-.393-.392-.4-1.022-.02-1.403a1.001 1.001 0 011.417 0l4.176 4.177a1.001 1.001 0 010 1.416l-4.176 4.177a.991.991 0 01-1.4.016 1 1 0 01.003-1.42L7.782 9l1.013-.998z" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="global-icon-download" viewBox="0 0 16 16">
+            <path d="M2 14c0-.556.449-1 1.002-1h9.996a.999.999 0 110 2H3.002A1.006 1.006 0 012 14zM9 2v6.8l2.482-2.482c.392-.392 1.022-.4 1.403-.02a1.001 1.001 0 010 1.417l-4.177 4.177a1.001 1.001 0 01-1.416 0L3.115 7.715a.991.991 0 01-.016-1.4 1 1 0 011.42.003L7 8.8V2c0-.55.444-.996 1-.996.552 0 1 .445 1 .996z" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="global-icon-email" viewBox="0 0 18 18">
+            <path d="M1.995 2h14.01A2 2 0 0118 4.006v9.988A2 2 0 0116.005 16H1.995A2 2 0 010 13.994V4.006A2 2 0 011.995 2zM1 13.994A1 1 0 001.995 15h14.01A1 1 0 0017 13.994V4.006A1 1 0 0016.005 3H1.995A1 1 0 001 4.006zM9 11L2 7V5.557l7 4 7-4V7z" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="global-icon-institution" viewBox="0 0 18 18">
+            <path d="M14 8a1 1 0 011 1v6h1.5a.5.5 0 01.5.5v.5h.5a.5.5 0 01.5.5V18H0v-1.5a.5.5 0 01.5-.5H1v-.5a.5.5 0 01.5-.5H3V9a1 1 0 112 0v6h8V9a1 1 0 011-1zM6 8l2 1v4l-2 1zm6 0v6l-2-1V9zM9.573.401l7.036 4.925A.92.92 0 0116.081 7H1.92a.92.92 0 01-.528-1.674L8.427.401a1 1 0 011.146 0zM9 2.441L5.345 5h7.31z" fill-rule="evenodd"/>
+        </symbol>
+        <symbol id="global-icon-search" viewBox="0 0 22 22">
+            <path fill-rule="evenodd" d="M21.697 20.261a1.028 1.028 0 01.01 1.448 1.034 1.034 0 01-1.448-.01l-4.267-4.267A9.812 9.811 0 010 9.812a9.812 9.811 0 1117.43 6.182zM9.812 18.222A8.41 8.41 0 109.81 1.403a8.41 8.41 0 000 16.82z"/>
+        </symbol>
+    </svg>
+
+</footer>
+
+
+
+<noscript>
+    <img hidden src="https://verify.nature.com/verify/nature.png" border="0" width="0" height="0" style="display: none" alt="">
+</noscript>
+
+
+
+</body>
+</html>
